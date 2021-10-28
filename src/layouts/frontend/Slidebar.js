@@ -1,12 +1,11 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { Container, InputGroup } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
 function Slidebar() {
 
     const [category, setCategory] = useState([]);
-    const [price, setPrice] = useState([]);
+    // const [price, setPrice] = useState([]);
     const [loading, setLoading] = useState(true);
     const [product, setProduct] = useState([]);
     const categoryCount = product.length;
@@ -20,7 +19,7 @@ function Slidebar() {
     }, []);
 
     if (loading) {
-        return <div className='loading'><h4>Loading...</h4></div>
+        return <div className='loading'><h4>Vui lòng đợi...</h4></div>
     } else {
         var category_HTML = '';
         category_HTML = category.map((item, idx) => {
@@ -41,27 +40,24 @@ function Slidebar() {
 
     return (
         <div className='long-filter'>
-            <h4>Filter</h4>
             <div className="py-3">
-                <h5 className="font-weight-bold">Categories</h5>
+                <h5 className="font-weight-bold">Loại sản phẩm</h5>
                 <ul className="list-group">
                     <Link to='/product' className='link'><li className="list-group-item list-group-item-action d-flex justify-content-between align-items-center category">All<span className="badge badge-primary badge-pill">{categoryCount}</span> </li></Link>
                     {category_HTML}
                 </ul>
             </div>
             <div className="py-3">
-                <h5 className="font-weight-bold">Price</h5>
+                <h5 className="font-weight-bold">Giá</h5>
                 <div className="brand">
-                    <div className="form-inline d-flex align-items-center py-1"> <label className="tick">Less 200<input type="radio" name='radio' /> <span className="check"></span> </label> </div>
+                    <div className="form-inline d-flex align-items-center py-1"> <label className="tick">Dưới 200<input type="radio" name='radio' /> <span className="check"></span> </label> </div>
                     <div className="form-inline d-flex align-items-center py-1"> <label className="tick">200 - 500<input type="radio" name='radio' /> <span className="check"></span> </label> </div>
                     <div className="form-inline d-flex align-items-center py-1"> <label className="tick">500 - 1000<input type="radio" name='radio' /> <span className="check"></span> </label> </div>
                     <div className="form-inline d-flex align-items-center py-1"> <label className="tick">1000 - 5000<input type="radio" name='radio' /> <span className="check"></span> </label> </div>
-                    <div className="form-inline d-flex align-items-center py-1"> <label className="tick">More 5000<input type="radio" name='radio' /> <span className="check"></span> </label> </div>
+                    <div className="form-inline d-flex align-items-center py-1"> <label className="tick">Trên 5000<input type="radio" name='radio' /> <span className="check"></span> </label> </div>
                 </div>
             </div>
-
         </div>
-
     )
 }
 export default Slidebar;

@@ -1,10 +1,10 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { Form, Row, Col, Button, Card, Table, ButtonGroup } from 'react-bootstrap';
+import { Form, Row, Col, Button, Card, Table } from 'react-bootstrap';
 import { Link, useHistory } from 'react-router-dom';
 import swal from 'sweetalert';
 
-document.title = `ChingMusic | CheckOut`;
+document.title = `ChingMusic | Thanh toán`;
 
 function Checkout() {
 
@@ -33,13 +33,18 @@ function Checkout() {
 
     if (!localStorage.getItem('auth_token')) {
         history.push('/login');
-        swal("Waring", "Login to go to checkout", 'error');
+        swal("Thông báo", "Đăng nhập để cho thể thanh toán", 'error');
+    }
+
+    const selectDistrict = (e) => {
+        e.persist();
+        checkoutInput.districtID = e.target.value;
     }
 
     const selectProvince = (e) => {
         e.persist();
         const province_id = e.target.value;
-        setCheckoutInput({ ...checkoutInput.provinceID, [e.target.name]: e.target.value })
+        checkoutInput.provinceID = province_id;
         axios.post(`/api/select-district/${province_id}`).then(res => {
             if (res.data.status === 200) {
                 setDistrict(res.data.district);
@@ -48,24 +53,13 @@ function Checkout() {
             }
         })
     }
-    // console.log("province: " + checkoutInput.provinceID);
-    // console.log("district: " + checkoutInput.districtID);
-
-
-    const selectDistrict = (e) => {
-        e.persist();
-        // setCheckoutInput({ ...checkoutInput.districtID, [e.target.name]: e.target.value });
-        checkoutInput.districtID = e.target.value;
-        console.log("province: " + checkoutInput.provinceID);
-        console.log(checkoutInput.districtID);
-    }
 
     const handleInput = (e) => {
         e.persist();
         setCheckoutInput({ ...checkoutInput, [e.target.name]: e.target.value });
     }
 
-   
+
 
     const submitCheckOut = (e, payment_mode) => {
         e.preventDefault();
@@ -86,7 +80,7 @@ function Checkout() {
 
         axios.post(`/api/place-order`, data).then(res => {
             if (res.data.status === 200) {
-                swal('Order successfully', res.data.message, 'success');
+                swal('Thanh toán thành công', res.data.message, 'success');
                 setError([]);
                 history.push('/thank-you');
             } else {
@@ -99,13 +93,11 @@ function Checkout() {
             case 'cod':
                 axios.post(`/api/place-order`, data).then(res => {
                     if (res.data.status === 200) {
-                        swal('Order successfully', res.data.message, 'success');
+                        swal('Thanh toán thành công', res.data.message, 'success');
                         setError([]);
                         history.push('/thank-you');
                     } else if (res.data.status === 422) {
-                        {
-                            setError(res.data.errors);
-                        }
+                        setError(res.data.errors);
                     }
                 });
                 break;
@@ -115,12 +107,12 @@ function Checkout() {
                     if (res.data.status === 200) {
                         setError([]);
                         var options = {
-                            "key": "rzp_test_rAbQkiPa8m1lxr", 
-                            "amount": totalOrder, 
+                            "key": "rzp_test_rAbQkiPa8m1lxr",
+                            "amount": totalOrder,
                             "name": "Acme Corp",
                             "description": "Test Transaction",
                             "image": "https://example.com/your_logo",
-                            "handler": function (response){
+                            "handler": function (response) {
                                 alert("Order Successfull with Razorpay id: " + response.razorpay_payment_id);
                                 data.payment_id = response.razorpay_payment_id;
                                 axios.post(`/api/place-order`, data).then(res => {
@@ -144,9 +136,7 @@ function Checkout() {
                         rzp1.open();
 
                     } else if (res.data.status === 422) {
-                        {
-                            setError(res.data.errors);
-                        }
+                        setError(res.data.errors);
                     }
                 });
                 break;
@@ -158,6 +148,27 @@ function Checkout() {
 
     useEffect(() => {
         let isMounterd = true;
+        axios.get(`/api/allprovince`).then(res => {
+            if (res.data.status === 200) {
+                setProvince(res.data.province);
+            }
+        });
+
+        const province_id = checkoutInput.provinceID;
+        axios.post(`/api/select-district/${province_id}`).then(res => {
+            if (res.data.status === 200) {
+                console.log("Hehe");
+            } else {
+                console.log("failed");
+            }
+        })
+
+        axios.get(`/api/alldistict/${province_id}`).then(res => {
+            if (res.data.status === 200) {
+                setDistrict(res.data.district);
+            }
+        })
+
         axios.get(`/api/cart`).then(res => {
             if (isMounterd) {
                 if (res.data.status === 201) {
@@ -165,7 +176,7 @@ function Checkout() {
                     setloading(false);
                 } else if (res.data.status === 401) {
                     history.push('/product');
-                    swal('Warning', res.data.message, 'error');
+                    swal('Thông báo', res.data.message, 'error');
                 }
             }
         })
@@ -173,18 +184,17 @@ function Checkout() {
         axios.get(`/api/getUser`).then(res => {
             if (res.data.status === 200) {
                 setCheckoutInput(res.data.user);
-                setProvince(res.data.province);
                 setloading(false);
             } else if (res.data.status === 401) {
                 history.push('/product');
-                swal('Warning', res.data.message, 'error');
+                swal('Thông báo', res.data.message, 'error');
             }
         })
 
         return () => {
             isMounterd = false;
         }
-    }, [history])
+    }, [history, checkoutInput.provinceID])
     var cart_HTML = "";
     if (cart.length > 0) {
         cart_HTML =
@@ -193,7 +203,7 @@ function Checkout() {
                     <Col xs={7}>
                         <Card border="warning">
                             <Card.Header
-                            >Form Confirm for {checkoutInput.fullname}</Card.Header>
+                            >Thông tin đơn hàng của {checkoutInput.fullname}</Card.Header>
                             <Card.Body>
                                 <Form onSubmit={submitCheckOut}>
                                     <Row className="mb-3">
@@ -203,8 +213,9 @@ function Checkout() {
                                                 value={checkoutInput.email} readOnly />
                                         </Form.Group>
                                         <Form.Group as={Col} controlId="formGridCity">
-                                            <Form.Label>Phone</Form.Label>
-                                            <Form.Control type="text" name="phone" value={checkoutInput.phone} onChange={handleInput} />
+                                            <Form.Label>Số điện thoại</Form.Label>
+                                            <Form.Control type="text" name="phone" value={checkoutInput.phone} onChange={handleInput}
+                                                readOnly />
                                             <small className="text-danger">{errorlist.phone}</small>
                                         </Form.Group>
 
@@ -212,10 +223,10 @@ function Checkout() {
 
                                     <Row className="mb-3">
                                         <Form.Group as={Col} controlId="formGridEmail">
-                                            <Form.Label>Province</Form.Label>
+                                            <Form.Label>Thành phố</Form.Label>
                                             <Form.Select defaultValue="0" name="provinceID" value={checkoutInput.provinceID}
                                                 onChange={selectProvince}>
-                                                <option>Choose...</option>
+                                                <option>Chọn...</option>
                                                 {
                                                     province.map((item) => {
                                                         return (
@@ -228,9 +239,9 @@ function Checkout() {
                                         </Form.Group>
 
                                         <Form.Group as={Col} controlId="formGridPassword">
-                                            <Form.Label>District</Form.Label>
+                                            <Form.Label>Huyện</Form.Label>
                                             <Form.Select defaultValue="0" name="districtID" value={checkoutInput.districtID} onChange={selectDistrict}>
-                                                <option>Choose...</option>
+                                                <option>Chọn...</option>
                                                 {
                                                     district.map((item) => {
                                                         return (
@@ -244,8 +255,8 @@ function Checkout() {
                                     </Row>
 
                                     <Form.Group className="mb-3" controlId="formGridAddress">
-                                        <Form.Label>Address</Form.Label>
-                                        <Form.Control placeholder="Apartment, studio, or floor" type="text"
+                                        <Form.Label>Địa chỉ</Form.Label>
+                                        <Form.Control placeholder="Số nhà - phường - xã" type="text"
                                             value={checkoutInput.address} name="address" onChange={handleInput} />
                                         <small className="text-danger">{errorlist.address}</small>
 
@@ -255,17 +266,17 @@ function Checkout() {
                                         <Form.Control placeholder="Note for store" type="text"
                                             value={checkoutInput.note} name="note" onChange={handleInput} />
                                         <Form.Text className="text-muted">
-                                            You can write note or no
+                                            Hãy điền chú thích cho cửa hàng (có thể bỏ trống)
                                         </Form.Text>
                                     </Form.Group>
 
                                     <Button variant="dark" type="submit" className="w-100"
                                         onClick={(e) => submitCheckOut(e, 'cod')}>
-                                        COD order
+                                        Thanh toán trực tiếp
                                     </Button>
                                     <Button variant="primary" type="submit" className="w-100 mt-2"
                                         onClick={(e) => submitCheckOut(e, 'razorpay')}>
-                                        Pay online
+                                        Thanh toán online
                                     </Button>
 
                                 </Form>
@@ -276,10 +287,10 @@ function Checkout() {
                         <Table bordered hover>
                             <thead>
                                 <tr className="text-center">
-                                    <th>Product</th>
-                                    <th>Price</th>
-                                    <th>Quantity</th>
-                                    <th>Total</th>
+                                    <th>Sản phẩm</th>
+                                    <th>Giá</th>
+                                    <th>Số lượng</th>
+                                    <th>Tổng</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -290,7 +301,6 @@ function Checkout() {
                                     quantityproduct += item.quantity;
                                     total_quantity += item.quantity * 10;
                                     totalOrder = totalCartPrice + total_quantity;
-                                    
                                     return (
                                         <tr key={idx} className="text-center">
                                             <td width="35%">{item.product.name}</td>
@@ -301,18 +311,18 @@ function Checkout() {
                                     )
                                 })}
                                 <tr className="text-center">
-                                    <td colSpan="2">Grand total</td>
+                                    <td colSpan="2">Tổng giá</td>
                                     <td>{quantityproduct}</td>
                                     <td className="text-end">{totalCartPrice}</td>
                                 </tr>
                                 <tr className="text-center">
-                                    <td colSpan="2">Fee Ship</td>
+                                    <td colSpan="2">Phí di chuyển</td>
                                     <td>{quantityproduct}</td>
                                     <td className="text-end">{total_quantity}</td>
                                 </tr>
                                 <tr className="text-center">
-                                    <td colSpan="2" className="fw-bold">Total Order</td>
-                                   
+                                    <td colSpan="2" className="fw-bold">Tổng hóa đơn</td>
+
                                     <td colSpan="2" className="text-end fw-bold">{totalOrder}</td>
                                 </tr>
                             </tbody>

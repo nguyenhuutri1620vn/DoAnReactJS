@@ -3,8 +3,8 @@ import React, { useEffect, useState } from 'react';
 import { Breadcrumb, Figure, Col, Row } from 'react-bootstrap';
 import { useHistory, Link } from 'react-router-dom';
 import Moment from 'react-moment';
-import image from '../../assets/frontend/image/background1.png'
 
+document.title = "Chingu | Chi tiết tin tức"
 function DetailNews(props) {
 
     const [content, setContent] = useState([]);
@@ -13,7 +13,6 @@ function DetailNews(props) {
     const history = useHistory();
 
     useEffect(() => {
-        document.title = `ChinguMusic | ${content.name}`
 
         const content_id = props.match.params.content;
         axios.get(`/api/detailcontent/${content_id}`).then(res => {
@@ -23,10 +22,10 @@ function DetailNews(props) {
             }
             setloading(false);
         })
-    }, [props.match.params.id, history])
+    }, [props.match.params.content, history])
 
     if (loading) {
-        return <div className="loading"><h4>Loading...</h4></div>
+        return <div className="loading"><h4>Đang tải...</h4></div>
     } else {
         var content_HTML = '';
         content_HTML = relatedConent.slice(0, 4).map((item, idx) => {
@@ -51,10 +50,10 @@ function DetailNews(props) {
         <div className="container">
             <Breadcrumb className="mb-3 mt-3">
                 <Breadcrumb.Item href="/product">
-                    Home
+                    Trang chủ
                 </Breadcrumb.Item>
                 <Breadcrumb.Item href="/news">
-                    News
+                    Tin tức
                 </Breadcrumb.Item>
                 <Breadcrumb.Item href="#">
                     {content.name}
@@ -84,7 +83,7 @@ function DetailNews(props) {
                         </div>
                     </Col>
                     <Col>
-                        <p className="text-uppercase title_related_news small">NEWS OTHER</p>
+                        <p className="text-uppercase title_related_news small">Tin tức khác</p>
                         {content_HTML}
                     </Col>
                 </Row>

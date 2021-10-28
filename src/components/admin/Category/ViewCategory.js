@@ -7,7 +7,7 @@ import ReactPaginate from 'react-paginate';
 
 function ViewCategory() {
 
-    document.title = 'View Category';
+    document.title = 'Danh sách loại sản phẩm';
 
     const [pageNumber, setPageNumber] = useState(0);
     const [search, setSearch] = useState("");
@@ -34,18 +34,18 @@ function ViewCategory() {
         e.preventDefault();
 
         const thisClicked = e.currentTarget;
-        thisClicked.innerText = "Deleting"
+        thisClicked.innerText = "Đang xóa..."
 
         swal({
-            title: "Are you sure?",
-            text: "Once deleted, you will not be able to recover!",
+            title: "Có chắc là muốn xóa chưa?",
+            text: "Khi mà đã xóa rồi thì không hoàn tác được đâu đấy!",
             icon: "warning",
             buttons: true,
             dangerMode: true,
         })
             .then((willDelete) => {
                 if (willDelete) {
-                    swal("Poof! Category has been deleted!", {
+                    swal("Poof! Loại sản phẩm đã được xóa!", {
                         icon: "success",
 
                     });
@@ -54,19 +54,19 @@ function ViewCategory() {
                             thisClicked.closest('tr').remove();
 
                         } else if (res.data.status === 404) {
-                            thisClicked.innerText = "Delete"
+                            thisClicked.innerText = "Xóa"
                         }
                     })
                 } else {
-                    swal("Category file is safe!");
-                    thisClicked.innerText = "Delete"
+                    swal("Loại sản phẩm đã được an toàn!");
+                    thisClicked.innerText = "Xóa"
                 }
             });
 
     }
     var viewcategory_HTMLTABLE = null;
     if (loading) {
-        <h3>Loading category...</h3>
+        <h3>Đang tải danh sách loại sản phẩm, vui lòng đợi...</h3>
     } else {
         viewcategory_HTMLTABLE =
             categoryList.slice(pagesVisited, pagesVisited + categoryPerPage).filter((item) => {
@@ -83,14 +83,14 @@ function ViewCategory() {
                         <td className='text-center'>{item.id}</td>
                         <td>{item.name}</td>
                         <td>{item.slug}</td>
-                        <td className='text-center'><img src={`http://localhost:8000/${item.image}`} width='400px' alt={item.name} /></td>
-                        <td className='text-center'>{item.status === 1 ? 'Shown' : 'Hidden'}</td>
+                        <td className='text-center'><img src={`http://localhost:8000/${item.image}` } width="250" height="150" alt={item.name} /></td>
+                        <td className='text-center'>{item.status === 1 ? 'Hiện' : 'Ẩn'}</td>
                         <td className='text-center'>
-                            <Link to={`edit-category/${item.id}`}><Button variant="warning" >Edit</Button></Link>
+                            <Link to={`edit-category/${item.id}`}><Button variant="warning" >Sửa</Button></Link>
                         </td>
 
                         <td className='text-center'>
-                            <Button variant="danger" onClick={(e) => deleteCategory(e, item.id)}>Delete</Button>
+                            <Button variant="danger" onClick={(e) => deleteCategory(e, item.id)}>Xóa</Button>
                         </td>
 
                     </tr>
@@ -108,12 +108,12 @@ function ViewCategory() {
         <div className='container mt-2'>
             <div className='card'>
                 <div className='card-header'>
-                    <h4>Category List
+                    <h4>Danh sách loại sản phẩm
                         <form className="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0 float-end">
                             <div className="input-group">
                                 <input className="form-control"
-                                    type="text" placeholder="Search for..."
-                                    aria-label="Search for..."
+                                    type="text" placeholder="Tìm kiếm..."
+                                    aria-label="Tìm kiếm..."
                                     aria-describedby="btnNavbarSearch"
                                     value={search}
                                     onChange={(e) => { setSearch(e.target.value) }}
@@ -129,12 +129,12 @@ function ViewCategory() {
                         <thead className='text-center'>
                             <tr>
                                 <th className='col-3 col-sm-1'>ID</th>
-                                <th className='col-3 col-sm-1'>Name</th>
+                                <th className='col-3 col-sm-1'>Tên</th>
                                 <th className='col-3 col-sm-1'>Slug</th>
-                                <th className='col-3 col-sm-3'>Image</th>
-                                <th className='col-3 col-sm-1'>Status</th>
-                                <th className='col-3 col-sm-1'>Edit</th>
-                                <th className='col-3 col-sm-1'>Delete</th>
+                                <th className='col-3 col-sm-3'>Hình ảnh</th>
+                                <th className='col-3 col-sm-1'>Trạng thái</th>
+                                <th className='col-3 col-sm-1'>Sửa</th>
+                                <th className='col-3 col-sm-1'>Xóa</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -143,14 +143,14 @@ function ViewCategory() {
                     </table>
                 </div>
                 <ReactPaginate
-                    previousLabel={'Prev'}
-                    nextLabel={'Next'}
+                    disabledClassName={"pagination__link--disabled"}
+                    previousLabel={'←'}
+                    nextLabel={'→'}
                     pageCount={pageCount}
                     onPageChange={handleChangPage}
-                    containerClassName={"paginasqtionBttns"}
-                    previousLinkClassName={"previousBttn"}
-                    nextLinkClassName={"nextBttn"}
-                    disabledClassName={"paginationDisable"}
+                    containerClassName={"paginationBttns"}
+                    previousLinkClassName={"paginationPN"}
+                    nextLinkClassName={"paginationPN"}
                     activeClassName={"paginationActive"}
                 >
                 </ReactPaginate>

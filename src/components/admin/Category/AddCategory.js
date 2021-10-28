@@ -1,12 +1,12 @@
 import axios from 'axios';
 import React, { useState } from 'react';
 import swal from 'sweetalert';
-import { Button , Badge } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 
 
 function AddCategory() {
 
-    document.title = 'Create Category';
+    document.title = 'Thêm loại sản phẩm';
 
     const [picture, setPicture] = useState([]);
     const [errorlist, setError] = useState([]);
@@ -55,10 +55,10 @@ function AddCategory() {
 
         axios.post(`/api/store-category`, formData).then(res => {
             if (res.data.status === 200) {
-                swal('Success', res.data.message, 'success')
+                swal('Tạo loại sản phẩm thành công', res.data.message, 'success')
                 setError([]);
             } else if (res.data.status === 400) {
-                swal('All fields are mandatory', '', 'error');
+                swal('Vui lòng điền đầy đủ thông tin', '', 'error');
                 setError(res.data.errors);
             }
         })
@@ -66,64 +66,64 @@ function AddCategory() {
 
     return (
         <div className='container-fluid px-4'>
-            <h2 className='mt-4'>Create <Badge bg="primary" text="dark">Category</Badge></h2>
+            <h2 className='mt-4'>Thêm loại sản phẩm</h2>
             <form onSubmit={submitCategory} id="CATEGORY_FORM">
                 <ul className="nav nav-tabs" id="myTab" role="tablist">
                     <li className="nav-item" role="presentation">
-                        <button className="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Home</button>
+                        <button className="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Thông tin loại sản phẩm</button>
                     </li>
                     <li className="nav-item" role="presentation">
                         <button className="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#seo-tags" type="button" role="tab" aria-controls="seo-tags" aria-selected="false">SEO Tags</button>
                     </li>
                 </ul>
                 <div className="tab-content" id="myTabContent">
-                    <div className="tab-pane card-body border fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                    <div className="tab-pane card-body fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                         <div className='form-group mb-3'>
                             <label>Slug</label>
-                            <input type='text' name='slug' onChange={handleInput} value={categoryInput.slug} className='form-control' />
+                            <input type='text' name='slug' placeholder="Nhập slug..." onChange={handleInput} value={categoryInput.slug} className='form-control' />
                         </div>
                         <div className='notifyText'>{errorlist.slug}</div>
                         <div className='form-group mb-3'>
-                            <label>Name</label>
-                            <input type='text' name='name' onChange={handleInput} value={categoryInput.name} className='form-control' />
+                            <label>Tên loại sản phẩm</label>
+                            <input type='text' name='name' onChange={handleInput} placeholder="Nhập tên loại sản phẩm..." value={categoryInput.name} className='form-control' />
                         </div>
                         <div className='notifyText'>{errorlist.name}</div>
                         <div className='form-group mb-3'>
-                            <label>Description</label>
-                            <input type='text' name='description' onChange={handleInput} value={categoryInput.description} className='form-control' />
+                            <label>Mô tả</label>
+                            <input type='text' name='description' placeholder="Nhập mô tả..." onChange={handleInput} value={categoryInput.description} className='form-control' />
                         </div>
                         <div className='col-md-6 form-group mb-3'>
-                            <label>Image</label>
+                            <label>Hình ảnh</label>
                             <input type='file' name='image' onChange={handleImage} className='form-control' />
                         </div>
                        
                         <div className='notifyText'>{errorlist.image}</div>
                         <div className='form-group mb-3'>
-                            <label>Status</label>
+                            <label>Trạng thái</label>
                             <input type='checkbox' name='status' className='form-check-input ms-5' id="flexCheckChecked" onChange={handleCheckbox} defaultChecked={allCheckbox.status === 1 ? true:false} />
                             <label className="form-check-label " htmlFor="flexCheckChecked">
-                                Shown
+                                Hiện
                             </label>
                         </div>
 
                     </div>
-                    <div className="tab-pane card-body border fade" id="seo-tags" role="tabpanel" aria-labelledby="profile-tab">
+                    <div className="tab-pane card-body fade" id="seo-tags" role="tabpanel" aria-labelledby="profile-tab">
                         <div className='form-group mb-3'>
                             <label>Meta title</label>
-                            <input type='text' name='meta_title' onChange={handleInput} value={categoryInput.meta_title} className='form-control' />
+                            <input type='text' name='meta_title' onChange={handleInput} placeholder="Nhập meta title..." value={categoryInput.meta_title} className='form-control' />
                         </div>
 
                         <div className='notifyText'>{errorlist.meta_title}</div>
                         <div className='form-group mb-3'>
                             <label>Meta keywords</label>
-                            <input type='text' name='meta_keyword' onChange={handleInput} value={categoryInput.meta_keyword} className='form-control' />
+                            <input type='text' placeholder="Nhập meta keywords..." name='meta_keyword' onChange={handleInput} value={categoryInput.meta_keyword} className='form-control' />
                         </div>
                         <div className='form-group mb-3'>
                             <label>Meta description</label>
-                            <textarea type='text' name='meta_descrip' onChange={handleInput} value={categoryInput.meta_descrip} className='form-control h-50' /> 
+                            <textarea type='text' name='meta_descrip' placeholder="Nhập meta description..." onChange={handleInput} value={categoryInput.meta_descrip} className='form-control h-50' /> 
                         </div>
                     </div>
-                    <Button type='submit' variant="outline-primary" className=' px-4 float-end'>Create</Button>
+                    <Button type='submit' variant="outline-primary" className=' px-4 mx-3'>Thêm</Button>
                 </div>
             </form>
         </div >

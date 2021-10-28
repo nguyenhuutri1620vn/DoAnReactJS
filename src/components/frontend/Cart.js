@@ -1,16 +1,15 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { Breadcrumb, Button, Card, Col, Row } from 'react-bootstrap';
+import { Button, Card, Col, Row } from 'react-bootstrap';
 import { Link, useHistory } from 'react-router-dom';
 import swal from 'sweetalert';
 import { BsFillTrashFill } from "react-icons/bs";
+document.title = `ChingMusic | Giỏ hàng`;
 
 function Cart() {
 
     const [cart, setCart] = useState([]);
     const [loading, setloading] = useState(true);
-    const [product, setProduct] = useState([]);
-    const [quantity, setQuantity] = useState(0);
     const history = useHistory();
 
     let total_quantity = 0;
@@ -19,7 +18,7 @@ function Cart() {
 
     if (!localStorage.getItem('auth_token')) {
         history.push('/login');
-        swal("Waring", "Login to go to cart", 'error')
+        swal("Thông tin", "Đăng nhập để tiếp tục", 'error')
     }
 
     const handleDecrement = (cartID) => {
@@ -45,7 +44,7 @@ function Cart() {
                 // swal("Success", res.data.message, 'success');
                 console.log(res.data.message);
             } else if (res.data.status === 401) {
-                swal("Warning", res.data.message, 'erorr');
+                swal("Thông báo", res.data.message, 'erorr');
             }
         });
     }
@@ -57,18 +56,17 @@ function Cart() {
 
         axios.delete(`/api/deleteitemcart/${cart_id}`).then(res => {
             if (res.data.status === 200) {
-                swal("Success", res.data.message, 'success');
+                swal("Xóa thành công", res.data.message, 'success');
                 thisClicked.closest("tr").remove();
             } else if (res.data.status === 404) {
-                swal("Warning", res.data.message, 'error');
-                thisClicked.innerText = "Remove";
+                swal("Thông báo", res.data.message, 'error');
+                thisClicked.innerText = "Xóa";
             }
         })
     }
 
     useEffect(() => {
         let isMounterd = true;
-        document.title = `ChingMusic | Cart`;
         axios.get(`/api/cart`).then(res => {
             if (isMounterd) {
                 if (res.data.status === 201) {
@@ -76,7 +74,7 @@ function Cart() {
                     setloading(false);
                 } else if (res.data.status === 401) {
                     history.push('/product');
-                    swal('Warning', res.data.message, 'error');
+                    swal('Thông báo', res.data.message, 'error');
                 }
             }
         })
@@ -87,7 +85,7 @@ function Cart() {
 
     if (loading) {
         return (
-            <div className="loading"><h4>Loading cart...</h4></div>
+            <div className="loading"><h4>Đang tải, vui lòng chờ...</h4></div>
         )
     }
     var cart_HTML = "";
@@ -101,11 +99,11 @@ function Cart() {
                                 <thead>
                                     <tr>
                                         <th className="text-center">#</th>
-                                        <th className="text-center">Image</th>
-                                        <th>Product</th>
-                                        <th className="text-center">Price</th>
-                                        <th className="text-center">Quantity</th>
-                                        <th className="text-center">Total price</th>
+                                        <th className="text-center">Hình ảnh</th>
+                                        <th>Sản phẩn</th>
+                                        <th className="text-center">Giá</th>
+                                        <th className="text-center">Số lượng</th>
+                                        <th className="text-center">Tổng giá</th>
                                         <th className="text-center"></th>
                                     </tr>
                                 </thead>
@@ -133,12 +131,12 @@ function Cart() {
                                                     <Row className="nameproduct-cart">{item.product.name}</Row>
                                                     <Row className="mt-2"></Row>
                                                     <Row className="nameproduct-cart note-product-cart">
-                                                        Category: {item.product.category.name},
-                                                        Brand: {item.product.producer.name}
+                                                        Thể loại: {item.product.category.name},
+                                                        Thương hiệu: {item.product.producer.name}
                                                     </Row>
                                                 </td>
                                                 <td >
-                                                    <Col><p className="original_cart ">${selling_p}</p></Col>
+                                                    <Col><p className="original_cart ">{selling_p} VNĐ</p></Col>
                                                 </td>
                                                 <td className='col-3 col-sm-2'>
                                                     <div className="input-group">
@@ -148,7 +146,7 @@ function Cart() {
                                                     </div>
                                                 </td>
                                                 <td className='col-3 col-sm-2 text-center'>
-                                                    <Col><p className="selling_cart">${total_p}</p></Col>
+                                                    <Col><p className="selling_cart">{total_p} VNĐ</p></Col>
                                                 </td>
                                                 <td><Button variant="danger" onClick={(e) => deleteItemCart(e, item.id)}>
                                                     <BsFillTrashFill />
@@ -165,17 +163,17 @@ function Cart() {
                     <Card style={{ width: '22rem' }} border="warning">
                         <Card.Body>
                             <Card.Text>
-                                <h5>Sub Total:
+                                <h5>Tổng sản phẩm:
                                     <span className="float-end">{totalCartPrice}</span>
                                 </h5>
-                                <h5>Fee ship (10$/1P):
+                                <h5>Phí di chuyển (10$/1P):
                                     <span className="float-end">{total_quantity}</span>
                                 </h5>
-                                <h5>Grand Total:
+                                <h5>Tổng hóa đơn:
                                     <span className="float-end">{totalOrder}</span>
                                 </h5>
                             </Card.Text>
-                            <Button variant="secondary" className="w-100" href="/checkout">Checkout</Button>
+                            <Button variant="secondary" className="w-100" href="/checkout">Chuyển trang thanh toán</Button>
                         </Card.Body>
                     </Card>
                 </Col>

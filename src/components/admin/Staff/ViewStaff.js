@@ -2,7 +2,6 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import swal from "sweetalert";
 import ReactPaginate from 'react-paginate';
-import { Button } from 'react-bootstrap';
 
 
 function ViewStaff() {
@@ -22,7 +21,7 @@ function ViewStaff() {
     }
 
     useEffect(() => {
-        document.title = 'View staff';
+        document.title = 'Danh sách nhân viên';
 
         axios.get(`/api/view-staff`).then(res => {
             if (res.data.status === 200) {
@@ -36,18 +35,18 @@ function ViewStaff() {
         e.preventDefault();
 
         const thisClicked = e.currentTarget;
-        thisClicked.innerText = "Waiting..."
+        thisClicked.innerText = "Đợi tí..."
 
         swal({
-            title: "Are you sure?",
-            text: "This staff will be become ADMIN",
+            title: "Có chắc là muốn xóa chưa?",
+            text: "Khi mà đã xóa rồi thì không hoàn tác được đâu đấy!",
             icon: "warning",
             buttons: true,
-            dangerMode: false,
+            dangerMode: true,
         })
             .then((willAdmin) => {
                 if (willAdmin) {
-                    swal("Poof! A staff has been become ADMIN!", {
+                    swal("Poof! Nhân viên sẽ trở lại thành nhân viên!", {
                         icon: "success",
 
                     });
@@ -56,12 +55,12 @@ function ViewStaff() {
                             thisClicked.closest('tr').remove();
 
                         } else if (res.data.status === 404) {
-                            thisClicked.innerText = "→ → →"
+                            thisClicked.innerText = "→ Customer"
                         }
                     })
                 } else {
-                    swal("staff is safe!");
-                    thisClicked.innerText = "→ Staff"
+                    swal("Giữ được việc rồi nhá!");
+                    thisClicked.innerText = "→ Customer"
                 }
             });
 
@@ -69,7 +68,7 @@ function ViewStaff() {
 
     var display_staff = '';
     if (loading) {
-        return <h1>staff view loading...</h1>
+        return <h4>Danh sách nhân viên đang tải, vui lòng đợi...</h4>
     } else {
         display_staff = staff.slice(pagesVisited, pagesVisited + staffPerPage).filter((item) => {
             if (search === '') {
@@ -89,9 +88,8 @@ function ViewStaff() {
                     <td className='col-3 col-sm-2'>{item.fullname}</td>
                     <td className='col-3 col-sm-2'>{item.email}</td>
                     <td className='col-3 col-sm-1'>{item.phone}</td>
-                    <td className='col-3 col-sm-2'>{item.address}</td>
                     <td className='text-center'>
-                        <Button onClick={(e) => becomeAdmin(e, item.id)} variant="success">→ Staff</Button>
+                        <button onClick={(e) => becomeAdmin(e, item.id)} className="btn btn-warning border">→ Customer</button>
                     </td>
                 </tr>
             );
@@ -103,11 +101,11 @@ function ViewStaff() {
         <div className='container px-4 mt-2'>
             <div className='card'>
                 <div className='card-header'>
-                    <h4>staff List
+                    <h4>Danh sách nhân viên
                         <form className="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0 float-end">
                             <div className="input-group">
                                 <input className="form-control"
-                                    type="text" placeholder="Search for..."
+                                    type="text" placeholder="Tìm kiếm..."
                                     aria-label="Search for..."
                                     aria-describedby="btnNavbarSearch"
                                     value={search}
@@ -124,10 +122,9 @@ function ViewStaff() {
                             <tr>
                                 <th>ID</th>
                                 <th className='col-3 col-sm-1'>Username</th>
-                                <th className='col-3 col-sm-2'>Full name</th>
+                                <th className='col-3 col-sm-2'>Họ và tên</th>
                                 <th className='col-3 col-sm-2'>Email</th>
-                                <th className='col-3 col-sm-1'>Phone</th>
-                                <th className='col-3 col-sm-2'>Address</th>
+                                <th className='col-3 col-sm-1'>Điện thoại</th>
                                 <th>Role</th>
                             </tr>
                         </thead>
@@ -137,8 +134,8 @@ function ViewStaff() {
                     </table>
                 </div>
                 <ReactPaginate
-                    previousLabel={'Prev'}
-                    nextLabel={'Next'}
+                    previousLabel={'←'}
+                    nextLabel={'→'}
                     pageCount={pageCount}
                     onPageChange={handleChangPage}
                     containerClassName={"paginationBttns"}

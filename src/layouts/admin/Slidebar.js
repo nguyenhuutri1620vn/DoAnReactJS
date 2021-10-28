@@ -11,12 +11,12 @@ const Slidebar = () => {
                     <div className="sb-sidenav-menu-heading">CHÍNH</div>
                     <Link className="nav-link" to="/admin/Dashboard">
                         <div className="sb-nav-link-icon "><i className="fas fa-tachometer-alt"></i></div>
-                        Dashboard
+                        Thống kê
                     </Link>
                     <div className="sb-sidenav-menu-heading">HÓA ĐƠN</div>
                     <Link className="nav-link collapsed" to="#" data-bs-toggle="collapse" data-bs-target="#BilldaysLayouts" aria-expanded="false" aria-controls="collapseLayouts">
                         <div className="sb-nav-link-icon"><i className="fas fa-columns"></i></div>
-                        Order's day
+                        Hóa đơn ngày
                         <div className="sb-sidenav-collapse-arrow"><i className="fas fa-angle-down"></i></div>
                     </Link>
                     <div className="collapse" id="BilldaysLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
@@ -27,7 +27,7 @@ const Slidebar = () => {
                     </div>
                     <Link className="nav-link collapsed" to="#" data-bs-toggle="collapse" data-bs-target="#BillTotalLayouts" aria-expanded="false" aria-controls="collapseLayouts">
                         <div className="sb-nav-link-icon"><i className="fas fa-columns"></i></div>
-                        Order's total
+                        Tổng hóa đơn
                         <div className="sb-sidenav-collapse-arrow"><i className="fas fa-angle-down"></i></div>
                     </Link>
                     <div className="collapse" id="BillTotalLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
@@ -36,70 +36,66 @@ const Slidebar = () => {
                             <Link className="nav-link" to="layout-sidenav-light.html">Tổng hóa đơn</Link>
                         </nav>
                     </div>
-                    <div className="sb-sidenav-menu-heading">Product - News</div>
+                    <div className="sb-sidenav-menu-heading">Sản phẩm - Tin tức</div>
                     <Link className="nav-link collapsed" to="#" data-bs-toggle="collapse" data-bs-target="#CategoryLayouts" aria-expanded="false" aria-controls="collapseLayouts">
                         <div className="sb-nav-link-icon"><i className="fas fa-columns"></i></div>
-                        Category
+                        Loại sản phẩm
                         <div className="sb-sidenav-collapse-arrow"><i className="fas fa-angle-down"></i></div>
                     </Link>
                     <div className="collapse" id="CategoryLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                         <nav className="sb-sidenav-menu-nested nav">
-                            <Link className="nav-link" to="/admin/add-category">Create</Link>
-                            <Link className="nav-link" to="/admin/view-category">Category List</Link>
+                            <Link className="nav-link" to="/admin/add-category">Tạo</Link>
+                            <Link className="nav-link" to="/admin/view-category">Danh sách</Link>
                         </nav>
                     </div>
                     <Link className="nav-link collapsed" to="#" data-bs-toggle="collapse" data-bs-target="#ProducerPages" aria-expanded="false" aria-controls="collapsePages">
                         <div className="sb-nav-link-icon"><i className="fas fa-archway"></i></div>
-                        Brand
+                        Thương hiệu
                         <div className="sb-sidenav-collapse-arrow"><i className="fas fa-angle-down"></i></div>
                     </Link>
                     <div className="collapse" id="ProducerPages" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                         <nav className="sb-sidenav-menu-nested nav">
-                            <Link className="nav-link" to="/admin/add-producer">Create</Link>
-                            <Link className="nav-link" to="/admin/view-producer">Brand List</Link>
+                            <Link className="nav-link" to="/admin/add-producer">Tạo</Link>
+                            <Link className="nav-link" to="/admin/view-producer">Danh sách</Link>
                         </nav>
                     </div>
                     <Link className="nav-link collapsed" to="#" data-bs-toggle="collapse" data-bs-target="#ProductPages" aria-expanded="false" aria-controls="collapsePages">
                         <div className="sb-nav-link-icon"><i className="fab fa-product-hunt"></i></div>
-                        Product
+                        Sản phẩm
                         <div className="sb-sidenav-collapse-arrow"><i className="fas fa-angle-down"></i></div>
                     </Link>
                     <div className="collapse" id="ProductPages" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                         <nav className="sb-sidenav-menu-nested nav">
-                            <Link className="nav-link" to="/admin/add-product">Create</Link>
-                            <Link className="nav-link" to="/admin/view-product">Product List</Link>
+                            <Link className="nav-link" to="/admin/add-product">Tạo</Link>
+                            <Link className="nav-link" to="/admin/view-product">Danh sách</Link>
                         </nav>
                     </div>
                     <Link className="nav-link collapsed" to="#" data-bs-toggle="collapse" data-bs-target="#NewsPages" aria-expanded="false" aria-controls="collapsePages">
                         <div className="sb-nav-link-icon"><i className="fas fa-newspaper"></i></div>
-                        News
+                        Tin tức
                         <div className="sb-sidenav-collapse-arrow"><i className="fas fa-angle-down"></i></div>
                     </Link>
                     <div className="collapse" id="NewsPages" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                         <nav className="sb-sidenav-menu-nested nav">
-                            <Link className="nav-link" to="/admin/add-news">Create</Link>
-                            <Link className="nav-link" to="/admin/view-news">News List</Link>
+                            <Link className="nav-link" to="/admin/add-news">Tạo</Link>
+                            <Link className="nav-link" to="/admin/view-news">Danh sách</Link>
                         </nav>
                     </div>
                     <div className="sb-sidenav-menu-heading">NGƯỜI DÙNG</div>
                     <Link className="nav-link" to="/admin/view-staff">
                         <div className="sb-nav-link-icon"><i className="fas fa-user-astronaut"></i></div>
-                        Staff
+                        Nhân viên
                     </Link>
                     <Link className="nav-link" to="/admin/view-users">
                         <div className="sb-nav-link-icon"><i className="fas fa-user-alt"></i></div>
-                        Users
+                        Khách hàng
                     </Link>
                     <div className="sb-sidenav-menu-heading">GIAO DIỆN</div>
                     <Link className="nav-link" to="/admin/edit-config">
                         <div className="sb-nav-link-icon"><i className="fas fa-info-circle"></i></div>
-                        Configuration WEBSITE
+                        Cấu hình WEBSITE
                     </Link>
                 </div>
-            </div>
-            <div className="sb-sidenav-footer">
-                <div className="small">Logged in as:</div>
-                @USER
             </div>
         </nav>
     )

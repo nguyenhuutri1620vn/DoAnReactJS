@@ -7,7 +7,7 @@ import { Button } from 'react-bootstrap';
 
 
 function AddNews() {
-    document.title = 'Create Content';
+    document.title = 'Tạo tin tức';
 
     const [picture, setPicture] = useState([]);
     const [errorlist, setError] = useState([]);
@@ -57,10 +57,10 @@ function AddNews() {
 
         axios.post(`/api/add-news`, formData).then(res => {
             if (res.data.status === 200) {
-                swal('Sucess', res.data.message, 'success');
+                swal('Tạo tin tức thành công', res.data.message, 'success');
                 setError([]);
             } else if (res.data.status === 422) {
-                swal('All fields are mandatory', '', 'error');
+                swal('Vui lòng điền đầy đủ thông tin', '', 'error');
                 setError(res.data.errors);
             }
         })
@@ -69,69 +69,70 @@ function AddNews() {
 
     return (
         <div className='container-fluid px-4'>
-            <h2 className='mt-4'>Create News</h2>
+            <h2 className='mt-4'>Tạo tin tức</h2>
             <form encType='multipart/form-data' onSubmit={newsSubmit}>
                 <ul className="nav nav-tabs" id="myTab" role="tablist">
                     <li className="nav-item" role="presentation">
-                        <button className="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Home</button>
+                        <button className="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Thông tin tin tức</button>
                     </li>
                     <li className="nav-item" role="presentation">
                         <button className="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#seo-tags" type="button" role="tab" aria-controls="seo-tags" aria-selected="false">SEO Tags</button>
                     </li>
                 </ul>
                 <div className="tab-content" id="myTabContent">
-                    <div className="tab-pane card-body border fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                    <div className="tab-pane card-body fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
 
                         <div className='form-group mb-3'>
-                            <label>Name</label>
-                            <input type='text' name='name' className='form-control' onChange={handleInput} value={newsInput.name} />
+                            <label>Tên tin tức</label>
+                            <input type='text' name='name' className='form-control' 
+                            placeholder="Nhập tên tin tức..." onChange={handleInput} value={newsInput.name} />
                         </div>
                         <div className='text-danger'>{errorlist.name}</div>
                         <div className='form-group mb-3'>
-                            <label>Description</label>
+                            <label>Mô tả</label>
                             <CKEditor
                                 editor={ClassicEditor}
                                 data=""
                                 name='description'
                                 value={newsInput.description}
                                 onChange={handleDescrip}
-
+                                placeholder="Nhập mô tả..."
                             />
                         </div>
                         <div className='text-danger'>{errorlist.description}</div>
                         <div className='form-group mb-3'>
-                            <label>Image</label>
+                            <label>Hình ảnh</label>
                             <input type='file' name='image' className='form-control' onChange={handleImage} />
                         </div>
                         <div className='text-danger'>{errorlist.image}</div>
                         <div className='form-group mb-3'>
-                            <label>Status:</label>
+                            <label>Trạng thái:</label>
                             <input type='checkbox' name='status' className='form-check-input ms-5' id="flexCheckChecked" onChange={handleCheckbox} defaultChecked={allCheckbox.status === 1 ? true : false} />
                             <label className="form-check-label " htmlFor="flexCheckChecked">
-                                Shown
+                                Hiện
                             </label>
                         </div>
                     </div>
-                    <div className="tab-pane card-body border fade" id="seo-tags" role="tabpanel" aria-labelledby="profile-tab">
+                    <div className="tab-pane card-body fade" id="seo-tags" role="tabpanel" aria-labelledby="profile-tab">
                         <div className='form-group mb-3'>
                             <label>Meta title</label>
-                            <input type='text' name='meta_title' className='form-control' onChange={handleInput} value={newsInput.meta_title} />
+                            <input type='text' name='meta_title' placeholder="Nhập meta title..." className='form-control' onChange={handleInput} value={newsInput.meta_title} />
                         </div>
                         <div className='text-danger'>{errorlist.meta_title}</div>
                         <div className='form-group mb-3'>
                             <label>Meta keywords</label>
-                            <input type='text' name='meta_keyword' className='form-control' onChange={handleInput} value={newsInput.meta_keyword} />
+                            <input type='text' name='meta_keyword' placeholder="Nhập meta keywords..." className='form-control' onChange={handleInput} value={newsInput.meta_keyword} />
                         </div>
                         <div className='text-danger'>{errorlist.meta_keyword}</div>
                         <div className='form-group mb-3'>
                             <label>Meta description</label>
-                            <textarea type='text' name='meta_descrip' className='form-control' onChange={handleInput} value={newsInput.meta_descrip} />
+                            <textarea type='text' name='meta_descrip' placeholder="Nhập meta description..." className='form-control' onChange={handleInput} value={newsInput.meta_descrip} />
                         </div>
                         <div className='text-danger'>{errorlist.meta_descrip}</div>
 
                     </div>
                 </div>
-                <Button type='submit' variant="outline-primary" className=' px-4 float-end'>Create</Button>
+                <Button type='submit' variant="outline-primary" className=' px-4 mx-3'>Thêm</Button>
             </form>
         </div >
     )

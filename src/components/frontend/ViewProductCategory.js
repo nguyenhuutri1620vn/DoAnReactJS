@@ -33,10 +33,10 @@ function ViewProductCategory(props) {
                     setProduct(res.data.product_data.product);
                     setCategory(res.data.product_data.category);
                 } else if (res.data.status === 400) {
-                    swal('Warning', res.data.message, 'error');
+                    swal('Thông báo', res.data.message, 'error');
                 } else if (res.data.status === 404) {
                     history.push('/product');
-                    swal('Warning', res.data.message, 'error');
+                    swal('Thông báo', res.data.message, 'error');
                 }
                 setloading(false);
             }
@@ -48,13 +48,13 @@ function ViewProductCategory(props) {
     }, [props.match.params.slug, history])
 
     if (loading) {
-        return <div className='loading'><h4>Loading...</h4></div>
+        return <div className='loading'><h4>Vui lòng chờ...</h4></div>
     } else {
         var product_HTML = '';
         if (productCount) {
             product_HTML = product.slice(pagesVisited, pagesVisited + productPerPage).map((item, idx) => {
-                let original_p = new Intl.NumberFormat('en-IN', {maximumSignificantDigits: 3 }).format(parseInt(item.original_price));
-                let selling_p = new Intl.NumberFormat('en-IN', {maximumSignificantDigits: 3 }).format(parseInt(item.selling_price));
+                let original_p = new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 3 }).format(parseInt(item.original_price));
+                let selling_p = new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 3 }).format(parseInt(item.selling_price));
                 return (
                     <Card className='card-product' key={idx}>
                         <Link to={`/category/${item.category.slug}/${item.id}`} className='link-product'>
@@ -64,25 +64,25 @@ function ViewProductCategory(props) {
                             <Card.Body>
                                 <Card.Title>{item.name}</Card.Title>
                                 <Card.Text className='card-text'>
-                                    <p className="card-user-name small">Category: {item.category.name}</p>
-                                    <p className="card-user-name small">Brand: {item.producer.name}</p>
-                                    <del className="card-user-name smaill">Original price: ${original_p} </del>
-                                    <p className="card-user-name selling-price">Only: ${selling_p}</p>
+                                    <p className="card-user-name small">Loại sản phẩm: {item.category.name}</p>
+                                    <p className="card-user-name small">Thương hiệu: {item.producer.name}</p>
+                                    <del className="card-user-name smaill">Giá gốc: {original_p} VNĐ</del>
+                                    <p className="card-user-name selling-price">Giá bán: {selling_p} VNĐ</p>
                                 </Card.Text>
                                 <div className="card-bottom">
                                     <Button variant="danger"><BsFillCartCheckFill /></Button>
-                                    <div className="card-watching">Only: {item.number}</div>
+                                    <div className="card-watching">Chỉ còn: {item.number}</div>
                                 </div>
                             </Card.Body>
                         </Link>
                     </Card>
                 )
             })
-        }else{
-            product_HTML = 
-            <div>
-                <h4>No product available for {category.name}</h4>
-            </div>
+        } else {
+            product_HTML =
+                <div>
+                    <h4>Không có sản phẩm nào là {category.name}</h4>
+                </div>
         }
     }
 
@@ -93,7 +93,7 @@ function ViewProductCategory(props) {
             <div className='container product-container'>
                 <Breadcrumb>
                     <Breadcrumb.Item href="/product" className='link-product'>
-                        Home
+                        Trang chủ
                     </Breadcrumb.Item>
                     <Breadcrumb.Item href={`../category/${category.slug}`}>
                         {category.name}
@@ -109,8 +109,8 @@ function ViewProductCategory(props) {
                     </div>
                 </div>
                 <ReactPaginate
-                    previousLabel={'Prev'}
-                    nextLabel={'Next'}
+                    previousLabel={'←'}
+                    nextLabel={'→'}
                     pageCount={pageCount}
                     onPageChange={handleChangPage}
                     containerClassName={"paginationBttns"}

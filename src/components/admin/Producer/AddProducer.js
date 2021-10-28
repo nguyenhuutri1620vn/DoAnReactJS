@@ -4,7 +4,7 @@ import swal from 'sweetalert';
 import { Button } from 'react-bootstrap';
 
 function AddProrucer() {
-    document.title = 'Create Producer';
+    document.title = 'Tạo thương hiệu';
 
     const [producerInput, setProducer] = useState({
         slug: '',
@@ -31,7 +31,7 @@ function AddProrucer() {
     const submitProducer = (e) => {
         e.preventDefault();
 
-        
+
         const formData = new FormData();
 
 
@@ -43,75 +43,81 @@ function AddProrucer() {
         formData.append('meta_keyword', producerInput.meta_keyword);
         formData.append('meta_descrip', producerInput.meta_descrip);
 
-        formData.append('status', allCheckbox.status ? "1":"0");
+        formData.append('status', allCheckbox.status ? "1" : "0");
 
 
         axios.post(`/api/store-producer`, formData).then(res => {
             if (res.data.status === 200) {
-                swal('Success', res.data.message, 'success')
+                swal('Tạo thương hiệu thành công', res.data.message, 'success')
                 setError([]);
             } else if (res.data.status === 400) {
-                swal('All fields are mandatory', '', 'error');
+                swal('Vui lòng điền đầy đủ thông tin', '', 'error');
                 setError(res.data.errors);
             }
         })
-    
+
     }
-   
+
     return (
         <div className='container-fluid px-4'>
-            <h2 className='mt-4'>Create Producer</h2>
+            <h2 className='mt-4'>Tạo thương hiệu</h2>
             <form onSubmit={submitProducer} id="PRODUCER_FORM">
                 <ul className="nav nav-tabs" id="myTab" role="tablist">
                     <li className="nav-item" role="presentation">
-                        <button className="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Home</button>
+                        <button className="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Thông tin thương hiệu</button>
                     </li>
                     <li className="nav-item" role="presentation">
                         <button className="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#seo-tags" type="button" role="tab" aria-controls="seo-tags" aria-selected="false">SEO Tags</button>
                     </li>
                 </ul>
                 <div className="tab-content" id="myTabContent">
-                    <div className="tab-pane card-body border fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                    <div className="tab-pane card-body fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                         <div className='form-group mb-3'>
                             <label>Slug</label>
-                            <input type='text' name='slug' onChange={handleInput} value={producerInput.slug} className='form-control' />
+                            <input type='text' name='slug' placeholder="Nhập slug..."
+                                onChange={handleInput} value={producerInput.slug} className='form-control' />
                         </div>
                         <div className='notifyText'>{errorlist.slug}</div>
                         <div className='form-group mb-3'>
-                            <label>Name</label>
-                            <input type='text' name='name' onChange={handleInput} value={producerInput.name} className='form-control' />
+                            <label>Tên thương hiệu</label>
+                            <input type='text' name='name' placeholder="Nhập tên thương hiệu..."
+                                onChange={handleInput} value={producerInput.name} className='form-control' />
                         </div>
                         <div className='notifyText'>{errorlist.name}</div>
                         <div className='form-group mb-3'>
-                            <label>Description</label>
-                            <input type='text' name='description' onChange={handleInput} value={producerInput.description} className='form-control' />
+                            <label>Mô tả</label>
+                            <input type='text' name='description' placeholder="Nhập mô tả..."
+                                onChange={handleInput} value={producerInput.description} className='form-control' />
                         </div>
                         <div className='notifyText'>{errorlist.description}</div>
                         <div className='form-group mb-3'>
-                            <label>Status</label>
-                            <input type='checkbox' name='status' className='form-check-input ms-5' id="flexCheckChecked" onChange={handleCheckbox} defaultChecked={allCheckbox.status === 1 ? true:false} />
+                            <label>Trạng thái</label>
+                            <input type='checkbox' name='status' className='form-check-input ms-5' id="flexCheckChecked" onChange={handleCheckbox} defaultChecked={allCheckbox.status === 1 ? true : false} />
                             <label className="form-check-label " htmlFor="flexCheckChecked">
-                                Shown
+                                Hiện
                             </label>
                         </div>
                     </div>
                     <div className="tab-pane card-body border fade" id="seo-tags" role="tabpanel" aria-labelledby="profile-tab">
                         <div className='form-group mb-3'>
                             <label>Meta title</label>
-                            <input type='text' name='meta_title' onChange={handleInput} value={producerInput.meta_title} className='form-control' />
+                            <input type='text' name='meta_title' placeholder="Nhập meta title..."
+                                onChange={handleInput} value={producerInput.meta_title} className='form-control' />
                         </div>
                         <div className='notifyText'>{errorlist.meta_title}</div>
                         <div className='form-group mb-3'>
                             <label>Meta keywords</label>
-                            <input type='text' name='meta_keyword' onChange={handleInput} value={producerInput.meta_keyword} className='form-control' />
+                            <input type='text' name='meta_keyword' placeholder="Nhập meta keywords..."
+                                onChange={handleInput} value={producerInput.meta_keyword} className='form-control' />
                         </div>
                         <div className='form-group mb-3'>
                             <label>Meta description</label>
-                            <textarea type='text' name='meta_descrip' onChange={handleInput} value={producerInput.meta_descrip} className='form-control' />
+                            <textarea type='text' name='meta_descrip' placeholder="Nhập meta description..."
+                                onChange={handleInput} value={producerInput.meta_descrip} className='form-control' />
                         </div>
                     </div>
                 </div>
-                <Button type='submit' variant="outline-primary" className=' px-4 float-end'>Create</Button>
+                <Button type='submit' variant="outline-primary" className='px-4 mx-3'>Thêm</Button>
             </form>
         </div >
     )

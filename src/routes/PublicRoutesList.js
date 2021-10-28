@@ -1,5 +1,7 @@
 import Home from "../components/frontend/Home";
-import About from "../components/frontend/About";
+import Profile from "../components/frontend/Profile";
+import ChangePassword from "../components/frontend/ChangePassword";
+import OrderHistory from "../components/frontend/OrderHistory";
 import Checkout from "../components/frontend/Checkout";
 import Cart from "../components/frontend/Cart";
 import News from "../components/frontend/News";
@@ -9,13 +11,16 @@ import Product from "../components/frontend/Product"
 import ViewProductCategory from "../components/frontend/ViewProductCategory";
 import ViewProductDetail from "../components/frontend/ViewProductDetail";
 import DetailNews from "../components/frontend/DetailNews";
-
+import OrderDetail from "../components/frontend/OrderDetail";
 
 
 const PublicRoutesList = [
 
     { path: '/', exact: true, name: 'Home', component: Home },
-    { path: '/about', exact: true, name: 'About', component: About },
+    { path: '/profile', exact: true, name: 'Profile', component: Profile },
+    { path: '/change-password', exact: true, name: 'ChangePassword', component: ChangePassword },
+    { path: '/order-history', exact: true, name: 'OrderHistory', component: OrderHistory },
+    { path: '/order-detail/:id', exact: true, name: 'OrderDetail', component: OrderDetail },
     { path: '/checkout', exact: true, name: 'Checkout', component: Checkout },
     { path: '/cart', exact: true, name: 'Cart', component: Cart },
     { path: '/news', exact: true, name: 'News', component: News },

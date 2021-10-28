@@ -7,7 +7,7 @@ import ReactPaginate from 'react-paginate';
 
 
 function ViewProduct() {
-    document.title = 'View Product';
+    document.title = 'Danh sách sản phẩm';
 
     const [pageNumber, setPageNumber] = useState(0);
     const [search, setSearch] = useState("");
@@ -40,34 +40,34 @@ function ViewProduct() {
         thisClicked.innerText = "Deleting"
 
         swal({
-            title: "Are you sure?",
-            text: "Once deleted, you will not be able to recover!",
+            title: "Có chắc là muốn xóa chưa?",
+            text: "Khi mà đã xóa rồi thì không hoàn tác được đâu đấy!",
             icon: "warning",
             buttons: true,
             dangerMode: true,
         })
             .then((willDelete) => {
                 if (willDelete) {
-                    swal("Poof! Product has been deleted!", {
+                    swal("Poof! Sản phẩm đã được xóa!", {
                         icon: "success",
                     });
                     axios.delete(`/api/delete-product/${id}`).then(res => {
                         if (res.data.status === 200) {
                             thisClicked.closest('tr').remove();
                         } else if (res.data.status === 404) {
-                            thisClicked.innerText = "Delete"
+                            thisClicked.innerText = "Xóa"
                         }
                     })
                 } else {
-                    swal("Product file is safe!");
-                    thisClicked.innerText = "Delete"
+                    swal("Sản phẩm vẫn an toàn nhen!");
+                    thisClicked.innerText = "Xóa"
                 }
             });
     }
 
     var display_product = '';
     if (loading) {
-        return <h4>Product loading....</h4>
+        return <h4>Đang tải trang danh sách sản phẩm, đợi tí nha...</h4>
     } else {
         display_product = product.slice(pagesVisited, pagesVisited + productPerPage).filter((item) => {
             if (search === '') {
@@ -88,9 +88,9 @@ function ViewProduct() {
                     <td className='text-center'>{item.selling_price}</td>
                     <td className='text-center'>{item.number}</td>
                     <td className='text-center'><img src={`http://localhost:8000/${item.image}`} width='100px' alt={item.name} /></td>
-                    <td className='text-center'>{item.status === 1 ? "shown":"hiden"}</td>
-                    <td className='text-center'><Link to={`/admin/edit-product/${item.id}`} className='btn btn-warning'>Edit</Link></td>
-                    <td className='text-center'><Button variant="danger" onClick={(e) => deleteProduct(e, item.id)}>Delete</Button></td>
+                    <td className='text-center'>{item.status === 1 ? "Hiện":"Ẩn"}</td>
+                    <td className='text-center'><Link to={`/admin/edit-product/${item.id}`} className='btn btn-warning'>Sửa</Link></td>
+                    <td className='text-center'><Button variant="danger" onClick={(e) => deleteProduct(e, item.id)}>Xóa</Button></td>
                 </tr>
             );
         });
@@ -101,11 +101,11 @@ function ViewProduct() {
         <div className='container px-4 mt-2'>
             <div className='card'>
                 <div className='card-header'>
-                    <h4>Product List
+                    <h4>Danh sách sản phẩm
                         <form className="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0 float-end">
                             <div className="input-group">
                                 <input className="form-control"
-                                    type="text" placeholder="Search for..."
+                                    type="text" placeholder="Tìm kiếm..."
                                     aria-label="Search for..."
                                     aria-describedby="btnNavbarSearch"
                                     value={search}
@@ -120,16 +120,16 @@ function ViewProduct() {
                         <thead className='text-center'>
                             <tr>
                                 <th>ID</th>
-                                <th className='col-3 col-sm-1'>Category name</th>
-                                <th className='col-3 col-sm-1'>Producer name</th>
-                                <th className='col-3 col-sm-2'>Name</th>
-                                <th className='col-3 col-sm-2'>Original price</th>
-                                <th className='col-3 col-sm-2'>Selling price</th>
-                                <th className='col-3 col-sm-1'>Quantity</th>
-                                <th className='col-3 col-sm-3'>Image</th>
-                                <th className='col-3 col-sm-1'>Status</th>
-                                <th className='col-3 col-sm-1'>Edit</th>
-                                <th className='col-3 col-sm-1'>Delete</th>
+                                <th className='col-3 col-sm-1'>Loại sản phẩm</th>
+                                <th className='col-3 col-sm-1'>Thương hiệu</th>
+                                <th className='col-3 col-sm-2'>Tên sản phẩm</th>
+                                <th className='col-3 col-sm-2'>Giá gốc</th>
+                                <th className='col-3 col-sm-2'>Giá bán</th>
+                                <th className='col-3 col-sm-1'>Số lượng</th>
+                                <th className='col-3 col-sm-3'>Hình ảnh</th>
+                                <th className='col-3 col-sm-1'>Trạng thái</th>
+                                <th className='col-3 col-sm-1'>Sửa</th>
+                                <th className='col-3 col-sm-1'>Xóa</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -139,8 +139,8 @@ function ViewProduct() {
                 </div>
                 <ReactPaginate
                     disabledClassName={"pagination__link--disabled"}
-                    previousLabel={'←Prev'}
-                    nextLabel={'Next→'}
+                    previousLabel={'←'}
+                    nextLabel={'→'}
                     pageCount={pageCount}
                     onPageChange={handleChangPage}
                     containerClassName={"paginationBttns"}

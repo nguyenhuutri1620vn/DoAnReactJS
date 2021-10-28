@@ -46,44 +46,39 @@ function EditConfig(props) {
         })
     }
     if(loading){
-        return <h4>Configuration loading....</h4>
+        return <h4>Đang tải cấu hình website, vui lòng đợi....</h4>
     }
     return (
         <div className='container-fluid px-4'>
-            <h2 className='mt-4'>Configuration Website</h2>
-            <div id="emailHelp" className="form-text">Hope you have a successfully website.</div>
+            <h2 className='mt-4'>Cấu hình Website</h2>
+            <div id="emailHelp" className="form-text">Hi vọng thành công sẽ đến với bạn.</div>
             <form className='mt-4' onSubmit={configSubmit}>
                 <div className="mb-3">
-                    <label className="form-label">Website's name</label>
+                    <label className="form-label">Tên website</label>
                     <input type='text' name='name' onChange={handleInput} value={configInput.name} className='form-control' />
                 </div>
                 <div className='text-danger'>{error.name}</div>
                 <div className="mb-3">
-                    <label className="form-label">Slogan</label>
+                    <label className="form-label">Châm ngôn</label>
                     <input type='text' name='slogan' onChange={handleInput} value={configInput.slogan} className='form-control' />
                 </div>
                 <div className='text-danger'>{error.slogan}</div>
-                <div className="mb-3">
-                    <label className="form-label">Price_ship</label>
-                    <input type='text' name='price_ship' onChange={handleInput} value={configInput.price_ship} className='form-control' />
-                </div>
-                <div className='text-danger'>{error.price_ship}</div>
                 <div className="mb-3">
                     <label className="form-label">Email</label>
                     <input type='text' name='email' onChange={handleInput} value={configInput.email} className='form-control' />
                 </div>
                 <div className='text-danger'>{error.email}</div>
                 <div className="mb-3">
-                    <label className="form-label">Phone</label>
+                    <label className="form-label">Điện thoại</label>
                     <input type='text' name='phone' onChange={handleInput} value={configInput.phone} className='form-control' />
                 </div>
                 <div className='text-danger'>{error.phone}</div>
                 <div className="mb-3">
-                    <label className="form-label">Address</label>
+                    <label className="form-label">Địa chỉ</label>
                     <input type='text' name='address' onChange={handleInput} value={configInput.address} className='form-control' />
                 </div>
                 <div className='text-danger'>{error.address}</div>
-                <Button type='submit' variant="outline-primary" className='px-4 float-end'>Update</Button>
+                <Button type='submit' variant="outline-primary" className='px-4 float-end'>Cập nhật</Button>
             </form>
         </div>
     )

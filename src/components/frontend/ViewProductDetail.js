@@ -36,14 +36,14 @@ function ViewProductDetail(props) {
         }
         axios.post(`/api/add-to-cart`, data).then(res => {
             if (res.data.status === 201) {
-                swal("Success", res.data.message, "success");
+                swal("Thêm giỏ hàng thành công", res.data.message, "success");
             } else if (res.data.status === 409) {
-                swal("Warning", res.data.message, "warning");
+                swal("Thông báo", res.data.message, "warning");
             } else if (res.data.status === 401) {
-                swal("Error", res.data.message, "error");
+                swal("Có lỗi", res.data.message, "error");
                 history.push('/login');
             }else if (res.data.status === 404) {
-                swal("Warning", res.data.message, "warning");
+                swal("Thông báo", res.data.message, "warning");
             }
 
         });
@@ -64,18 +64,18 @@ function ViewProductDetail(props) {
                     setloading(false);
                 } else if (res.data.status === 404) {
                     history.push('/product');
-                    swal('Warning', res.data.message, 'error');
+                    swal('Thông báo', res.data.message, 'error');
                 }
             }
         })
         return () => {
             isMounterd = false;
         }
-    }, [props.match.params.category, props.match.params.product, history])
+    }, [props.match.params.category, props.match.params.product, history, product.name])
 
 
     if (loading) {
-        return <div className='loading'><h4>Loading product detail...</h4></div>
+        return <div className='loading'><h4>Đang tải, vui lòng đợi...</h4></div>
     } else {
         var relatedProduct_HTML = '';
         relatedProduct_HTML = relatedProduct.slice(0, 5).map((item, idx) => {
@@ -91,15 +91,15 @@ function ViewProductDetail(props) {
                             <Card.Body>
                                 <Card.Title>{item.name}</Card.Title>
                                 <Card.Text className='card-text'>
-                                    <del className="card-user-name smaill">Original price: ${original_p} </del>
-                                    <p className="card-user-name selling-price">Only: ${selling_p}</p>
+                                    <del className="card-user-name smaill">Giá gốc: {original_p} VNĐ</del>
+                                    <p className="card-user-name selling-price">Giá bán: ${selling_p} VNĐ</p>
                                 </Card.Text>
                             </Card.Body>
                         </Link>
                     </Card>
                 )
             } else if (relatedProduct.length - 1 === 0) {
-                return <h4 className="non-related text-uppercase mt-3 text-center">Do not have related product</h4>;
+                return <h4 className="non-related text-uppercase mt-3 text-center">Không có sản phẩm liên quan</h4>;
             } else {
                 return null;
             }
@@ -111,7 +111,7 @@ function ViewProductDetail(props) {
         <div className='container mt-2'>
             <Breadcrumb className="mb-2">
                 <Breadcrumb.Item href="/product">
-                    Home
+                    Trang chủ
                 </Breadcrumb.Item>
                 <Breadcrumb.Item href={`/category/${category.slug}`}>
                     {product.category.name}
@@ -136,31 +136,31 @@ function ViewProductDetail(props) {
                     <h3>{product.name} - <Link className="link-to text-success" to="#"> {product.producer.name}</Link></h3>
                     <p className="time-created"><Moment format="DD/MM/YYYY">{product.created_at}</Moment></p>
                     <div className="inf-area">
-                        <p className="cate-info">Category:<Link to={`/category/${category.slug}`} className="link-to"> {product.category.name}</Link></p>
+                        <p className="cate-info">Loại sản phẩm:<Link to={`/category/${category.slug}`} className="link-to"> {product.category.name}</Link></p>
                         {/* <p className="brand-info">Brand: <Link to="" className="link-to"> Taylor</Link></p> */}
                     </div>
                     <div className='price-area'>
-                        <del className="ori-price">Original price: ${original_p}</del>
-                        <p className=" text-danger mt-2">Selling price: ${selling_p}</p>
+                        <del className="ori-price">Giá gốc: {original_p} VNĐ</del>
+                        <p className=" text-danger mt-2">Giá bán: ${selling_p} VNĐ</p>
                     </div>
-                    <label className="btn-sm btn-success px-4 mt-2">Instock</label>
+                    <label className="btn-sm btn-success px-4 mt-2">Còn hàng</label>
                     <br />
-                    <label className="btn-sm btn-warning text-quantity mt-2">Quantity: {product.number}</label>
+                    <label className="btn-sm btn-warning text-quantity mt-2">Còn lại: {product.number}</label>
                     <div className="input-group mt-3 w-25">
                         <button className='input-group-text' onClick={handleDecrement} type="button">-</button>
                         <div className="text-center form-control ">{quantity}</div>
                         <button className='input-group-text' onClick={handleIncrement} type="button">+</button>
                     </div>
-                    <Button variant="danger" className="mt-3" onClick={submitAddtoCart}><BsFillCartCheckFill className="mb-1" /> Add to cart</Button>
+                    <Button variant="danger" className="mt-3" onClick={submitAddtoCart}><BsFillCartCheckFill className="mb-1" /> Thêm vào giỏ hàng</Button>
                 </Col>
             </Row>
             <hr />
             <div className="desription-text">
-                <h4 className="text-uppercase title_category_home">description</h4>
+                <h4 className="text-uppercase title_category_home">Mô tả</h4>
                 <div dangerouslySetInnerHTML={{ __html: product.description }} className="container"></div>
             </div>
             <hr />
-            <h4 className="text-uppercase title_category_home">related products</h4>
+            <h4 className="text-uppercase title_category_home">Sản phẩm liên quan</h4>
             <div className="related-area">
                 {relatedProduct_HTML}
             </div>

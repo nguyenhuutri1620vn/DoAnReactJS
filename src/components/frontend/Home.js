@@ -4,13 +4,12 @@ import { Card, Carousel, Button, Container, Row, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { BsFillCartCheckFill } from 'react-icons/bs';
 
+document.title = 'CHINGUMUSIC - CUNG CẤP NHẠC CỤ'
 
 function Home() {
 
-    document.title = 'CHINGUMUSIC - PROVIDE MUSICAL INSTRUMENT FOR YOU'
 
     const [category, setCategory] = useState([]);
-    // const [producer, setProducer] = useState([]);
     const [content, setContent] = useState([]);
     const [productFeatured, setProductFeatured] = useState([]);
     const [productPopular, setProductPopular] = useState([]);
@@ -30,11 +29,11 @@ function Home() {
     }, [])
 
     if (loading) {
-        return <div className='loading'><h4>Welcome to ChinguMusic, wait for loading...</h4></div>
+        return <div className='loading'><h4>Chào mừng tới ChinguMusic, vui lòng chờ...</h4></div>
     } else {
         var category_HTML = '';
         category_HTML = category.map((item) => {
-           
+
             return (
                 <Card className="card-category" key={item.id}>
                     <Link to={`/category/${item.slug}`} className='link'>
@@ -48,9 +47,9 @@ function Home() {
             )
         })
         var featured_HTML = '';
-        featured_HTML = productFeatured.slice(0,8).map((item) => {
-            let original_p = new Intl.NumberFormat('en-IN', {maximumSignificantDigits: 3 }).format(parseInt(item.original_price));
-            let selling_p = new Intl.NumberFormat('en-IN', {maximumSignificantDigits: 3 }).format(parseInt(item.selling_price));
+        featured_HTML = productFeatured.slice(0, 8).map((item) => {
+            let original_p = new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 3 }).format(parseInt(item.original_price));
+            let selling_p = new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 3 }).format(parseInt(item.selling_price));
             return (
                 <Card className='card-product' key={item.id}>
                     <Link to={`/category/${item.category.slug}/${item.id}`} className='link-product'>
@@ -60,14 +59,14 @@ function Home() {
                         <Card.Body>
                             <Card.Title>{item.name}</Card.Title>
                             <Card.Text className='card-text'>
-                                <p className="card-user-name small">Category: {item.category.name}</p>
-                                <p className="card-user-name small">Brand: {item.producer.name}</p>
-                                <del className="card-user-name smaill">Original price: ${original_p} </del>
-                                <p className="card-user-name selling-price">Only: ${selling_p}</p>
+                                <p className="card-user-name small">Loại sản phẩm: {item.category.name}</p>
+                                <p className="card-user-name small">Thương hiệu: {item.producer.name}</p>
+                                <del className="card-user-name smaill">Giá gốc: {original_p} VNĐ</del>
+                                <p className="card-user-name selling-price">Giá bán: {selling_p} VNĐ</p>
                             </Card.Text>
                             <div className="card-bottom">
                                 <Button variant="danger"><BsFillCartCheckFill /></Button>
-                                <div className="card-watching">Only: {item.number}</div>
+                                <div className="card-watching">Chỉ còn: {item.number}</div>
                             </div>
                         </Card.Body>
                     </Link>
@@ -75,9 +74,9 @@ function Home() {
             )
         })
         var popular_HTML = '';
-        popular_HTML = productPopular.slice(0,8).map((item) => {
-            let original_p = new Intl.NumberFormat('en-IN', {maximumSignificantDigits: 3 }).format(parseInt(item.original_price));
-            let selling_p = new Intl.NumberFormat('en-IN', {maximumSignificantDigits: 3 }).format(parseInt(item.selling_price));
+        popular_HTML = productPopular.slice(0, 8).map((item) => {
+            let original_p = new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 3 }).format(parseInt(item.original_price));
+            let selling_p = new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 3 }).format(parseInt(item.selling_price));
             return (
                 <Card className='card-product' key={item.id}>
                     <Link to={`/category/${item.category.slug}/${item.id}`} className='link-product'>
@@ -87,10 +86,10 @@ function Home() {
                         <Card.Body>
                             <Card.Title>{item.name}</Card.Title>
                             <Card.Text className='card-text'>
-                                <p className="card-user-name small">Category: {item.category.name}</p>
-                                <p className="card-user-name small">Brand: {item.producer.name}</p>
-                                <del className="card-user-name smaill">Original price: ${original_p}</del>
-                                <p className="card-user-name selling-price">Only: ${selling_p}</p>
+                                <p className="card-user-name small">Loại sản phẩm: {item.category.name}</p>
+                                <p className="card-user-name small">Thương hiệu: {item.producer.name}</p>
+                                <del className="card-user-name smaill">Giá gốc: {original_p} VNĐ</del>
+                                <p className="card-user-name selling-price">Giá bán: ${selling_p} VNĐ</p>
                             </Card.Text>
                             <Button variant="danger"><BsFillCartCheckFill /></Button>
                         </Card.Body>
@@ -99,7 +98,7 @@ function Home() {
             )
         })
         var content_html = '';
-        content_html = content.slice(0,3).map((item) => {
+        content_html = content.slice(0, 3).map((item) => {
             if (item.id !== 4 && item.id !== 5 && item.id !== 6) {
                 return (
                     <div className='col-md-6' key={item.id}>
@@ -112,7 +111,7 @@ function Home() {
                                 <Card.Body>
                                     <Card.Title>{item.name}</Card.Title>
                                     <Card.Text className='descrip-text'>
-                                        <div dangerouslySetInnerHTML={{ __html: item.description}}></div>
+                                        <div dangerouslySetInnerHTML={{ __html: item.description }}></div>
                                     </Card.Text>
                                 </Card.Body>
                             </Link>
@@ -157,8 +156,8 @@ function Home() {
                                     <div className='icon_html icon_installment'>
                                     </div>
                                     <div className='cap_html'>
-                                        <div className='tit_html'>Installment</div>
-                                        <div className='des_html'>Interest rate 0%</div>
+                                        <div className='tit_html'>Trả góp</div>
+                                        <div className='des_html'>Lãi suất 0%</div>
                                     </div>
                                 </div>
                             </Link>
@@ -169,8 +168,8 @@ function Home() {
                                     <div className='icon_html icon_delivery'>
                                     </div>
                                     <div className='cap_html'>
-                                        <div className='tit_html'>Delivery</div>
-                                        <div className='des_html'>Professional - Speed</div>
+                                        <div className='tit_html'>Giao hàng</div>
+                                        <div className='des_html'>Chuyên nghiệp</div>
                                     </div>
                                 </div>
                             </Link>
@@ -181,8 +180,8 @@ function Home() {
                                     <div className='icon_html icon_insurance'>
                                     </div>
                                     <div className='cap_html'>
-                                        <div className='tit_html'>Insurance</div>
-                                        <div className='des_html'>Effective - Quality</div>
+                                        <div className='tit_html'>Bảo hành</div>
+                                        <div className='des_html'>Hiểu quả - chất lượng</div>
                                     </div>
                                 </div>
                             </Link></Col>
@@ -192,8 +191,8 @@ function Home() {
                                     <div className='icon_html icon_dealer'>
                                     </div>
                                     <div className='cap_html'>
-                                        <div className='tit_html'>Authorized dealer</div>
-                                        <div className='des_html'>Spread all over world</div>
+                                        <div className='tit_html'>Đại lý</div>
+                                        <div className='des_html'>Trải dài khắp Việt Nam</div>
                                     </div>
                                 </div>
                             </Link>
@@ -203,7 +202,7 @@ function Home() {
                 {/* Nhạc cụ */}
                 <div className='category_home mt-4'>
                     <div className='box_category_home'>
-                        <h2 className='title_category_home'>Musical Intrument</h2>
+                        <h2 className='title_category_home'>Nhạc cụ</h2>
                         <div className='cards'>
                             {category_HTML}
                         </div>
@@ -213,7 +212,7 @@ function Home() {
                 {/* Featured product */}
                 <div className='featured_product'>
                     <div className='box_category_home'>
-                        <h2 className='title_category_home'>Featured product</h2>
+                        <h2 className='title_category_home'>Nhạc cụ nổi bật</h2>
                         <div className="cards">
 
                             {featured_HTML}
@@ -222,11 +221,11 @@ function Home() {
                     </div>
                 </div>
                 <div className='see_more'>
-                    <Link to='/product' className='link-seemore'><h4>See more...</h4></Link></div>
+                    <Link to='/product' className='link-seemore'><h4>Xem thêm...</h4></Link></div>
                 {/* Popular product */}
                 <div className='popular_product'>
                     <div className='box_category_home'>
-                        <h2 className='title_category_home'>popular product</h2>
+                        <h2 className='title_category_home'>nhạc cụ phổ biến</h2>
                         <div className='cards'>
 
                             {popular_HTML}
@@ -234,18 +233,18 @@ function Home() {
                         </div>
                     </div>
                 </div>
-                <div className='see_more'><Link to='/product' className='link-seemore'><h4>See more...</h4></Link></div>
+                <div className='see_more'><Link to='/product' className='link-seemore'><h4>Xem thêm...</h4></Link></div>
                 {/* Content */}
                 <div className='content-container'>
                     <div className='box_category_home'>
-                        <h2 className='title_category_home'>Content - Event</h2>
+                        <h2 className='title_category_home'>TIN TỨC - SỰ KIỆN</h2>
                         <div className='row'>
 
                             {content_html}
 
                         </div>
                     </div>
-                    <div className='see_more'><Link to='/product' className='link-seemore'><h4>See more...</h4></Link></div>
+                    <div className='see_more'><Link to='/news' className='link-seemore'><h4>Xem thêm...</h4></Link></div>
 
                 </div>
             </Container>

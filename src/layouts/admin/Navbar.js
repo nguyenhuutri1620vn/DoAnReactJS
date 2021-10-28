@@ -39,10 +39,10 @@ const Navbar = () => {
                 <li className="nav-item dropdown">
                     <Link className="nav-link dropdown-toggle" id="navbarDropdown" to="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i className="fas fa-user fa-fw"></i></Link>
                     <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                        <li><Link className="dropdown-item" to="#!">Settings</Link></li>
-                        <li><Link className="dropdown-item" to="#!">Activity Log</Link></li>
+                        <li><Link className="dropdown-item" to="#!">Cài đặt</Link></li>
+                        <li><Link className="dropdown-item" to="#!">Trạng thái hoạt động</Link></li>
                         <li><hr className="dropdown-divider" /></li>
-                        <li><button className="dropdown-item" onClick={logoutSubmit}>Logout</button></li>
+                        <li><button className="dropdown-item" onClick={logoutSubmit}>Đăng xuất</button></li>
                     </ul>
                 </li>
             </ul>

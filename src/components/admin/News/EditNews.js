@@ -7,7 +7,7 @@ import { Link, useHistory } from "react-router-dom";
 import { Button } from 'react-bootstrap';
 
 function EditNews(props) {
-    document.title = 'Edit Content';
+    document.title = 'Chỉnh sửa tin tức';
 
     const [picture, setPicture] = useState([]);
     const [errorlist, setError] = useState([]);
@@ -85,17 +85,17 @@ function EditNews(props) {
 
 
     if (loading) {
-        return <h3>Edit news data loading... </h3>
+        return <h3 className="mx-3">Đang tải trang chỉnh sửa tin tức, vui lòng đòng... </h3>
     }
 
     return (
         <div className='container-fluid px-4'>
-            <h2 className='mt-4'>Edit News
+            <h2 className='mt-4'>Chỉnh sửa tin tức
                 <Link to='/admin/view-news' className='btn btn-danger float-end btn-sm'>Back</Link></h2>
             <form encType='multipart/form-data' onSubmit={updateNews}>
                 <ul className="nav nav-tabs" id="myTab" role="tablist">
                     <li className="nav-item" role="presentation">
-                        <button className="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Home</button>
+                        <button className="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Thông tin tin tức</button>
                     </li>
                     <li className="nav-item" role="presentation">
                         <button className="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#seo-tags" type="button" role="tab" aria-controls="seo-tags" aria-selected="false">SEO Tags</button>
@@ -105,12 +105,12 @@ function EditNews(props) {
                     <div className="tab-pane card-body border fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
 
                         <div className='form-group mb-3'>
-                            <label>Name</label>
+                            <label>Tên tin tức</label>
                             <input type='text' name='name' className='form-control' onChange={handleInput} value={newsInput.name} />
                         </div>
                         <div className='text-danger'>{errorlist.name}</div>
                         <div className='form-group mb-3'>
-                            <label>Description</label>
+                            <label>Mô tả</label>
                             <CKEditor
                                 editor={ClassicEditor}
                                 data={newsInput.description}
@@ -120,16 +120,16 @@ function EditNews(props) {
                         </div>
                         <div className='text-danger'>{errorlist.description}</div>
                         <div className='form-group mb-3'>
-                            <label>Image</label>
+                            <label>Hình ảnh</label>
                             <input type='file' name='image' className='form-control' onChange={handleImage} />
                             <img src={`http://localhost:8000/${[newsInput.image]}`} width='300px' className='mt-4' alt={newsInput.name} />
                         </div>
                         <div className='text-danger'>{errorlist.image}</div>
                         <div className='form-group mb-3'>
-                            <label>Status:</label>
+                            <label>Trạng thái</label>
                             <input type='checkbox' name='status' className='form-check-input ms-5' id="flexCheckChecked" onChange={handleCheckbox} defaultChecked={allCheckbox.status === 1 ? true : false} />
                             <label className="form-check-label " htmlFor="flexCheckChecked">
-                                Shown
+                                Hiện
                             </label>
                         </div>
                     </div>
@@ -152,7 +152,7 @@ function EditNews(props) {
 
                     </div>
                 </div>
-                <Button type='submit' variant="outline-primary" className='px-4 float-end'>Update</Button>
+                <Button type='submit' variant="outline-primary" className='px-4 mx-3'>Cập nhật</Button>
             </form>
         </div >
     )

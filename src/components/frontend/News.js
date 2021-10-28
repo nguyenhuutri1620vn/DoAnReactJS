@@ -1,8 +1,10 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { Row, Col, Figure, Badge, Breadcrumb } from 'react-bootstrap';
+import { Row, Col, Figure, Breadcrumb } from 'react-bootstrap';
 import ReactPaginate from 'react-paginate';
 import { Link } from 'react-router-dom';
+
+document.title = "Chingu | Tin tức"
 
 function News() {
 
@@ -29,7 +31,7 @@ function News() {
     }, [])
 
     if (loading) {
-        return <div className="loading"><h4>Loading news...</h4></div>
+        return <div className="loading"><h4>Đang tải tin tức...</h4></div>
     } else {
         var content_HTML = '';
         content_HTML = content.slice(pagesVisited, pagesVisited + contentPerPage).map((item, idx) => {
@@ -55,7 +57,7 @@ function News() {
                                 <div dangerouslySetInnerHTML={{ __html: item.meta_descrip }}>
                                 </div>
                             </div>
-                            <Link to={`/news/${item.id}`} className="float-end link-to">Detail 》</Link>
+                            <Link to={`/news/${item.id}`} className="float-end link-to">Chi tiêt 》</Link>
                         </Link>
                     </Col>
                     <hr />
@@ -67,18 +69,17 @@ function News() {
         <div className='container mt-4'>
             <Breadcrumb className="mb-2">
                 <Breadcrumb.Item href="/product">
-                    Home
+                    Trang chủ
                 </Breadcrumb.Item>
                 <Breadcrumb.Item href="#">
-                    News
+                    Tin tức
                 </Breadcrumb.Item>
             </Breadcrumb>
-            <h2> Event <Badge pill bg="dark mb-4"> Content </Badge>{' '}
-            </h2>
+            <h4 className="mb-4"> Tin tức - Sự kiện </h4>
             {content_HTML}
             <ReactPaginate
-                previousLabel={'Prev'}
-                nextLabel={'Next'}
+                 previousLabel={'←'}
+                 nextLabel={'→'}
                 pageCount={pageCount}
                 onPageChange={handleChangPage}
                 containerClassName={"paginationBttns"}

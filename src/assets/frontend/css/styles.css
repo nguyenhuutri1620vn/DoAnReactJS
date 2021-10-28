@@ -780,6 +780,16 @@ a {
   color: #555;
 }
 
+.descrip--content{
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-word;
+  font-size: 15px;
+}
+
 .descrip-text-content:hover {
   text-decoration: underline;
 }
@@ -1272,6 +1282,15 @@ div.h6, h6 {
   border: 1px solid #D5B85A;
 }
 
+.custom-form-profile {
+  justify-self: center;
+  align-items: center;
+  margin: auto;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #d3d3d3;
+}
+
 .inf-area p {
   font-size: 20px;
   font-weight: 500;
@@ -1410,4 +1429,12 @@ div.h6, h6 {
 .original_cart {
   font-weight: 500;
   font-size: 18px;
+}
+.card-header-order-history{
+  border-bottom: 1px solid #555;
+  padding-bottom: 10px;
+  padding-top: 10px;
+  text-align: center;
+  color: #FFFFFF;
+  background: #666;
 }

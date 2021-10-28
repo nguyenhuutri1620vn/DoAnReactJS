@@ -3,17 +3,17 @@ import React, { useEffect, useState } from "react";
 import { Breadcrumb, Card, Button, Tab, Tabs } from "react-bootstrap";
 import { BsFillCartCheckFill } from "react-icons/bs";
 import ReactPaginate from "react-paginate";
-import { Link, useHistory } from "react-router-dom";
-import swal from "sweetalert";
+import { Link } from "react-router-dom";
 
 import Slidebar from "../../layouts/frontend/Slidebar";
+
+document.title = "Chingu | Sản phẩm"
 
 function Product() {
 
     const [product, setProduct] = useState([]);
     const [loading, setloading] = useState(true);
     const [pageNumber, setPageNumber] = useState(0);
-    const history = useHistory();
 
     const productPerPage = 12;
     const pagesVisited = pageNumber * productPerPage;
@@ -35,10 +35,10 @@ function Product() {
     if (loading) {
         return <div className='loading'><h4>Loading...</h4></div>
     } else {
-        
+
         var product_HTML = '';
         product_HTML = product.slice(pagesVisited, pagesVisited + productPerPage).map((item) => {
-            
+
             let original_p = new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 3 }).format(parseInt(item.original_price));
             let selling_p = new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 3 }).format(parseInt(item.selling_price));
             return (
@@ -50,14 +50,14 @@ function Product() {
                         <Card.Body>
                             <Card.Title>{item.name}</Card.Title>
                             <Card.Text className='card-text'>
-                                <p className="card-user-name small">Category: {item.category.name}</p>
-                                <p className="card-user-name small">Brand: {item.producer.name}</p>
-                                <del className="card-user-name small">Original price: ${original_p} </del>
-                                <p className="card-user-name selling-price">Only: ${selling_p}</p>
+                                <p className="card-user-name small">Loại sản phẩm: {item.category.name}</p>
+                                <p className="card-user-name small">Thương hiệu: {item.producer.name}</p>
+                                <del className="card-user-name smaill">Giá gốc: {original_p} VNĐ</del>
+                                <p className="card-user-name selling-price">Giá bán: {selling_p} VNĐ</p>
                             </Card.Text>
                             <div className="card-bottom">
-                                <Button variant="danger"  onClick={()=>console.log(item.id)}><BsFillCartCheckFill /></Button>
-                                <div className="card-watching">Only: {item.number}</div>
+                                <Button variant="danger"><BsFillCartCheckFill /></Button>
+                                <div className="card-watching">Chỉ còn: {item.number}</div>
                             </div>
                         </Card.Body>
                     </Link>
@@ -78,19 +78,21 @@ function Product() {
                             <Card.Body>
                                 <Card.Title>{item.name}</Card.Title>
                                 <Card.Text className='card-text'>
-                                    <p className="card-user-name small">Category: {item.category.name}</p>
-                                    <p className="card-user-name small">Brand: {item.producer.name}</p>
-                                    <del className="card-user-name smaill">Original price: ${original_p} </del>
-                                    <p className="card-user-name selling-price">Only: ${selling_p}</p>
+                                    <p className="card-user-name small">Loại sản phẩm: {item.category.name}</p>
+                                    <p className="card-user-name small">Thương hiệu: {item.producer.name}</p>
+                                    <del className="card-user-name smaill">Giá gốc: {original_p} VNĐ</del>
+                                    <p className="card-user-name selling-price">Giá bán: {selling_p} VNĐ</p>
                                 </Card.Text>
                                 <div className="card-bottom">
                                     <Button variant="danger"><BsFillCartCheckFill /></Button>
-                                    <div className="card-watching">Only: {item.number}</div>
+                                    <div className="card-watching">Chỉ còn: {item.number}</div>
                                 </div>
                             </Card.Body>
                         </Link>
                     </Card>
                 )
+            }else{
+                return null
             }
         });
         var productPopular_HTML = '';
@@ -107,39 +109,39 @@ function Product() {
                             <Card.Body>
                                 <Card.Title>{item.name}</Card.Title>
                                 <Card.Text className='card-text'>
-                                    <p className="card-user-name small">Category: {item.category.name}</p>
-                                    <p className="card-user-name small">Brand: {item.producer.name}</p>
-                                    <del className="card-user-name smaill">Original price: ${original_p} </del>
-                                    <p className="card-user-name selling-price">Only: ${selling_p}</p>
+                                    <p className="card-user-name small">Loại sản phẩm: {item.category.name}</p>
+                                    <p className="card-user-name small">Thương hiệu: {item.producer.name}</p>
+                                    <del className="card-user-name smaill">Giá gốc: {original_p} VNĐ</del>
+                                    <p className="card-user-name selling-price">Giá bán: {selling_p} VNĐ</p>
                                 </Card.Text>
                                 <div className="card-bottom">
                                     <Button variant="danger"><BsFillCartCheckFill /></Button>
-                                    <div className="card-watching">Only: {item.number}</div>
+                                    <div className="card-watching">Chỉ còn: {item.number}</div>
                                 </div>
                             </Card.Body>
                         </Link>
                     </Card>
                 )
             }
+            else{
+                return null
+            }
         });
     }
-
-
-
     return (
         <div className='container product-home'>
             <Slidebar />
             <div className='container product-container'>
                 <Breadcrumb>
                     <Breadcrumb.Item href="/product" className='link-product'>
-                        Home
+                        Trang chủ
                     </Breadcrumb.Item>
                     <Breadcrumb.Item href="/product">
-                        Product
+                        Sản phẩm
                     </Breadcrumb.Item>
                 </Breadcrumb>
                 <Tabs defaultActiveKey="featured" id="uncontrolled-tab-example" className="mb-3 tab-title">
-                    <Tab eventKey="featured" title="Featured">
+                    <Tab eventKey="featured" title="Nổi bật">
                         <div className='featured_product'>
                             <div className='box_category_home'>
                                 <div className="cards-product">
@@ -150,7 +152,7 @@ function Product() {
                             </div>
                         </div>
                     </Tab>
-                    <Tab eventKey="popular" title="Popular">
+                    <Tab eventKey="popular" title="Phổ biến">
                         <div className='featured_product'>
                             <div className='box_category_home'>
                                 <div className="cards-product">
@@ -161,7 +163,7 @@ function Product() {
                             </div>
                         </div>
                     </Tab>
-                    <Tab eventKey="default" title="Default">
+                    <Tab eventKey="default" title="Mặc định">
                         <div className='featured_product'>
                             <div className='box_category_home'>
                                 <div className="cards-product">
@@ -175,8 +177,8 @@ function Product() {
                 </Tabs>
 
                 <ReactPaginate
-                    previousLabel={'Prev'}
-                    nextLabel={'Next'}
+                    previousLabel={'←'}
+                    nextLabel={'→'}
                     pageCount={pageCount}
                     onPageChange={handleChangPage}
                     containerClassName={"paginationBttns"}

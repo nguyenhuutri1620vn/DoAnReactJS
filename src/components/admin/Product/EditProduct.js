@@ -8,7 +8,7 @@ import { Button } from 'react-bootstrap';
 
 function EditProduct(props) {
 
-    document.title = 'Edit Product';
+    document.title = 'Chỉnh sửa sản phẩm';
 
     const [categorylist, setCategorylist] = useState([]);
     const [producerlist, setProducerlist] = useState([]);
@@ -57,9 +57,8 @@ function EditProduct(props) {
             if (res.data.status === 200) {
                 setProduct(res.data.product);
                 setCheckbox(res.data.product);
-                // console.log(res.data.product);
             } else if (res.data.status === 404) {
-                swal('Error', res.data.message, 'error');
+                swal('Có lỗi', res.data.message, 'error');
                 history.push('/admin/view-product')
             }
             setLoading(false);
@@ -70,7 +69,6 @@ function EditProduct(props) {
         e.preventDefault();
 
         const formData = new FormData();
-
         const product_id = props.match.params.id;
         formData.append('image', picture.image);
 
@@ -91,47 +89,46 @@ function EditProduct(props) {
         formData.append('popular', allCheckbox.popular ? "1" : "0");
         formData.append('status', allCheckbox.status ? "1" : "0");
 
-
         axios.post(`/api/update-product/${product_id}`, formData).then(res => {
             if (res.data.status === 200) {
-                swal('Sucess', res.data.message, 'success');
+                swal('Cập nhật thành công', res.data.message, 'success');
                 history.push('/admin/view-product');
                 setError([]);
             } else if (res.data.status === 422) {
-                swal('All fields are mandatory', '', 'error');
+                swal('Vui lòng nhập đầy đủ thông tin', '', 'error');
                 setError(res.data.errors);
             } else if (res.data.status === 404) {
-                swal('Error', res.data.message, 'error');
+                swal('Có lỗi', res.data.message, 'error');
                 history.push('/admin/view-product');
             }
         })
     }
     if (loading) {
-        return <h3>Edit product data loading...</h3>
+        return <h3>Đang tải trang chỉnh sửa sản phẩm, vui lòng đợi...</h3>
     }
     return (
         <div className='container-fluid px-4'>
-            <h2 className='mt-4'>Edit Product
-                <Link to='/admin/view-product' className='btn btn-danger float-end btn-sm'>Back</Link></h2>
+            <h2 className='mt-4'>Chỉnh sửa sản phẩm
+                <Link to='/admin/view-product' className='btn btn-danger float-end btn-sm'>Quay về</Link></h2>
             <form onSubmit={updateProduct} encType='multipart/form-data'>
                 <ul className="nav nav-tabs" id="myTab" role="tablist">
                     <li className="nav-item" role="presentation">
-                        <button className="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Home</button>
+                        <button className="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Thông tin sản phẩm</button>
                     </li>
                     <li className="nav-item" role="presentation">
-                        <button className="nav-link" id="other-tab" data-bs-toggle="tab" data-bs-target="#other-tags" type="button" role="tab" aria-controls="other-tags" aria-selected="false">Other Details</button>
+                        <button className="nav-link" id="other-tab" data-bs-toggle="tab" data-bs-target="#other-tags" type="button" role="tab" aria-controls="other-tags" aria-selected="false">Chi tiết sản phẩm</button>
                     </li>
                     <li className="nav-item" role="presentation">
                         <button className="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#seo-tags" type="button" role="tab" aria-controls="seo-tags" aria-selected="false">SEO Tags</button>
                     </li>
                 </ul>
                 <div className="tab-content" id="myTabContent">
-                    <div className="tab-pane card-body border fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                    <div className="tab-pane card-body fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                         <div className='row'>
                             <div className='col-md-6 form-group mb-3'>
-                                <label>Category</label>
+                                <label>Loại sản phẩm</label>
                                 <select name='cateID' className='form-select' aria-label="Default select example" onChange={handleInput} value={productInput.cateID}>
-                                    <option>Select category</option>
+                                    <option>Chọn loại sản phẩm</option>
                                     {
                                         categorylist.map((item) => {
                                             return (
@@ -143,9 +140,9 @@ function EditProduct(props) {
                                 <small className='text-danger'>{errorlist.cateID}</small>
                             </div>
                             <div className='col-md-6 form-group mb-3'>
-                                <label>Brand</label>
+                                <label>Thương hiệu</label>
                                 <select name='producerID' className='form-select' aria-label="Default select example" onChange={handleInput} value={productInput.producerID}>
-                                    <option>Select brand</option>
+                                    <option>Chọn thương hiệu</option>
                                     {
                                         producerlist.map((item) => {
                                             return (
@@ -165,15 +162,13 @@ function EditProduct(props) {
                         <small className='text-danger'>{errorlist.slug}</small>
 
                         <div className='form-group mb-3'>
-                            <label>Name</label>
+                            <label>Tên sản phẩm</label>
                             <input type='text' name='name' onChange={handleInput} value={productInput.name} className='form-control' />
                         </div>
                         <small className='text-danger'>{errorlist.name}</small>
 
                         <div className='form-group mb-3'>
-                            <label>Description</label>
-
-                            {/* <textarea type='text' name='description' id='description' onChange={handleInput} value={productInput.description} className='form-control' /> */}
+                            <label>Mô tả</label>
                             <CKEditor
                                 editor={ClassicEditor}
 
@@ -186,7 +181,7 @@ function EditProduct(props) {
                         <small className='text-danger'>{errorlist.description}</small>
                     </div>
 
-                    <div className="tab-pane card-body border fade" id="seo-tags" role="tabpanel" aria-labelledby="profile-tab">
+                    <div className="tab-pane card-body fade" id="seo-tags" role="tabpanel" aria-labelledby="profile-tab">
                         <div className='form-group mb-3'>
                             <label>Meta title</label>
                             <input type='text' name='meta_title' onChange={handleInput} value={productInput.meta_title} className='form-control' />
@@ -202,58 +197,58 @@ function EditProduct(props) {
                             <textarea type='text' name='meta_descrip' onChange={handleInput} value={productInput.meta_descrip} className='form-control h-50' /> 
                         </div>
                     </div>
-                    <div className="tab-pane card-body border fade" id="other-tags" role="tabpanel" aria-labelledby="other-tab">
+                    <div className="tab-pane card-body fade" id="other-tags" role="tabpanel" aria-labelledby="other-tab">
                         <div className='row'>
                             <div className='col-md-4 form-group mb-3'>
-                                <label>Original price</label>
+                                <label>Giá gốc</label>
                                 <input type='text' name='original_price' onChange={handleInput} value={productInput.original_price} className='form-control' />
                             </div>
                             <small className='text-danger'>{errorlist.original_price}</small>
 
                             <div className='col-md-4 form-group mb-3'>
-                                <label>Selling price</label>
+                                <label>Giá bán</label>
                                 <input type='text' name='selling_price' onChange={handleInput} value={productInput.selling_price} className='form-control' />
                             </div>
                             <small className='text-danger'>{errorlist.selling_price}</small>
 
                             <div className='col-md-4 form-group mb-3'>
-                                <label>Quantity</label>
+                                <label>Số lượng</label>
                                 <input type='text' name='number' onChange={handleInput} value={productInput.number} className='form-control' />
                             </div>
                             <small className='text-danger'>{errorlist.number}</small>
 
                             <div className='col-md-4 form-group mb-3'>
-                                <label>Image</label>
+                                <label>Hình ảnh</label>
                                 <input type='file' name='image' onChange={handleImage} className='form-control' />
                                 <img src={`http://localhost:8000/${[productInput.image]}`} width='200px' className='mt-4' alt={productInput.name} />
 
                             </div>
                             <small className='text-danger'>{errorlist.image}</small>
                             <div className='col-md-4 form-group mb-3'>
-                                <label>Featured</label>
+                                <label>Nổi bật</label>
                                 <input type='checkbox' name='featured' className='form-check-input ms-5' id="featuredCheckChecked" onChange={handleCheckbox} defaultChecked={allCheckbox.featured === 1 ? true : false} />
                                 <label className="form-check-label " htmlFor="featuredCheckChecked">
                                     Check
                                 </label>
                             </div>
                             <div className='col-md-4 form-group mb-3'>
-                                <label>Popular</label>
+                                <label>Phổ biến</label>
                                 <input type='checkbox' name='popular' className='form-check-input ms-5' id="popularCheckChecked" onChange={handleCheckbox} defaultChecked={allCheckbox.popular === 1 ? true : false} />
                                 <label className="form-check-label " htmlFor="popularCheckChecked">
                                     Check
                                 </label>
                             </div>
                             <div className='col-md-4 form-group mb-3'>
-                                <label>Status</label>
+                                <label>Trạng thái</label>
                                 <input type='checkbox' name='status' className='form-check-input ms-5' onChange={handleCheckbox} defaultChecked={allCheckbox.status === 1 ? true : false} />
                                 <label className="form-check-label " htmlFor="statusCheckChecked">
-                                    Shown
+                                    Hiện
                                 </label>
                             </div>
                         </div>
                     </div>
                 </div>
-                <Button type='submit' variant="outline-primary" className='px-4 float-end'>Update</Button>
+                <Button type='submit' variant="outline-primary" className='px-4 mx-3'>Cập nhật</Button>
             </form>
         </div >
     )

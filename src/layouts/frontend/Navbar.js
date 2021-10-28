@@ -7,12 +7,12 @@ import { BsCartCheckFill, BsSearch } from 'react-icons/bs';
 import logo from '../../assets/frontend/image/logo.png';
 
 import '../../assets/frontend/css/styles.css';
-import { Button, Col, Figure, Modal, Row } from "react-bootstrap";
+import { Button} from "react-bootstrap";
 function Navbar() {
 
 
   const history = useHistory();
-
+  const [user, setUser] = useState([]);
   const [category, setCategory] = useState([]);
   const [producer, setProducer] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -23,9 +23,19 @@ function Navbar() {
         setCategory(res.data.category);
         setProducer(res.data.producer);
       }
+    });
+
+    axios.get(`/api/getUser_w`).then(res => {
+      if (res.data.status === 200) {
+        setUser(res.data.user);
+      } else if (res.data.status === 401) {
+        history.push('/login');
+        swal('Warning', res.data.message, 'error');
+      }
       setLoading(false);
+
     })
-  }, [])
+  }, [history])
 
   if (loading === false) {
     var item_category = '';
@@ -63,19 +73,18 @@ function Navbar() {
   if (!localStorage.getItem('auth_token')) {
     AuthButtons = (
       <div>
-        <Link className="link-top" to="/register">Register</Link>
-        <Link className="link-top-last" to="/login">Login</Link>
+        <Link className="link-top" to="/register">Đăng ký</Link>
+        <Link className="link-top-last" to="/login">Đăng nhập</Link>
       </div>
     )
   } else {
     AuthButtons = (
-      <div >
-        <button className="btn btn-danger btn-sm" type='submit' onClick={logoutSubmit}><span className='textNav'>Logout</span></button>
+      <div>
+        <Link to={`/profile`} className='link-top-last'>Xin chào, {user.fullname}</Link>
+        <button className="btn btn-danger btn-sm" type='submit' onClick={logoutSubmit}><span className='textNav'>Đăng xuất</span></button>
       </div>
     )
   }
-
-
 
   return (
 
@@ -83,26 +92,24 @@ function Navbar() {
       <div className='navbar-wrapper container-wrapper'>
         <div className='container navbar'>
           <div className='flex v-center'>
-            <Link to='/sellingarea' className='link-top'>Selling area</Link>
-            <Link to='/product' className='link-top'>Product</Link>
+            <Link to='/sellingarea' className='link-top'>Khu giao dịch</Link>
+            <Link to='/product' className='link-top'>Sản phẩm</Link>
             <div className='nav-item dropdown'>
-              <Link to="#" className='link-top ' data-bs-toggle="dropdown">Category</Link>
+              <Link to="#" className='link-top ' data-bs-toggle="dropdown">Loại sản phẩm</Link>
               <ul className="dropdown-menu sub_menu">
                 {item_category}
               </ul>
             </div>
             <div to='#' className='nav-item dropdown'>
-              <Link to="#" className='link-top' data-bs-toggle="dropdown">Brand</Link>
+              <Link to="#" className='link-top' data-bs-toggle="dropdown">Thương hiệu</Link>
               <ul className="dropdown-menu ">
                 {item_brand}
               </ul>
             </div>
-            <Link to='/sellingarea' className='link-top-last'>Contact</Link>
+            <Link to='/news' className='link-top-last'>Tin tức</Link>
           </div>
           <div className='navbar__spacer'></div>
           <div className='navbar__links'>
-            <Link to='/about' className='link-top-last'>About</Link>
-            <Link to='/news' className='link-top-last'>News</Link>
             {AuthButtons}
           </div>
         </div>
@@ -114,7 +121,7 @@ function Navbar() {
             <div className='chingu-searchbar chingu-searchbar--focus'>
               <div className='chingu-searchbar__main'>
                 <form className='chingu-searchbar-input'>
-                  <input className='chingu-searchbar-input__input' placeholder='Search product name...' />
+                  <input className='chingu-searchbar-input__input' placeholder='Nhập sản phẩm cần tìm...' />
                 </form>
               </div>
               <Button className='btn btn-dark btn--s btn--inline py-1'><BsSearch /></Button>

@@ -2,11 +2,10 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import swal from "sweetalert";
 import ReactPaginate from 'react-paginate';
-import { Button } from 'react-bootstrap';
 
 
 function ViewUser() {
-    document.title = 'Users View';
+    document.title = 'Danh sách khách hàng';
 
     const [pageNumber, setPageNumber] = useState(0);
     const [search, setSearch] = useState("");
@@ -22,8 +21,6 @@ function ViewUser() {
     }
 
     useEffect(() => {
-        document.title = 'View users';
-
         axios.get(`/api/view-users`).then(res => {
             if (res.data.status === 200) {
                 setUser(res.data.users);
@@ -36,14 +33,14 @@ function ViewUser() {
         e.preventDefault();
 
         const thisClicked = e.currentTarget;
-        thisClicked.innerText = "Waiting..."
+        thisClicked.innerText = "Đợi tíi..."
 
         swal({
-            title: "Are you sure?",
-            text: "This user will be become ADMIN",
+            title: "Có chắc là muốn xóa chưa?",
+            text: "Khi mà đã xóa rồi thì không hoàn tác được đâu đấy!",
             icon: "warning",
             buttons: true,
-            dangerMode: false,
+            dangerMode: true,
         })
             .then((willAdmin) => {
                 if (willAdmin) {
@@ -69,14 +66,14 @@ function ViewUser() {
 
     var display_users = '';
     if (loading) {
-        return <h1>Users view loading...</h1>
+        return <h1>Đang tải danh sách khách hàng, vui lòng đợi...</h1>
     } else {
         display_users = users.slice(pagesVisited, pagesVisited + usersPerPage).filter((item) => {
             if (search === '') {
                 return item;
             } else if (item.username.toString().toLowerCase().includes(search.toLowerCase())) {
                 return item;
-            }else {
+            } else {
                 return item;
             }
         }).map((item) => {
@@ -84,14 +81,13 @@ function ViewUser() {
             return (
 
                 <tr key={item.id}>
-                    <td className='col-3 col-sm-1'>{item.id}</td>
+                    <td className='col-3 col-sm-1 text-center'>{item.id}</td>
                     <td className='col-3 col-sm-1'>{item.username}</td>
-                    <td className='col-3 col-sm-1'>{item.fullname}</td>
+                    <td className='col-3 col-sm-2'>{item.fullname}</td>
                     <td className='col-3 col-sm-2'>{item.email}</td>
-                    <td className='col-3 col-sm-1'>{item.phone}</td>
-                    <td className='col-3 col-sm-2'>{item.address}</td>
+                    <td className='col-3 col-sm-2'>{item.phone}</td>
                     <td className='text-center'>
-                        <Button onClick={(e) => becomeAdmin(e, item.id)} variant="success">→ Staff</Button>
+                        <button onClick={(e) => becomeAdmin(e, item.id)} className="btn btn-danger">→ Staff</button>
                     </td>
                 </tr>
             );
@@ -107,7 +103,7 @@ function ViewUser() {
                         <form className="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0 float-end">
                             <div className="input-group">
                                 <input className="form-control"
-                                    type="text" placeholder="Search for..."
+                                    type="text" placeholder="Tìm kiếm..."
                                     aria-label="Search for..."
                                     aria-describedby="btnNavbarSearch"
                                     value={search}
@@ -124,10 +120,9 @@ function ViewUser() {
                             <tr>
                                 <th>ID</th>
                                 <th className='col-3 col-sm-1'>Username</th>
-                                <th className='col-3 col-sm-1'>Full name</th>
+                                <th className='col-3 col-sm-1'>Họ và tên</th>
                                 <th className='col-3 col-sm-2'>Email</th>
-                                <th className='col-3 col-sm-1'>Phone</th>
-                                <th className='col-3 col-sm-2'>Address</th>
+                                <th className='col-3 col-sm-1'>Số điện thoại</th>
                                 <th>Role</th>
                             </tr>
                         </thead>
@@ -137,8 +132,8 @@ function ViewUser() {
                     </table>
                 </div>
                 <ReactPaginate
-                    previousLabel={'Prev'}
-                    nextLabel={'Next'}
+                    previousLabel={'←'}
+                    nextLabel={'→'}
                     pageCount={pageCount}
                     onPageChange={handleChangPage}
                     containerClassName={"paginationBttns"}
