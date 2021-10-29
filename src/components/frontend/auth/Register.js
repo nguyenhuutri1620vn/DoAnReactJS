@@ -72,7 +72,7 @@ function Register() {
                                 </Form.Group>
                                 <Form.Group as={Col} controlId="formGridFullname">
                                     <Form.Label>Họ và tên</Form.Label>
-                                    <Form.Control type="text" placeholder="" name="Nhập họ và tên.." onChange={handleInput} value={registerInput.fullname} />
+                                    <Form.Control type="text" placeholder="Nhập họ và tên..." name="fullname" onChange={handleInput} value={registerInput.fullname} />
                                     <small className="text-danger">{error.fullname}</small>
                                 </Form.Group>
                             </Row>

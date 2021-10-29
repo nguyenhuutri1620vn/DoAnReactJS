@@ -29,8 +29,6 @@ function Checkout() {
     let quantityproduct = 0;
     let totalOrder = 0;
 
-
-
     if (!localStorage.getItem('auth_token')) {
         history.push('/login');
         swal("Thông báo", "Đăng nhập để cho thể thanh toán", 'error');
@@ -39,12 +37,13 @@ function Checkout() {
     const selectDistrict = (e) => {
         e.persist();
         checkoutInput.districtID = e.target.value;
+        console.log(checkoutInput.districtID);
+        console.log(checkoutInput.provinceID);
     }
-
     const selectProvince = (e) => {
         e.persist();
         const province_id = e.target.value;
-        checkoutInput.provinceID = province_id;
+        checkoutInput.provinceID =  e.target.value;
         axios.post(`/api/select-district/${province_id}`).then(res => {
             if (res.data.status === 200) {
                 setDistrict(res.data.district);
@@ -53,13 +52,10 @@ function Checkout() {
             }
         })
     }
-
     const handleInput = (e) => {
         e.persist();
         setCheckoutInput({ ...checkoutInput, [e.target.name]: e.target.value });
     }
-
-
 
     const submitCheckOut = (e, payment_mode) => {
         e.preventDefault();
@@ -148,26 +144,6 @@ function Checkout() {
 
     useEffect(() => {
         let isMounterd = true;
-        axios.get(`/api/allprovince`).then(res => {
-            if (res.data.status === 200) {
-                setProvince(res.data.province);
-            }
-        });
-
-        const province_id = checkoutInput.provinceID;
-        axios.post(`/api/select-district/${province_id}`).then(res => {
-            if (res.data.status === 200) {
-                console.log("Hehe");
-            } else {
-                console.log("failed");
-            }
-        })
-
-        axios.get(`/api/alldistict/${province_id}`).then(res => {
-            if (res.data.status === 200) {
-                setDistrict(res.data.district);
-            }
-        })
 
         axios.get(`/api/cart`).then(res => {
             if (isMounterd) {
@@ -180,21 +156,20 @@ function Checkout() {
                 }
             }
         })
-
         axios.get(`/api/getUser`).then(res => {
             if (res.data.status === 200) {
                 setCheckoutInput(res.data.user);
+                setProvince(res.data.province);
                 setloading(false);
             } else if (res.data.status === 401) {
                 history.push('/product');
                 swal('Thông báo', res.data.message, 'error');
             }
         })
-
         return () => {
             isMounterd = false;
         }
-    }, [history, checkoutInput.provinceID])
+    }, [history])
     var cart_HTML = "";
     if (cart.length > 0) {
         cart_HTML =
@@ -226,7 +201,7 @@ function Checkout() {
                                             <Form.Label>Thành phố</Form.Label>
                                             <Form.Select defaultValue="0" name="provinceID" value={checkoutInput.provinceID}
                                                 onChange={selectProvince}>
-                                                <option>Chọn...</option>
+                                                <option value={null}>Chọn...</option>
                                                 {
                                                     province.map((item) => {
                                                         return (
@@ -333,15 +308,15 @@ function Checkout() {
     } else {
         <div>
             <div className="card card-body py-5 text-center shadow-sm">
-                <h4>Your shopping cart is empty. You are in Checkout page</h4>
-                <p>Do you want to go <Link to="/product">shopping</Link> ?</p>
+                <h4>Giỏ hàng của bạn không có sản phẩm. Bạn đang ở trang thanh toán</h4>
+                <p>Quay lại trang sản phẩm tại<Link to="/product">đây</Link> ?</p>
             </div>
         </div>
     }
 
     if (loading) {
         return (
-            <div className="loading"><h4>Loading checkout...</h4></div>
+            <div className="loading"><h4>Đang tải, vui lòng đợi...</h4></div>
         )
     }
     return (

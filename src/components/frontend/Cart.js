@@ -183,8 +183,8 @@ function Cart() {
         cart_HTML =
             <div>
                 <div className="card card-body py-5 text-center shadow-sm">
-                    <h4>Your shopping cart is empty</h4>
-                    <p>Do you want to go <Link to="/product">shopping</Link> ?</p>
+                    <h4>Giỏ hàng của bạn hiện tại không có sản phẩm</h4>
+                    <p>Trở lại trang chủ tại<Link to="/product">đây</Link> ?</p>
                 </div>
             </div>
     }

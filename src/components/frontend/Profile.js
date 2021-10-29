@@ -11,8 +11,6 @@ function Profile() {
 
     const [user, setUser] = useState([]);
     const [loading, setloading] = useState(true);
-    const [province, setProvince] = useState([]);
-    const [district, setDistrict] = useState([]);
     const [errorlist, setError] = useState([]);
     const history = useHistory();
 
@@ -21,37 +19,8 @@ function Profile() {
         history.push('/login');
     }
 
-    const selectDistrict = (e) => {
-        e.persist();
-        user.districtID = e.target.value;
-    }
-
-    const selectProvince = (e) => {
-        e.persist();
-        const province_id = e.target.value;
-        user.provinceID = province_id;
-        axios.post(`/api/select-district/${province_id}`).then(res => {
-            if (res.data.status === 200) {
-                setDistrict(res.data.district);
-            } else {
-                console.log("failed");
-            }
-        })
-    }
     console.log(user.districtID);
     useEffect(() => {
-        axios.get(`api/allprovince`).then(res => {
-            if (res.data.status === 200) {
-                setProvince(res.data.province);
-            }
-        });
-
-        axios.get(`/api/alldistict/${user.provinceID}`).then(res => {
-            if (res.data.status === 200) {
-                setDistrict(res.data.district);
-            }
-        })
-
         axios.get(`/api/getUser`).then(res => {
             if (res.data.status === 200) {
                 setUser(res.data.user);
@@ -152,43 +121,6 @@ function Profile() {
                             </Form.Group>
                         </Row>
                         <small className="text-danger">{errorlist.phone}</small>
-
-                        <Row className="mb-3">
-                            <Form.Group as={Col} controlId="formGridEmail">
-                                <Form.Label>Thành phố</Form.Label>
-                                <Form.Select name="provinceID" value={user.provinceID}
-                                    onChange={selectProvince}>
-                                    <option>Chọn...</option>
-                                    {
-                                        province.map((item) => {
-                                            return (
-                                                <option value={item.id} key={item.id}>{item.name}</option>
-                                            )
-                                        })
-                                    };
-                                </Form.Select>
-                            </Form.Group>
-
-                            <Form.Group as={Col} controlId="formGridPassword">
-                                <Form.Label>Huyện</Form.Label>
-                                <Form.Select name="districtID" value={user.districtID} onChange={selectDistrict}>
-                                    <option>Chọn...</option>
-                                    {
-                                        district.map((item) => {
-                                            return (
-                                                <option value={item.id} key={item.id}>{item.name}</option>
-                                            )
-                                        })
-                                    }
-                                </Form.Select>
-                            </Form.Group>
-                        </Row>
-                        <Form.Group className="mb-3" controlId="formGridAddress">
-                            <Form.Label>Địa chỉ</Form.Label>
-                            <Form.Control placeholder="Số nhà - phường  - xã" type="text"
-                                value={user.address} name="address" onChange={handleInput} />
-                            <small className="text-danger">{errorlist.address}</small>
-                        </Form.Group>
                         <div className="d-grid gap-2">
                             <Button type="submit" variant="outline-dark">
                                 <span>Cập nhật</span>

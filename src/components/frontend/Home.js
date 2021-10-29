@@ -4,10 +4,10 @@ import { Card, Carousel, Button, Container, Row, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { BsFillCartCheckFill } from 'react-icons/bs';
 
-document.title = 'CHINGUMUSIC - CUNG CẤP NHẠC CỤ'
 
 function Home() {
 
+    document.title = 'CHINGUMUSIC - CUNG CẤP NHẠC CỤ'
 
     const [category, setCategory] = useState([]);
     const [content, setContent] = useState([]);
