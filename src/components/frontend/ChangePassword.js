@@ -5,8 +5,8 @@ import { useHistory } from 'react-router-dom';
 import swal from 'sweetalert';
 
 
-document.title = "CHINGU | Đổi mật khẩu"
 function ChangePassword() {
+    document.title = "CHINGU | Đổi mật khẩu"
     const [user, setUser] = useState([]);
     const [error, setError] = useState([]);
     const history = useHistory();

@@ -50,7 +50,7 @@ function AddCategory() {
         formData.append('meta_keyword', categoryInput.meta_keyword);
         formData.append('meta_descrip', categoryInput.meta_descrip);
 
-        formData.append('status', allCheckbox.status ? "1":"0");
+        formData.append('status', allCheckbox.status ? 1:0);
 
 
         axios.post(`/api/store-category`, formData).then(res => {

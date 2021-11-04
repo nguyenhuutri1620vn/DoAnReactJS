@@ -4,7 +4,7 @@ import swal from "sweetalert";
 import { Button } from 'react-bootstrap';
 
 function EditConfig(props) {
-    document.title = 'Edit Config';
+    document.title = 'Cấu hình website';
 
     const [loading, setloading] = useState(true);
     const [configInput, setConfig] = useState([]);

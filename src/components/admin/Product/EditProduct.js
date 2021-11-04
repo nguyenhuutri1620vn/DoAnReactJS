@@ -156,12 +156,6 @@ function EditProduct(props) {
                             </div>
                         </div>
                         <div className='form-group mb-3'>
-                            <label>Slug</label>
-                            <input type='text' name='slug' onChange={handleInput} value={productInput.slug} className='form-control' />
-                        </div>
-                        <small className='text-danger'>{errorlist.slug}</small>
-
-                        <div className='form-group mb-3'>
                             <label>Tên sản phẩm</label>
                             <input type='text' name='name' onChange={handleInput} value={productInput.name} className='form-control' />
                         </div>

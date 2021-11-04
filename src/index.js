@@ -8,6 +8,7 @@ import 'bootstrap/dist/js/bootstrap.bundle.js';
 ReactDOM.render(
 
   <React.StrictMode>
+
     <script src="https://unpkg.com/react/umd/react.production.min.js" crossOrigin="true"></script>
 
     <script

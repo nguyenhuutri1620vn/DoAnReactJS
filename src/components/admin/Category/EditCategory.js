@@ -71,7 +71,7 @@ function EditCategory(props) {
         const category_id = props.match.params.id;
         axios.post(`/api/update-category/${category_id}`, formData).then(res => {
             if (res.data.status === 200) {
-                swal('Success', res.data.message, 'success')
+                swal('Cập nhật loại sản phẩm thành công', res.data.message, 'success')
                 setError([]);
                 history.push('/admin/view-category')
             } else if (res.data.status === 400) {
@@ -123,7 +123,7 @@ function EditCategory(props) {
                         </div>
                         <div className='form-group mb-3'>
                             <label>Trạng thái</label>
-                            <input type='checkbox' name='status' className='form-check-input ms-5' id='status' onChange={handleCheckbox} defaultChecked={allCheckbox.status === 1 ? true : false} />
+                            <input type='checkbox' name='status' className='form-check-input ms-5' onChange={handleCheckbox} defaultChecked={allCheckbox.status === 1 ? true : false} />
                             <label className="form-check-label " htmlFor='status'>
                                 Hiện
                             </label>
@@ -141,7 +141,7 @@ function EditCategory(props) {
                         </div>
                         <div className='form-group mb-3'>
                             <label>Meta description</label>
-                            <textarea name='meta_descrip' placeholder="Nhập meta description..." onChange={handleInput} value={categoryInput.meta_descrip} className='form-control' />
+                            <textarea name='meta_descrip' placeholder="Nhập meta description..." onChange={handleInput} value={categoryInput.meta_descrip || ""} className='form-control' />
                         </div>
                     </div>
                 </div>

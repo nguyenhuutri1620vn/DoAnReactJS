@@ -85,6 +85,7 @@ function ViewProductCategory(props) {
                 </div>
         }
     }
+    document.title = `CHINGU | ${category.name}`
 
     return (
         <div className='container product-home'>

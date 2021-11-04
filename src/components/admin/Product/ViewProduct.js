@@ -75,7 +75,7 @@ function ViewProduct() {
             } else if (item.name.toString().toLowerCase().includes(search.toLowerCase())) {
                 return item;
             }else {
-                return item;
+                return null;
             }
         }).map((item) => {
             return (

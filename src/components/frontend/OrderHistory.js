@@ -4,9 +4,9 @@ import { Breadcrumb, Col, ListGroup, Row, Table } from 'react-bootstrap';
 import { Link, useHistory } from 'react-router-dom';
 import swal from 'sweetalert';
 
-document.title = "CHINGU | Lịch sử đơn hàng"
 
 function OrderHistory() {
+    document.title = "CHINGU | Lịch sử đơn hàng"
 
     const [loading, setloading] = useState(true);
     const [order, setOrder] = useState([]);

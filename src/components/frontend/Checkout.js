@@ -1,17 +1,22 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { Form, Row, Col, Button, Card, Table } from 'react-bootstrap';
+import { Form, Row, Col, Button, Card, Table, Modal } from 'react-bootstrap';
 import { Link, useHistory } from 'react-router-dom';
 import swal from 'sweetalert';
-
-document.title = `ChingMusic | Thanh toán`;
+import ReactDOM from 'react-dom'
 
 function Checkout() {
+    document.title = `ChingMusic | Thanh toán`;
 
     const [cart, setCart] = useState([]);
     const [loading, setloading] = useState(true);
     const [province, setProvince] = useState([]);
     const [district, setDistrict] = useState([]);
+    const [show, setShow] = useState(false);
+
+    const handleShow = () => setShow(true);
+    const handleClose = () => setShow(false);
+    // const handleShow = () => setShow(true);
     const [checkoutInput, setCheckoutInput] = useState({
         fullname: '',
         email: '',
@@ -33,7 +38,6 @@ function Checkout() {
         history.push('/login');
         swal("Thông báo", "Đăng nhập để cho thể thanh toán", 'error');
     }
-
     const selectDistrict = (e) => {
         e.persist();
         checkoutInput.districtID = e.target.value;
@@ -43,7 +47,7 @@ function Checkout() {
     const selectProvince = (e) => {
         e.persist();
         const province_id = e.target.value;
-        checkoutInput.provinceID =  e.target.value;
+        checkoutInput.provinceID = e.target.value;
         axios.post(`/api/select-district/${province_id}`).then(res => {
             if (res.data.status === 200) {
                 setDistrict(res.data.district);
@@ -57,6 +61,49 @@ function Checkout() {
         setCheckoutInput({ ...checkoutInput, [e.target.name]: e.target.value });
     }
 
+    const orderpaypal_data = {
+        fullname: checkoutInput.fullname,
+        email: checkoutInput.email,
+        phone: checkoutInput.phone,
+        provinceID: checkoutInput.provinceID,
+        districtID: checkoutInput.districtID,
+        address: checkoutInput.address,
+        note: checkoutInput.note,
+        number: quantityproduct,
+        total_price: totalOrder,
+        payment_mode: "Paid by Paypal",
+        payment_id: ''
+    }
+    //Paypal
+    const PayPalButton = window.paypal.Buttons.driver("react", { React, ReactDOM });
+    const createOrder = (data, actions) => {
+        return actions.order.create({
+            purchase_units: [
+                {
+                    amount: {
+                        value: totalOrder/23000,
+                    },
+                },
+            ],
+        });
+    };
+    const onApprove = (data, actions) => {
+        // return actions.order.capture();
+        return actions.order.capture().then(function (details) {
+            console.log(details);
+            orderpaypal_data.payment_id = details.id;
+            axios.post(`/api/place-order`, orderpaypal_data).then(res => {
+                if (res.data.status === 200) {
+                    swal('Thanh toán thành công', res.data.message, 'success');
+                    setError([]);
+                    history.push('/thank-you');
+                } else if (res.data.status === 422) {
+                    setError(res.data.errors);
+                }
+            });
+        });
+    }
+    //End
     const submitCheckOut = (e, payment_mode) => {
         e.preventDefault();
 
@@ -79,10 +126,8 @@ function Checkout() {
                 swal('Thanh toán thành công', res.data.message, 'success');
                 setError([]);
                 history.push('/thank-you');
-            } else {
-                if (res.data.status === 422) {
-                    setError(res.data.errors);
-                }
+            } else if (res.data.status === 422) {
+                setError(res.data.errors);
             }
         });
         switch (payment_mode) {
@@ -137,14 +182,25 @@ function Checkout() {
                 });
                 break;
 
+            case 'paypal':
+                axios.post(`/api/validate-order`, data).then(res => {
+                    if (res.data.status === 200) {
+                        setError([]);
+                        // let myModal = new Modal(document.getElementById('paypal'));
+                        // myModal.show();
+
+
+                    } else if (res.data.status === 422) {
+                        setError(res.data.errors);
+                    }
+                });
+                break
             default:
                 break;
         }
     };
-
     useEffect(() => {
         let isMounterd = true;
-
         axios.get(`/api/cart`).then(res => {
             if (isMounterd) {
                 if (res.data.status === 201) {
@@ -174,6 +230,18 @@ function Checkout() {
     if (cart.length > 0) {
         cart_HTML =
             <div>
+                <Modal show={show} onHide={handleClose} id="paypal">
+                    <Modal.Header closeButton>
+                        <Modal.Title>Paypal online</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <PayPalButton
+                            createOrder={(data, actions) => createOrder(data, actions)}
+                            onApprove={(data, actions) => onApprove(data, actions)}
+                        />
+                    </Modal.Body>
+
+                </Modal>
                 <Row>
                     <Col xs={7}>
                         <Card border="warning">
@@ -251,7 +319,12 @@ function Checkout() {
                                     </Button>
                                     <Button variant="primary" type="submit" className="w-100 mt-2"
                                         onClick={(e) => submitCheckOut(e, 'razorpay')}>
-                                        Thanh toán online
+                                        Thanh toán Razorpay
+                                    </Button>
+                                    <Button variant="warning" type="submit" className="w-100 mt-2"
+                                        onClick={((e) => submitCheckOut(e, 'paypal')), handleShow}
+                                    >
+                                        Thanh toán PayPal
                                     </Button>
 
                                 </Form>

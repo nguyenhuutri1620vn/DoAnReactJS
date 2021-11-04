@@ -6,7 +6,7 @@ import swal from 'sweetalert';
 
 
 function Profile() {
-    document.title = "CHINGU | Profile"
+    document.title = "CHINGU | Cập nhật thông tin"
 
 
     const [user, setUser] = useState([]);
