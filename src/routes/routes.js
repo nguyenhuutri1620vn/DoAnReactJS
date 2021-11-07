@@ -24,6 +24,7 @@ import ViewUser from "../components/admin/User/ViewUser";
 
 import EditConfig from "../components/admin/ConfigW/EditConfig";
 
+import OrderView from "../components/admin/Order/OrderView";
 
 const routes = [
     {path: '/admin', exact: true, name: 'Admin'},
@@ -50,23 +51,17 @@ const routes = [
     {path: '/admin/view-news', exact: true, name:'ViewNews', component: ViewNews},
     {path: '/admin/edit-news/:id', exact: true, name:'EditNews', component: EditNews},
 
-
-
     //users
     {path: '/admin/view-users', exact: true, name:'ViewUser', component: ViewUser},
     
-
-
     //staff
     {path: '/admin/view-staff', exact: true, name:'ViewStaff', component: ViewStaff},
-
 
     //config
     {path: '/admin/edit-config', exact: true, name:'EditConfig', component: EditConfig},
 
-
     //order
-    
+    {path: '/admin/view-order', exact: true, name:'OrderView', component: OrderView},
 
 ];
 export default routes;

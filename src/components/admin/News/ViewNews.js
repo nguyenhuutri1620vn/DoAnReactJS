@@ -6,7 +6,7 @@ import { Button } from 'react-bootstrap';
 import ReactPaginate from 'react-paginate';
 
 function ViewNews() {
-
+    document.title = 'Danh sách tin tức';
     const [pageNumber, setPageNumber] = useState(0);
     const [search, setSearch] = useState("");
     const [news, setNews] = useState([]);
@@ -18,7 +18,6 @@ function ViewNews() {
 
 
     useEffect(() => {
-        document.title = 'Danh sách tin tức';
         axios.get(`/api/view-news`).then(res => {
             if (res.data.status === 200) {
                 setNews(res.data.news);
@@ -83,7 +82,7 @@ function ViewNews() {
                     <td className='text-center'>{item.id}</td>
                     <td>{item.name}</td>
                     <div ><td className="descrip--content">{item.meta_descrip}</td></div>
-                    <td className='text-center'><img src={`http://localhost:8000/${item.image}`} alt={item.name}  width="250" height="150"/></td>
+                    <td className='text-center'><img src={`http://localhost:8000/${item.image}`} alt={item.name}  height="150"/></td>
                     <td className="text-center">{item.status === 1 ? "Hiện":"Ẩn"}</td>
                     <td className='text-center'><Link to={`/admin/edit-news/${item.id}`}><Button variant="warning" >Sửa</Button></Link></td>
                     <td className='text-center'> <Button variant="danger" onClick={(e) => deleteNews(e, item.id)}>Xóa</Button></td>
@@ -106,7 +105,6 @@ function ViewNews() {
                                     value={search}
                                     onChange={(e) => { setSearch(e.target.value) }}
                                 />
-
                             </div>
                         </form>
                     </h4>
@@ -131,8 +129,8 @@ function ViewNews() {
                 </div>
                 <ReactPaginate
                     disabledClassName={"pagination__link--disabled"}
-                    previousLabel={'←'}
-                    nextLabel={'→'}
+                    previousLabel={'Trang trước'}
+                    nextLabel={'Trang sau'}
                     pageCount={pageCount}
                     onPageChange={handleChangPage}
                     containerClassName={"paginationBttns"}

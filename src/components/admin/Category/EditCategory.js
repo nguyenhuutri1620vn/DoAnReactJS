@@ -66,7 +66,7 @@ function EditCategory(props) {
         formData.append('meta_keyword', categoryInput.meta_keyword);
         formData.append('meta_descrip', categoryInput.meta_descrip);
 
-        formData.append('status', allCheckbox.status ===true ? "1" : "0");
+        formData.append('status', allCheckbox.status === true ? "1" : "0");
 
         const category_id = props.match.params.id;
         axios.post(`/api/update-category/${category_id}`, formData).then(res => {
@@ -100,48 +100,50 @@ function EditCategory(props) {
                         <button className="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#seo-tags" type="button" role="tab" aria-controls="seo-tags" aria-selected="false">SEO Tags</button>
                     </li>
                 </ul>
-                <div className="tab-content" id="myTabContent">
-                    <div className="tab-pane card-body fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                        <div className='form-group mb-3'>
-                            <label>Slug</label>
-                            <input type='text' name='slug'  placeholder="Nhập slug..." onChange={handleInput} value={categoryInput.slug} className='form-control' />
+                <div className="box px-2">
+                    <div className="tab-content" id="myTabContent">
+                        <div className="tab-pane card-body fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                            <div className='form-group mb-3'>
+                                <label>Slug</label>
+                                <input type='text' name='slug' placeholder="Nhập slug..." onChange={handleInput} value={categoryInput.slug} className='form-control' />
+                            </div>
+                            <small className='text-danger'>{error.slug}</small>
+                            <div className='form-group mb-3'>
+                                <label>Tên loại sản phẩm</label>
+                                <input type='text' name='name' placeholder="Nhập tên loại sản phẩm..." onChange={handleInput} value={categoryInput.name} className='form-control' />
+                            </div>
+                            <small className='text-danger'>{error.name}</small>
+                            <div className='form-group mb-3'>
+                                <label>Mô tả</label>
+                                <textarea name='description' placeholder="Nhập mô tả..." onChange={handleInput} value={categoryInput.description} className='form-control' />
+                            </div>
+                            <div className='col-md-6 form-group mb-3'>
+                                <label>Hình ảnh</label>
+                                <input type='file' name='image' onChange={handleImage} className='form-control' />
+                                <img src={`http://localhost:8000/${[categoryInput.image]}`} width='300px' className='mt-4' alt={categoryInput.name} />
+                            </div>
+                            <div className='form-group mb-3'>
+                                <label>Trạng thái</label>
+                                <input type='checkbox' name='status' className='form-check-input ms-5' onChange={handleCheckbox} defaultChecked={allCheckbox.status === 1 ? true : false} />
+                                <label className="form-check-label " htmlFor='status'>
+                                    Hiện
+                                </label>
+                            </div>
                         </div>
-                        <small className='text-danger'>{error.slug}</small>
-                        <div className='form-group mb-3'>
-                            <label>Tên loại sản phẩm</label>
-                            <input type='text' name='name'  placeholder="Nhập tên loại sản phẩm..." onChange={handleInput} value={categoryInput.name} className='form-control' />
-                        </div>
-                        <small className='text-danger'>{error.name}</small>
-                        <div className='form-group mb-3'>
-                            <label>Mô tả</label>
-                            <textarea name='description' placeholder="Nhập mô tả..." onChange={handleInput} value={categoryInput.description} className='form-control' />
-                        </div>
-                        <div className='col-md-6 form-group mb-3'>
-                            <label>Hình ảnh</label>
-                            <input type='file' name='image' onChange={handleImage} className='form-control' />
-                            <img src={`http://localhost:8000/${[categoryInput.image]}`} width='300px' className='mt-4' alt={categoryInput.name} />
-                        </div>
-                        <div className='form-group mb-3'>
-                            <label>Trạng thái</label>
-                            <input type='checkbox' name='status' className='form-check-input ms-5' onChange={handleCheckbox} defaultChecked={allCheckbox.status === 1 ? true : false} />
-                            <label className="form-check-label " htmlFor='status'>
-                                Hiện
-                            </label>
-                        </div>
-                    </div>
-                    <div className="tab-pane card-body fade" id="seo-tags" role="tabpanel" aria-labelledby="profile-tab">
-                        <div className='form-group mb-3'>
-                            <label>Meta title</label>
-                            <input type='text' name='meta_title' onChange={handleInput} placeholder="Nhập meta title..." value={categoryInput.meta_title} className='form-control' />
-                        </div>
-                        <small className='text-danger'>{error.meta_title}</small>
-                        <div className='form-group mb-3'>
-                            <label>Meta keywords</label>
-                            <input type='text' name='meta_keyword' placeholder="Nhập meta keywords..." onChange={handleInput} value={categoryInput.meta_keyword} className='form-control' />
-                        </div>
-                        <div className='form-group mb-3'>
-                            <label>Meta description</label>
-                            <textarea name='meta_descrip' placeholder="Nhập meta description..." onChange={handleInput} value={categoryInput.meta_descrip || ""} className='form-control' />
+                        <div className="tab-pane card-body fade" id="seo-tags" role="tabpanel" aria-labelledby="profile-tab">
+                            <div className='form-group mb-3'>
+                                <label>Meta title</label>
+                                <input type='text' name='meta_title' onChange={handleInput} placeholder="Nhập meta title..." value={categoryInput.meta_title} className='form-control' />
+                            </div>
+                            <small className='text-danger'>{error.meta_title}</small>
+                            <div className='form-group mb-3'>
+                                <label>Meta keywords</label>
+                                <input type='text' name='meta_keyword' placeholder="Nhập meta keywords..." onChange={handleInput} value={categoryInput.meta_keyword} className='form-control' />
+                            </div>
+                            <div className='form-group mb-3'>
+                                <label>Meta description</label>
+                                <textarea name='meta_descrip' placeholder="Nhập meta description..." onChange={handleInput} value={categoryInput.meta_descrip || ""} className='form-control' />
+                            </div>
                         </div>
                     </div>
                 </div>

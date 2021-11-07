@@ -11,7 +11,7 @@
  * Copyright 2011-2021 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  */
-
+ @import url('http://fonts.cdnfonts.com/css/montserrat');
 :root {
   --bs-blue: #0d6efd;
   --bs-indigo: #6610f2;
@@ -58,10 +58,10 @@
   --bs-font-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   --bs-gradient: linear-gradient(180deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0));
   --bs-body-font-family: var(--bs-font-sans-serif);
-  --bs-body-font-size: 1rem;
+  --bs-body-font-size: 14px;
   --bs-body-font-weight: 400;
   --bs-body-line-height: 1.5;
-  --bs-body-color: #212529;
+  --bs-body-color: #454647;
   --bs-body-bg: #fff;
 }
 
@@ -77,7 +77,7 @@
 
 body {
   margin: 0;
-  font-family: "Helvetica Neue", Helvetica, Arial, 文泉驛正黑, "WenQuanYi Zen Hei", "Hiragino Sans GB", "儷黑 Pro", "LiHei Pro", "Heiti TC", 微軟正黑體, "Microsoft JhengHei UI", "Microsoft JhengHei", sans-serif;
+  font-family: 'Montserrat', sans-serif;
   font-size: var(--bs-body-font-size);
   font-weight: var(--bs-body-font-weight);
   line-height: var(--bs-body-line-height);
@@ -10605,12 +10605,28 @@ html, body {
   flex-grow: 1;
   min-height: calc(100vh - 56px);
   margin-left: -225px;
+  background-color: #f9fafc;
 }
-
+.content {
+  min-height: 250px;
+  padding: 15px;
+  margin-right: auto;
+  margin-left: auto;
+  padding-left: 15px;
+  padding-right: 15px;
+}
 .sb-sidenav-toggled #layoutSidenav #layoutSidenav_nav {
   transform: translateX(0);
 }
-
+.box {
+  position: relative;
+  border-radius: 3px;
+  background: #ffffff;
+  border-top: 3px solid #d2d6de;
+  margin-bottom: 20px;
+  width: 100%;
+  box-shadow: 0 1px 1px rgb(0 0 0 / 10%);
+}
 .sb-sidenav-toggled #layoutSidenav #layoutSidenav_content:before {
   content: "";
   display: block;
@@ -10991,21 +11007,21 @@ html, body {
 }
 
 .paginationBttns a {
-  padding: 10px;
-  /* margin: 0px 0px 5px 5px; */
-  border: 1px solid #6c7ac9;
-  color: #6c7ac9;
+  text-decoration: none;
+  padding: 5px 7px 5px 7px;
+  border: 1px solid #F0EDED;
+  color: #696969;
   cursor: pointer;
 }
 
 .paginationBttns a:hover {
   color: white;
-  background-color: #6c7ac9;
+  background-color: #696969;
 }
 
 .paginationActive a {
   color: white;
-  background-color: #6c7ac9;
+  background-color: #F0EDED;
 }
 
 .previousBttn {

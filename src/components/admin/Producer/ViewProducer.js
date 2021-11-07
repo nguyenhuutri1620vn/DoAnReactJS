@@ -81,7 +81,7 @@ function ViewProducer() {
                         <td>{item.slug}</td>
                         <td className="text-center">{item.status === 1 ? 'Hiện' : 'Ẩn'}</td>
                         <td className='text-center'>
-                            <Link to={`edit-producer/${item.id}`} className='btn btn-warning btn-sm' >Sửa</Link>
+                            <Link to={`edit-producer/${item.id}`} className='btn btn-warning btn-sm py-2 px-3' >Sửa</Link>
                         </td>
                         <td className='text-center'>
                             <Button variant="danger" onClick={(e) => deleteProducer(e, item.id)}>Xóa</Button>
@@ -118,8 +118,8 @@ function ViewProducer() {
                         <thead className='text-center'>
                             <tr>
                                 <th className='col-3 col-sm-1'>ID</th>
-                                <th className='col-3 col-sm-2'>Tên thương hiệu</th>
-                                <th className='col-3 col-sm-2'>Slug</th>
+                                <th className='col-3 col-sm-1'>Tên thương hiệu</th>
+                                <th className='col-3 col-sm-1'>Slug</th>
                                 <th className='col-3 col-sm-1'>Trạng thái</th>
                                 <th className='col-3 col-sm-1'>Chỉnh sửa</th>
                                 <th className='col-3 col-sm-1'>Xóa</th>

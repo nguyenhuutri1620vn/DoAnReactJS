@@ -70,54 +70,56 @@ function AddProrucer() {
                         <button className="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#seo-tags" type="button" role="tab" aria-controls="seo-tags" aria-selected="false">SEO Tags</button>
                     </li>
                 </ul>
-                <div className="tab-content" id="myTabContent">
-                    <div className="tab-pane card-body fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                        <div className='form-group mb-3'>
-                            <label>Slug</label>
-                            <input type='text' name='slug' placeholder="Nhập slug..."
-                                onChange={handleInput} value={producerInput.slug} className='form-control' />
+                <div className="box">
+                    <div className="tab-content" id="myTabContent">
+                        <div className="tab-pane card-body fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                            <div className='form-group mb-3'>
+                                <label>Slug</label>
+                                <input type='text' name='slug' placeholder="Nhập slug..."
+                                    onChange={handleInput} value={producerInput.slug} className='form-control' />
+                            </div>
+                            <div className='notifyText'>{errorlist.slug}</div>
+                            <div className='form-group mb-3'>
+                                <label>Tên thương hiệu</label>
+                                <input type='text' name='name' placeholder="Nhập tên thương hiệu..."
+                                    onChange={handleInput} value={producerInput.name} className='form-control' />
+                            </div>
+                            <div className='notifyText'>{errorlist.name}</div>
+                            <div className='form-group mb-3'>
+                                <label>Mô tả</label>
+                                <input type='text' name='description' placeholder="Nhập mô tả..."
+                                    onChange={handleInput} value={producerInput.description} className='form-control' />
+                            </div>
+                            <div className='notifyText'>{errorlist.description}</div>
+                            <div className='form-group mb-3'>
+                                <label>Trạng thái</label>
+                                <input type='checkbox' name='status' className='form-check-input ms-5' id="flexCheckChecked" onChange={handleCheckbox} defaultChecked={allCheckbox.status === 1 ? true : false} />
+                                <label className="form-check-label " htmlFor="flexCheckChecked">
+                                    Hiện
+                                </label>
+                            </div>
                         </div>
-                        <div className='notifyText'>{errorlist.slug}</div>
-                        <div className='form-group mb-3'>
-                            <label>Tên thương hiệu</label>
-                            <input type='text' name='name' placeholder="Nhập tên thương hiệu..."
-                                onChange={handleInput} value={producerInput.name} className='form-control' />
-                        </div>
-                        <div className='notifyText'>{errorlist.name}</div>
-                        <div className='form-group mb-3'>
-                            <label>Mô tả</label>
-                            <input type='text' name='description' placeholder="Nhập mô tả..."
-                                onChange={handleInput} value={producerInput.description} className='form-control' />
-                        </div>
-                        <div className='notifyText'>{errorlist.description}</div>
-                        <div className='form-group mb-3'>
-                            <label>Trạng thái</label>
-                            <input type='checkbox' name='status' className='form-check-input ms-5' id="flexCheckChecked" onChange={handleCheckbox} defaultChecked={allCheckbox.status === 1 ? true : false} />
-                            <label className="form-check-label " htmlFor="flexCheckChecked">
-                                Hiện
-                            </label>
+                        <div className="tab-pane card-body fade" id="seo-tags" role="tabpanel" aria-labelledby="profile-tab">
+                            <div className='form-group mb-3'>
+                                <label>Meta title</label>
+                                <input type='text' name='meta_title' placeholder="Nhập meta title..."
+                                    onChange={handleInput} value={producerInput.meta_title} className='form-control' />
+                            </div>
+                            <div className='notifyText'>{errorlist.meta_title}</div>
+                            <div className='form-group mb-3'>
+                                <label>Meta keywords</label>
+                                <input type='text' name='meta_keyword' placeholder="Nhập meta keywords..."
+                                    onChange={handleInput} value={producerInput.meta_keyword} className='form-control' />
+                            </div>
+                            <div className='form-group mb-3'>
+                                <label>Meta description</label>
+                                <textarea type='text' name='meta_descrip' placeholder="Nhập meta description..."
+                                    onChange={handleInput} value={producerInput.meta_descrip} className='form-control' />
+                            </div>
                         </div>
                     </div>
-                    <div className="tab-pane card-body border fade" id="seo-tags" role="tabpanel" aria-labelledby="profile-tab">
-                        <div className='form-group mb-3'>
-                            <label>Meta title</label>
-                            <input type='text' name='meta_title' placeholder="Nhập meta title..."
-                                onChange={handleInput} value={producerInput.meta_title} className='form-control' />
-                        </div>
-                        <div className='notifyText'>{errorlist.meta_title}</div>
-                        <div className='form-group mb-3'>
-                            <label>Meta keywords</label>
-                            <input type='text' name='meta_keyword' placeholder="Nhập meta keywords..."
-                                onChange={handleInput} value={producerInput.meta_keyword} className='form-control' />
-                        </div>
-                        <div className='form-group mb-3'>
-                            <label>Meta description</label>
-                            <textarea type='text' name='meta_descrip' placeholder="Nhập meta description..."
-                                onChange={handleInput} value={producerInput.meta_descrip} className='form-control' />
-                        </div>
-                    </div>
+                    <Button type='submit' variant="outline-primary" className='px-4 mx-3'>Thêm</Button>
                 </div>
-                <Button type='submit' variant="outline-primary" className='px-4 mx-3'>Thêm</Button>
             </form>
         </div >
     )

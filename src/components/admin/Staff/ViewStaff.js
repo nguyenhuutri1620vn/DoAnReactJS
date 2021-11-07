@@ -5,7 +5,7 @@ import ReactPaginate from 'react-paginate';
 
 
 function ViewStaff() {
-    document.title = 'Staff View';
+    document.title = 'Danh sách nhân viên';
 
     const [pageNumber, setPageNumber] = useState(0);
     const [search, setSearch] = useState("");
@@ -55,12 +55,12 @@ function ViewStaff() {
                             thisClicked.closest('tr').remove();
 
                         } else if (res.data.status === 404) {
-                            thisClicked.innerText = "→ Customer"
+                            thisClicked.innerText = "→ Khách hàng"
                         }
                     })
                 } else {
                     swal("Giữ được việc rồi nhá!");
-                    thisClicked.innerText = "→ Customer"
+                    thisClicked.innerText = "→ Khách hàng"
                 }
             });
 
@@ -89,7 +89,7 @@ function ViewStaff() {
                     <td className='col-3 col-sm-2'>{item.email}</td>
                     <td className='col-3 col-sm-1'>{item.phone}</td>
                     <td className='text-center'>
-                        <button onClick={(e) => becomeAdmin(e, item.id)} className="btn btn-warning border">→ Customer</button>
+                        <button onClick={(e) => becomeAdmin(e, item.id)} className="btn btn-info border">→ Khách hàng</button>
                     </td>
                 </tr>
             );
@@ -125,7 +125,7 @@ function ViewStaff() {
                                 <th className='col-3 col-sm-2'>Họ và tên</th>
                                 <th className='col-3 col-sm-2'>Email</th>
                                 <th className='col-3 col-sm-1'>Điện thoại</th>
-                                <th>Role</th>
+                                <th className='col-3 col-sm-1'>Role</th>
                             </tr>
                         </thead>
                         <tbody>

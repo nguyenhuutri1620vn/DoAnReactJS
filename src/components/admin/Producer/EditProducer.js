@@ -11,7 +11,7 @@ function EditProducer(props) {
     const [allCheckbox, setCheckbox] = useState([]);
     const history = useHistory();
     const [loading, setLoading] = useState(true);
-    const[error, setError] = useState([]);
+    const [error, setError] = useState([]);
 
     const handleInput = (e) => {
         e.persist();
@@ -71,7 +71,7 @@ function EditProducer(props) {
     }
 
     console.log(allCheckbox.status);
-    
+
     if (loading) {
         <h3>Đang tải trang chỉnh sửa thương hiệu, vui lòng đợi...</h3>
     }
@@ -89,46 +89,48 @@ function EditProducer(props) {
                         <button className="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#seo-tags" type="button" role="tab" aria-controls="seo-tags" aria-selected="false">SEO Tags</button>
                     </li>
                 </ul>
-                <div className="tab-content" id="myTabContent">
-                    <div className="tab-pane card-body fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                        <div className='form-group mb-3'>
-                            <label>Slug</label>
-                            <input type='text' name='slug' onChange={handleInput} value={producer.slug} className='form-control' />
+                <div className="box">
+                    <div className="tab-content" id="myTabContent">
+                        <div className="tab-pane card-body fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                            <div className='form-group mb-3'>
+                                <label>Slug</label>
+                                <input type='text' name='slug' onChange={handleInput} value={producer.slug} className='form-control' />
+                            </div>
+                            <small className='text-danger'>{error.slug}</small>
+                            <div className='form-group mb-3'>
+                                <label>Tên thương hiệu</label>
+                                <input type='text' name='name' onChange={handleInput} value={producer.name} className='form-control' />
+                            </div>
+                            <small className='text-danger'>{error.name}</small>
+                            <div className='form-group mb-3'>
+                                <label>Mô tả</label>
+                                <textarea name='description' onChange={handleInput} value={producer.description} className='form-control' />
+                            </div>
+                            <div className='form-group mb-3'>
+                                <label>Trạng thái</label>
+                                <input type='checkbox' name='status' className='form-check-input ms-5' id='flexCheckChecked' onChange={handleCheckbox} defaultChecked={allCheckbox.status === 1 ? true : false} />
+                                <label className="form-check-label " htmlFor="flexCheckChecked">
+                                    Hiện
+                                </label>
+                            </div>
                         </div>
-                        <small className='text-danger'>{error.slug}</small>
-                        <div className='form-group mb-3'>
-                            <label>Tên thương hiệu</label>
-                            <input type='text' name='name' onChange={handleInput} value={producer.name} className='form-control' />
+                        <div className="tab-pane card-body fade" id="seo-tags" role="tabpanel" aria-labelledby="profile-tab">
+                            <div className='form-group mb-3'>
+                                <label>Meta title</label>
+                                <input type='text' name='meta_title' onChange={handleInput} value={producer.meta_title} className='form-control' />
+                            </div>
+                            <small className='text-danger'>{error.meta_title}</small>
+                            <div className='form-group mb-3'>
+                                <label>Meta keywords</label>
+                                <input type='text' name='meta_keyword' onChange={handleInput} value={producer.meta_keyword} className='form-control' />
+                            </div>
+                            <div className='form-group mb-3'>
+                                <label>Meta description</label>
+                                <textarea name='meta_descrip' onChange={handleInput} value={producer.meta_descrip} className='form-control' />
+                            </div>
                         </div>
-                        <small className='text-danger'>{error.name}</small>
-                        <div className='form-group mb-3'>
-                            <label>Mô tả</label>
-                            <textarea name='description' onChange={handleInput} value={producer.description} className='form-control' />
-                        </div>
-                        <div className='form-group mb-3'>
-                            <label>Trạng thái</label>
-                            <input type='checkbox' name='status' className='form-check-input ms-5' id='flexCheckChecked' onChange={handleCheckbox} defaultChecked={allCheckbox.status === 1 ? true : false}/>
-                            <label className="form-check-label " htmlFor="flexCheckChecked">
-                                Hiện
-                            </label>
-                        </div>
+                        <Button type='submit' variant="outline-primary" className='px-4 mx-3'>Cập nhật</Button>
                     </div>
-                    <div className="tab-pane card-body fade" id="seo-tags" role="tabpanel" aria-labelledby="profile-tab">
-                        <div className='form-group mb-3'>
-                            <label>Meta title</label>
-                            <input type='text' name='meta_title' onChange={handleInput} value={producer.meta_title} className='form-control' />
-                        </div>
-                        <small className='text-danger'>{error.meta_title}</small>
-                        <div className='form-group mb-3'>
-                            <label>Meta keywords</label>
-                            <input type='text' name='meta_keyword' onChange={handleInput} value={producer.meta_keyword} className='form-control' />
-                        </div>
-                        <div className='form-group mb-3'>
-                            <label>Meta description</label>
-                            <textarea name='meta_descrip' onChange={handleInput} value={producer.meta_descrip} className='form-control' />
-                        </div>
-                    </div>
-                    <Button type='submit' variant="outline-primary" className='px-4 mx-3'>Cập nhật</Button>
                 </div>
             </form>
         </div >

@@ -8,7 +8,8 @@ html, body {
   height: auto;
   width: auto;
   font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-  font-size: 16px;
+  font-size: 14px;
+  background-color: #ecf0f5;
 }
 
 ul {
@@ -20,7 +21,6 @@ ul {
   margin-inline-end: 0px;
   padding-inline-start: 40px;
 }
-
 div {
   display: block;
 }
@@ -1104,7 +1104,7 @@ div.h6, h6 {
 }
 
 .btn.btn-success {
-  visibility: hidden
+  visibility: visible
 }
 
 .product-container {

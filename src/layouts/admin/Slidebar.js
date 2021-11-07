@@ -14,28 +14,10 @@ const Slidebar = () => {
                         Thống kê
                     </Link>
                     <div className="sb-sidenav-menu-heading">HÓA ĐƠN</div>
-                    <Link className="nav-link collapsed" to="#" data-bs-toggle="collapse" data-bs-target="#BilldaysLayouts" aria-expanded="false" aria-controls="collapseLayouts">
-                        <div className="sb-nav-link-icon"><i className="fas fa-columns"></i></div>
-                        Hóa đơn ngày
-                        <div className="sb-sidenav-collapse-arrow"><i className="fas fa-angle-down"></i></div>
+                    <Link className="nav-link" to="/admin/view-order">
+                        <div className="sb-nav-link-icon"><i className="fas fa-file-invoice"></i></div>
+                        Đơn hàng
                     </Link>
-                    <div className="collapse" id="BilldaysLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
-                        <nav className="sb-sidenav-menu-nested nav">
-                            <Link className="nav-link" to="admin/Category">Chưa duyệt</Link>
-                            <Link className="nav-link" to="layout-sidenav-light.html">Tổng hóa đơn</Link>
-                        </nav>
-                    </div>
-                    <Link className="nav-link collapsed" to="#" data-bs-toggle="collapse" data-bs-target="#BillTotalLayouts" aria-expanded="false" aria-controls="collapseLayouts">
-                        <div className="sb-nav-link-icon"><i className="fas fa-columns"></i></div>
-                        Tổng hóa đơn
-                        <div className="sb-sidenav-collapse-arrow"><i className="fas fa-angle-down"></i></div>
-                    </Link>
-                    <div className="collapse" id="BillTotalLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
-                        <nav className="sb-sidenav-menu-nested nav">
-                            <Link className="nav-link" to="#">Chưa duyệt</Link>
-                            <Link className="nav-link" to="layout-sidenav-light.html">Tổng hóa đơn</Link>
-                        </nav>
-                    </div>
                     <div className="sb-sidenav-menu-heading">Sản phẩm - Tin tức</div>
                     <Link className="nav-link collapsed" to="#" data-bs-toggle="collapse" data-bs-target="#CategoryLayouts" aria-expanded="false" aria-controls="collapseLayouts">
                         <div className="sb-nav-link-icon"><i className="fas fa-columns"></i></div>

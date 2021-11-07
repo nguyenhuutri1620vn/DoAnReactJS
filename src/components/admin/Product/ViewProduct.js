@@ -23,8 +23,6 @@ function ViewProduct() {
     }
 
     useEffect(() => {
-        document.title = 'View Product';
-
         axios.get(`/api/view-product`).then(res => {
             if (res.data.status === 200) {
                 setProduct(res.data.products);
@@ -80,7 +78,7 @@ function ViewProduct() {
         }).map((item) => {
             return (
                 <tr key={item.id}>
-                    <td>{item.id}</td>
+                    <td className='text-center'>{item.id}</td>
                     <td>{item.category.name}</td>
                     <td>{item.producer.name}</td>
                     <td>{item.name}</td>

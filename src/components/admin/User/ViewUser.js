@@ -36,15 +36,15 @@ function ViewUser() {
         thisClicked.innerText = "Đợi tíi..."
 
         swal({
-            title: "Có chắc là muốn xóa chưa?",
-            text: "Khi mà đã xóa rồi thì không hoàn tác được đâu đấy!",
+            title: "Có chắc là muốn cấp quyền nhân viên chưa?",
+            text: "Hãy cân nhân trước khi đồng ý!",
             icon: "warning",
             buttons: true,
             dangerMode: true,
         })
             .then((willAdmin) => {
                 if (willAdmin) {
-                    swal("Poof! A user has been become ADMIN!", {
+                    swal("Yeh! Khách hàng đã trở thành nhân viên!", {
                         icon: "success",
 
                     });
@@ -57,8 +57,8 @@ function ViewUser() {
                         }
                     })
                 } else {
-                    swal("User is safe!");
-                    thisClicked.innerText = "→ Staff"
+                    swal("Mỗi thứ vẫn bình thương!");
+                    thisClicked.innerText = "→ Nhân viên"
                 }
             });
 
@@ -87,7 +87,7 @@ function ViewUser() {
                     <td className='col-3 col-sm-2'>{item.email}</td>
                     <td className='col-3 col-sm-2'>{item.phone}</td>
                     <td className='text-center'>
-                        <button onClick={(e) => becomeAdmin(e, item.id)} className="btn btn-danger">→ Staff</button>
+                        <button onClick={(e) => becomeAdmin(e, item.id)} className="btn btn-success">→ Nhân viên</button>
                     </td>
                 </tr>
             );

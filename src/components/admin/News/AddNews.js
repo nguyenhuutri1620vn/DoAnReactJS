@@ -79,60 +79,61 @@ function AddNews() {
                         <button className="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#seo-tags" type="button" role="tab" aria-controls="seo-tags" aria-selected="false">SEO Tags</button>
                     </li>
                 </ul>
-                <div className="tab-content" id="myTabContent">
-                    <div className="tab-pane card-body fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                <div className="box pb-2">
+                    <div className="tab-content" id="myTabContent">
+                        <div className="tab-pane card-body fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
 
-                        <div className='form-group mb-3'>
-                            <label>Tên tin tức</label>
-                            <input type='text' name='name' className='form-control' 
-                            placeholder="Nhập tên tin tức..." onChange={handleInput} value={newsInput.name} />
+                            <div className='form-group mb-3'>
+                                <label>Tên tin tức</label>
+                                <input type='text' name='name' className='form-control'
+                                    placeholder="Nhập tên tin tức..." onChange={handleInput} value={newsInput.name} />
+                            </div>
+                            <div className='text-danger'>{errorlist.name}</div>
+                            <div className='form-group mb-3'>
+                                <label>Mô tả</label>
+                                <CKEditor
+                                    editor={ClassicEditor}
+                                    data=""
+                                    name='description'
+                                    value={newsInput.description}
+                                    onChange={handleDescrip}
+                                    placeholder="Nhập mô tả..."
+                                />
+                            </div>
+                            <div className='text-danger'>{errorlist.description}</div>
+                            <div className='form-group mb-3'>
+                                <label>Hình ảnh</label>
+                                <input type='file' name='image' className='form-control' onChange={handleImage} />
+                            </div>
+                            <div className='text-danger'>{errorlist.image}</div>
+                            <div className='form-group mb-3'>
+                                <label>Trạng thái:</label>
+                                <input type='checkbox' name='status' className='form-check-input ms-5' id="flexCheckChecked" onChange={handleCheckbox} defaultChecked={allCheckbox.status === 1 ? true : false} />
+                                <label className="form-check-label " htmlFor="flexCheckChecked">
+                                    Hiện
+                                </label>
+                            </div>
                         </div>
-                        <div className='text-danger'>{errorlist.name}</div>
-                        <div className='form-group mb-3'>
-                            <label>Mô tả</label>
-                            <CKEditor
-                                editor={ClassicEditor}
-                                data=""
-                                name='description'
-                                value={newsInput.description}
-                                onChange={handleDescrip}
-                                placeholder="Nhập mô tả..."
-                            />
-                        </div>
-                        <div className='text-danger'>{errorlist.description}</div>
-                        <div className='form-group mb-3'>
-                            <label>Hình ảnh</label>
-                            <input type='file' name='image' className='form-control' onChange={handleImage} />
-                        </div>
-                        <div className='text-danger'>{errorlist.image}</div>
-                        <div className='form-group mb-3'>
-                            <label>Trạng thái:</label>
-                            <input type='checkbox' name='status' className='form-check-input ms-5' id="flexCheckChecked" onChange={handleCheckbox} defaultChecked={allCheckbox.status === 1 ? true : false} />
-                            <label className="form-check-label " htmlFor="flexCheckChecked">
-                                Hiện
-                            </label>
+                        <div className="tab-pane card-body fade" id="seo-tags" role="tabpanel" aria-labelledby="profile-tab">
+                            <div className='form-group mb-3'>
+                                <label>Meta title</label>
+                                <input type='text' name='meta_title' placeholder="Nhập meta title..." className='form-control' onChange={handleInput} value={newsInput.meta_title} />
+                            </div>
+                            <div className='text-danger'>{errorlist.meta_title}</div>
+                            <div className='form-group mb-3'>
+                                <label>Meta keywords</label>
+                                <input type='text' name='meta_keyword' placeholder="Nhập meta keywords..." className='form-control' onChange={handleInput} value={newsInput.meta_keyword} />
+                            </div>
+                            <div className='text-danger'>{errorlist.meta_keyword}</div>
+                            <div className='form-group mb-3'>
+                                <label>Meta description</label>
+                                <textarea type='text' name='meta_descrip' placeholder="Nhập meta description..." className='form-control' onChange={handleInput} value={newsInput.meta_descrip} />
+                            </div>
+                            <div className='text-danger'>{errorlist.meta_descrip}</div>
                         </div>
                     </div>
-                    <div className="tab-pane card-body fade" id="seo-tags" role="tabpanel" aria-labelledby="profile-tab">
-                        <div className='form-group mb-3'>
-                            <label>Meta title</label>
-                            <input type='text' name='meta_title' placeholder="Nhập meta title..." className='form-control' onChange={handleInput} value={newsInput.meta_title} />
-                        </div>
-                        <div className='text-danger'>{errorlist.meta_title}</div>
-                        <div className='form-group mb-3'>
-                            <label>Meta keywords</label>
-                            <input type='text' name='meta_keyword' placeholder="Nhập meta keywords..." className='form-control' onChange={handleInput} value={newsInput.meta_keyword} />
-                        </div>
-                        <div className='text-danger'>{errorlist.meta_keyword}</div>
-                        <div className='form-group mb-3'>
-                            <label>Meta description</label>
-                            <textarea type='text' name='meta_descrip' placeholder="Nhập meta description..." className='form-control' onChange={handleInput} value={newsInput.meta_descrip} />
-                        </div>
-                        <div className='text-danger'>{errorlist.meta_descrip}</div>
-
-                    </div>
+                    <Button type='submit' variant="outline-primary" className=' px-4 mx-3'>Thêm</Button>
                 </div>
-                <Button type='submit' variant="outline-primary" className=' px-4 mx-3'>Thêm</Button>
             </form>
         </div >
     )

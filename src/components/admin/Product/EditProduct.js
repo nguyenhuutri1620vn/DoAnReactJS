@@ -122,127 +122,129 @@ function EditProduct(props) {
                         <button className="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#seo-tags" type="button" role="tab" aria-controls="seo-tags" aria-selected="false">SEO Tags</button>
                     </li>
                 </ul>
-                <div className="tab-content" id="myTabContent">
-                    <div className="tab-pane card-body fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                        <div className='row'>
-                            <div className='col-md-6 form-group mb-3'>
-                                <label>Loại sản phẩm</label>
-                                <select name='cateID' className='form-select' aria-label="Default select example" onChange={handleInput} value={productInput.cateID}>
-                                    <option>Chọn loại sản phẩm</option>
-                                    {
-                                        categorylist.map((item) => {
-                                            return (
-                                                <option value={item.id} key={item.id}>{item.name}</option>
-                                            )
-                                        })
-                                    }
-                                </select>
-                                <small className='text-danger'>{errorlist.cateID}</small>
+                <div className="box pb-2">
+                    <div className="tab-content" id="myTabContent">
+                        <div className="tab-pane card-body fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                            <div className='row'>
+                                <div className='col-md-6 form-group mb-3'>
+                                    <label>Loại sản phẩm</label>
+                                    <select name='cateID' className='form-select' aria-label="Default select example" onChange={handleInput} value={productInput.cateID}>
+                                        <option>Chọn loại sản phẩm</option>
+                                        {
+                                            categorylist.map((item) => {
+                                                return (
+                                                    <option value={item.id} key={item.id}>{item.name}</option>
+                                                )
+                                            })
+                                        }
+                                    </select>
+                                    <small className='text-danger'>{errorlist.cateID}</small>
+                                </div>
+                                <div className='col-md-6 form-group mb-3'>
+                                    <label>Thương hiệu</label>
+                                    <select name='producerID' className='form-select' aria-label="Default select example" onChange={handleInput} value={productInput.producerID}>
+                                        <option>Chọn thương hiệu</option>
+                                        {
+                                            producerlist.map((item) => {
+                                                return (
+                                                    <option value={item.id} key={item.id}>{item.name}</option>
+                                                )
+                                            })
+                                        }
+                                    </select>
+                                    <small className='text-danger'>{errorlist.producerID}</small>
+
+                                </div>
                             </div>
-                            <div className='col-md-6 form-group mb-3'>
-                                <label>Thương hiệu</label>
-                                <select name='producerID' className='form-select' aria-label="Default select example" onChange={handleInput} value={productInput.producerID}>
-                                    <option>Chọn thương hiệu</option>
-                                    {
-                                        producerlist.map((item) => {
-                                            return (
-                                                <option value={item.id} key={item.id}>{item.name}</option>
-                                            )
-                                        })
-                                    }
-                                </select>
-                                <small className='text-danger'>{errorlist.producerID}</small>
+                            <div className='form-group mb-3'>
+                                <label>Tên sản phẩm</label>
+                                <input type='text' name='name' onChange={handleInput} value={productInput.name} className='form-control' />
+                            </div>
+                            <small className='text-danger'>{errorlist.name}</small>
 
+                            <div className='form-group mb-3'>
+                                <label>Mô tả</label>
+                                <CKEditor
+                                    editor={ClassicEditor}
+
+                                    name='description'
+                                    onChange={handleDescrip}
+                                    // value={productInput.description}
+                                    data={productInput.description}
+                                />
+                            </div>
+                            <small className='text-danger'>{errorlist.description}</small>
+                        </div>
+
+                        <div className="tab-pane card-body fade" id="seo-tags" role="tabpanel" aria-labelledby="profile-tab">
+                            <div className='form-group mb-3'>
+                                <label>Meta title</label>
+                                <input type='text' name='meta_title' onChange={handleInput} value={productInput.meta_title} className='form-control' />
+                            </div>
+                            <small className='text-danger'>{errorlist.meta_title}</small>
+
+                            <div className='form-group mb-3'>
+                                <label>Meta keywords</label>
+                                <input type='text' name='meta_keyword' onChange={handleInput} value={productInput.meta_keyword || ''} className='form-control' />
+                            </div>
+                            <div className='form-group mb-3'>
+                                <label>Meta description</label>
+                                <textarea type='text' name='meta_descrip' onChange={handleInput} value={productInput.meta_descrip} className='form-control h-50' />
                             </div>
                         </div>
-                        <div className='form-group mb-3'>
-                            <label>Tên sản phẩm</label>
-                            <input type='text' name='name' onChange={handleInput} value={productInput.name} className='form-control' />
-                        </div>
-                        <small className='text-danger'>{errorlist.name}</small>
+                        <div className="tab-pane card-body fade" id="other-tags" role="tabpanel" aria-labelledby="other-tab">
+                            <div className='row'>
+                                <div className='col-md-4 form-group mb-3'>
+                                    <label>Giá gốc</label>
+                                    <input type='text' name='original_price' onChange={handleInput} value={productInput.original_price} className='form-control' />
+                                </div>
+                                <small className='text-danger'>{errorlist.original_price}</small>
 
-                        <div className='form-group mb-3'>
-                            <label>Mô tả</label>
-                            <CKEditor
-                                editor={ClassicEditor}
+                                <div className='col-md-4 form-group mb-3'>
+                                    <label>Giá bán</label>
+                                    <input type='text' name='selling_price' onChange={handleInput} value={productInput.selling_price} className='form-control' />
+                                </div>
+                                <small className='text-danger'>{errorlist.selling_price}</small>
 
-                                name='description'
-                                onChange={handleDescrip}
-                                // value={productInput.description}
-                                data={productInput.description}
-                            />
+                                <div className='col-md-4 form-group mb-3'>
+                                    <label>Số lượng</label>
+                                    <input type='text' name='number' onChange={handleInput} value={productInput.number} className='form-control' />
+                                </div>
+                                <small className='text-danger'>{errorlist.number}</small>
+
+                                <div className='col-md-4 form-group mb-3'>
+                                    <label>Hình ảnh</label>
+                                    <input type='file' name='image' onChange={handleImage} className='form-control' />
+                                    <img src={`http://localhost:8000/${[productInput.image]}`} width='200px' className='mt-4' alt={productInput.name} />
+
+                                </div>
+                                <small className='text-danger'>{errorlist.image}</small>
+                                <div className='col-md-4 form-group mb-3'>
+                                    <label>Nổi bật</label>
+                                    <input type='checkbox' name='featured' className='form-check-input ms-5' id="featuredCheckChecked" onChange={handleCheckbox} defaultChecked={allCheckbox.featured === 1 ? true : false} />
+                                    <label className="form-check-label " htmlFor="featuredCheckChecked">
+                                        Check
+                                    </label>
+                                </div>
+                                <div className='col-md-4 form-group mb-3'>
+                                    <label>Phổ biến</label>
+                                    <input type='checkbox' name='popular' className='form-check-input ms-5' id="popularCheckChecked" onChange={handleCheckbox} defaultChecked={allCheckbox.popular === 1 ? true : false} />
+                                    <label className="form-check-label " htmlFor="popularCheckChecked">
+                                        Check
+                                    </label>
+                                </div>
+                                <div className='col-md-4 form-group mb-3'>
+                                    <label>Trạng thái</label>
+                                    <input type='checkbox' name='status' className='form-check-input ms-5' onChange={handleCheckbox} defaultChecked={allCheckbox.status === 1 ? true : false} />
+                                    <label className="form-check-label " htmlFor="statusCheckChecked">
+                                        Hiện
+                                    </label>
+                                </div>
+                            </div>
                         </div>
-                        <small className='text-danger'>{errorlist.description}</small>
                     </div>
-
-                    <div className="tab-pane card-body fade" id="seo-tags" role="tabpanel" aria-labelledby="profile-tab">
-                        <div className='form-group mb-3'>
-                            <label>Meta title</label>
-                            <input type='text' name='meta_title' onChange={handleInput} value={productInput.meta_title} className='form-control' />
-                        </div>
-                        <small className='text-danger'>{errorlist.meta_title}</small>
-
-                        <div className='form-group mb-3'>
-                            <label>Meta keywords</label>
-                            <input type='text' name='meta_keyword' onChange={handleInput} value={productInput.meta_keyword || ''} className='form-control' />
-                        </div>
-                        <div className='form-group mb-3'>
-                            <label>Meta description</label>
-                            <textarea type='text' name='meta_descrip' onChange={handleInput} value={productInput.meta_descrip} className='form-control h-50' /> 
-                        </div>
-                    </div>
-                    <div className="tab-pane card-body fade" id="other-tags" role="tabpanel" aria-labelledby="other-tab">
-                        <div className='row'>
-                            <div className='col-md-4 form-group mb-3'>
-                                <label>Giá gốc</label>
-                                <input type='text' name='original_price' onChange={handleInput} value={productInput.original_price} className='form-control' />
-                            </div>
-                            <small className='text-danger'>{errorlist.original_price}</small>
-
-                            <div className='col-md-4 form-group mb-3'>
-                                <label>Giá bán</label>
-                                <input type='text' name='selling_price' onChange={handleInput} value={productInput.selling_price} className='form-control' />
-                            </div>
-                            <small className='text-danger'>{errorlist.selling_price}</small>
-
-                            <div className='col-md-4 form-group mb-3'>
-                                <label>Số lượng</label>
-                                <input type='text' name='number' onChange={handleInput} value={productInput.number} className='form-control' />
-                            </div>
-                            <small className='text-danger'>{errorlist.number}</small>
-
-                            <div className='col-md-4 form-group mb-3'>
-                                <label>Hình ảnh</label>
-                                <input type='file' name='image' onChange={handleImage} className='form-control' />
-                                <img src={`http://localhost:8000/${[productInput.image]}`} width='200px' className='mt-4' alt={productInput.name} />
-
-                            </div>
-                            <small className='text-danger'>{errorlist.image}</small>
-                            <div className='col-md-4 form-group mb-3'>
-                                <label>Nổi bật</label>
-                                <input type='checkbox' name='featured' className='form-check-input ms-5' id="featuredCheckChecked" onChange={handleCheckbox} defaultChecked={allCheckbox.featured === 1 ? true : false} />
-                                <label className="form-check-label " htmlFor="featuredCheckChecked">
-                                    Check
-                                </label>
-                            </div>
-                            <div className='col-md-4 form-group mb-3'>
-                                <label>Phổ biến</label>
-                                <input type='checkbox' name='popular' className='form-check-input ms-5' id="popularCheckChecked" onChange={handleCheckbox} defaultChecked={allCheckbox.popular === 1 ? true : false} />
-                                <label className="form-check-label " htmlFor="popularCheckChecked">
-                                    Check
-                                </label>
-                            </div>
-                            <div className='col-md-4 form-group mb-3'>
-                                <label>Trạng thái</label>
-                                <input type='checkbox' name='status' className='form-check-input ms-5' onChange={handleCheckbox} defaultChecked={allCheckbox.status === 1 ? true : false} />
-                                <label className="form-check-label " htmlFor="statusCheckChecked">
-                                    Hiện
-                                </label>
-                            </div>
-                        </div>
-                    </div>
+                    <Button type='submit' variant="outline-primary" className='px-4 mx-3'>Cập nhật</Button>
                 </div>
-                <Button type='submit' variant="outline-primary" className='px-4 mx-3'>Cập nhật</Button>
             </form>
         </div >
     )

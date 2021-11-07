@@ -83,7 +83,7 @@ function ViewCategory() {
                         <td className='text-center'>{item.id}</td>
                         <td>{item.name}</td>
                         <td>{item.slug}</td>
-                        <td className='text-center'><img src={`http://localhost:8000/${item.image}` } width="250" height="150" alt={item.name} /></td>
+                        <td className='text-center'><img src={`http://localhost:8000/${item.image}` } width="150" alt={item.name} /></td>
                         <td className='text-center'>{item.status === 1 ? 'Hiện' : 'Ẩn'}</td>
                         <td className='text-center'>
                             <Link to={`edit-category/${item.id}`}><Button variant="warning" >Sửa</Button></Link>
@@ -131,7 +131,7 @@ function ViewCategory() {
                                 <th className='col-3 col-sm-1'>ID</th>
                                 <th className='col-3 col-sm-1'>Tên</th>
                                 <th className='col-3 col-sm-1'>Slug</th>
-                                <th className='col-3 col-sm-3'>Hình ảnh</th>
+                                <th className='col-3 col-sm-2'>Hình ảnh</th>
                                 <th className='col-3 col-sm-1'>Trạng thái</th>
                                 <th className='col-3 col-sm-1'>Sửa</th>
                                 <th className='col-3 col-sm-1'>Xóa</th>
