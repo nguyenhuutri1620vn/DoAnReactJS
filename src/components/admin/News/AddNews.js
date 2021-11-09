@@ -2,9 +2,8 @@ import React, { useState } from "react";
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import axios from "axios";
-import swal from "sweetalert";
 import { Button } from 'react-bootstrap';
-
+import Swal from "sweetalert2";
 
 function AddNews() {
     document.title = 'Tạo tin tức';
@@ -57,10 +56,10 @@ function AddNews() {
 
         axios.post(`/api/add-news`, formData).then(res => {
             if (res.data.status === 200) {
-                swal('Tạo tin tức thành công', res.data.message, 'success');
+                Swal.fire('Tạo tin tức thành công', res.data.message, 'success');
                 setError([]);
             } else if (res.data.status === 422) {
-                swal('Vui lòng điền đầy đủ thông tin', '', 'error');
+                Swal.fire('Vui lòng điền đầy đủ thông tin', '', 'error');
                 setError(res.data.errors);
             }
         })

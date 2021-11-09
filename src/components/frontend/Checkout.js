@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Form, Row, Col, Button, Card, Table, Modal } from 'react-bootstrap';
 import { Link, useHistory } from 'react-router-dom';
-import swal from 'sweetalert';
+import Swal from 'sweetalert2';
 import ReactDOM from 'react-dom'
 
 function Checkout() {
@@ -33,10 +33,12 @@ function Checkout() {
     let totalCartPrice = 0;
     let quantityproduct = 0;
     let totalOrder = 0;
-
+    let total_quan = 0;
+    let total_o = 0
+    let total_cart = 0
     if (!localStorage.getItem('auth_token')) {
         history.push('/login');
-        swal("Thông báo", "Đăng nhập để cho thể thanh toán", 'error');
+        Swal.fire("Thông báo", "Đăng nhập để cho thể thanh toán", 'error');
     }
     const selectDistrict = (e) => {
         e.persist();
@@ -94,7 +96,7 @@ function Checkout() {
             orderpaypal_data.payment_id = details.id;
             axios.post(`/api/place-order`, orderpaypal_data).then(res => {
                 if (res.data.status === 200) {
-                    swal('Thanh toán thành công', res.data.message, 'success');
+                    Swal.fire('Thanh toán thành công', res.data.message, 'success');
                     setError([]);
                     history.push('/thank-you');
                 } else if (res.data.status === 422) {
@@ -120,21 +122,11 @@ function Checkout() {
             payment_mode: payment_mode,
             payment_id: ''
         }
-
-        axios.post(`/api/place-order`, data).then(res => {
-            if (res.data.status === 200) {
-                swal('Thanh toán thành công', res.data.message, 'success');
-                setError([]);
-                history.push('/thank-you');
-            } else if (res.data.status === 422) {
-                setError(res.data.errors);
-            }
-        });
         switch (payment_mode) {
             case 'cod':
                 axios.post(`/api/place-order`, data).then(res => {
                     if (res.data.status === 200) {
-                        swal('Thanh toán thành công', res.data.message, 'success');
+                        Swal.fire('Thanh toán thành công', res.data.message, 'success');
                         setError([]);
                         history.push('/thank-you');
                     } else if (res.data.status === 422) {
@@ -158,7 +150,7 @@ function Checkout() {
                                 data.payment_id = response.razorpay_payment_id;
                                 axios.post(`/api/place-order`, data).then(res => {
                                     if (res.data.status === 200) {
-                                        swal('Order successfully', res.data.message, 'success');
+                                        Swal.fire('Order successfully', res.data.message, 'success');
                                         setError([]);
                                         history.push('/thank-you');
                                     }
@@ -186,10 +178,7 @@ function Checkout() {
                 axios.post(`/api/validate-order`, data).then(res => {
                     if (res.data.status === 200) {
                         setError([]);
-                        // let myModal = new Modal(document.getElementById('paypal'));
-                        // myModal.show();
-
-
+                 
                     } else if (res.data.status === 422) {
                         setError(res.data.errors);
                     }
@@ -208,7 +197,7 @@ function Checkout() {
                     setloading(false);
                 } else if (res.data.status === 401) {
                     history.push('/product');
-                    swal('Thông báo', res.data.message, 'error');
+                    Swal.fire('Thông báo', res.data.message, 'error');
                 }
             }
         })
@@ -219,7 +208,7 @@ function Checkout() {
                 setloading(false);
             } else if (res.data.status === 401) {
                 history.push('/product');
-                swal('Thông báo', res.data.message, 'error');
+                Swal.fire('Thông báo', res.data.message, 'error');
             }
         })
         return () => {
@@ -343,12 +332,15 @@ function Checkout() {
                             </thead>
                             <tbody>
                                 {cart.map((item, idx) => {
-                                    let selling_p = new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 3 }).format(parseInt(item.product.selling_price));
-                                    let total_p = new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 3 }).format(parseInt(item.product.selling_price * item.quantity));
                                     totalCartPrice += parseInt(item.product.selling_price * item.quantity);
                                     quantityproduct += item.quantity;
-                                    total_quantity += item.quantity * 10;
+                                    total_quantity += item.quantity * 30000;
                                     totalOrder = totalCartPrice + total_quantity;
+                                    let selling_p =new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.product.selling_price);
+                                    let total_p = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.product.selling_price * item.quantity);
+                                    total_quan = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(total_quantity);
+                                    total_o = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(totalOrder);
+                                    total_cart =  new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(totalCartPrice);
                                     return (
                                         <tr key={idx} className="text-center">
                                             <td width="35%">{item.product.name}</td>
@@ -361,17 +353,17 @@ function Checkout() {
                                 <tr className="text-center">
                                     <td colSpan="2">Tổng giá</td>
                                     <td>{quantityproduct}</td>
-                                    <td className="text-end">{totalCartPrice}</td>
+                                    <td className="text-end">{total_cart}</td>
                                 </tr>
                                 <tr className="text-center">
                                     <td colSpan="2">Phí di chuyển</td>
                                     <td>{quantityproduct}</td>
-                                    <td className="text-end">{total_quantity}</td>
+                                    <td className="text-end">{total_quan}</td>
                                 </tr>
                                 <tr className="text-center">
                                     <td colSpan="2" className="fw-bold">Tổng hóa đơn</td>
 
-                                    <td colSpan="2" className="text-end fw-bold">{totalOrder}</td>
+                                    <td colSpan="2" className="text-end fw-bold">{total_o}</td>
                                 </tr>
                             </tbody>
                         </Table>

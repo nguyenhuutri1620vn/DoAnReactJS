@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import axios from "axios";
-import swal from "sweetalert";
 import { Link, useHistory } from "react-router-dom";
 import { Button } from 'react-bootstrap';
+import Swal from 'sweetalert2'
 
 function EditNews(props) {
     document.title = 'Chỉnh sửa tin tức';
@@ -24,7 +24,7 @@ function EditNews(props) {
                 setNews(res.data.news);
                 setCheckbox(res.data.news);
             } else if (res.data.status === 404) {
-                swal('Error', res.data.message, 'error')
+                Swal.fire('Có sự cố', res.data.message, 'error')
                 history.push('/admin/view-news')
             }
             setloading(false);
@@ -68,24 +68,22 @@ function EditNews(props) {
         const news_id = props.match.params.id;
         axios.post(`/api/update-news/${news_id}`, formData).then(res => {
             if (res.data.status === 200) {
-                swal('Sucess', res.data.message, 'success');
+                Swal.fire('Cập nhật thành công', res.data.message, 'success');
                 history.push('/admin/view-news');
                 setError([]);
             } else if (res.data.status === 422) {
-                swal('All fields are mandatory', '', 'error');
+                Swal.fire('Vui lòng điền đầy đủ thông tin', '', 'error');
                 setError(res.data.errors);
             } else if (res.data.status === 404) {
-                swal('Error', res.data.message, 'error');
+                Swal.fire('Sự cố', res.data.message, 'error');
                 history.push('/admin/view-news');
             }
         })
 
     }
 
-
-
     if (loading) {
-        return <h3 className="mx-3">Đang tải trang chỉnh sửa tin tức, vui lòng đòng... </h3>
+        return <h3 className="mx-3">Đang tải trang chỉnh sửa tin tức, vui lòng đợi... </h3>
     }
 
     return (
@@ -103,7 +101,7 @@ function EditNews(props) {
                 </ul>
                 <div className="box">
                     <div className="tab-content" id="myTabContent">
-                        <div className="tab-pane card-body border fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                        <div className="tab-pane card-body fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                             <div className='form-group mb-3'>
                                 <label>Tên tin tức</label>
                                 <input type='text' name='name' className='form-control' onChange={handleInput} value={newsInput.name} />
@@ -133,7 +131,7 @@ function EditNews(props) {
                                 </label>
                             </div>
                         </div>
-                        <div className="tab-pane card-body border fade" id="seo-tags" role="tabpanel" aria-labelledby="profile-tab">
+                        <div className="tab-pane card-body fade" id="seo-tags" role="tabpanel" aria-labelledby="profile-tab">
                             <div className='form-group mb-3'>
                                 <label>Meta title</label>
                                 <input type='text' name='meta_title' className='form-control' onChange={handleInput} value={newsInput.meta_title} />

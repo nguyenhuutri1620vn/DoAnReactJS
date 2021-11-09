@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Breadcrumb, Col, ListGroup, Row, Button, Form } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
-import swal from 'sweetalert';
+import Swal from 'sweetalert2';
 
 
 function Profile() {
@@ -15,7 +15,7 @@ function Profile() {
     const history = useHistory();
 
     if (!localStorage.getItem('auth_token')) {
-        swal("Thông báo", "Đăng nhập để tiếp tục", 'error');
+        Swal.fire("Thông báo", "Đăng nhập để tiếp tục", 'error');
         history.push('/login');
     }
 
@@ -44,7 +44,7 @@ function Profile() {
 
         axios.post(`/api/update-profile`, data).then(res => {
             if (res.data.status === 200) {
-                swal('Cập nhật thành công', res.data.message, 'success');
+                Swal.fire('Cập nhật thành công', res.data.message, 'success');
                 setError([]);
             } else {
                 if (res.data.status === 422) {
@@ -59,7 +59,6 @@ function Profile() {
         e.persist();
         setUser({ ...user, [e.target.name]: e.target.value })
     }
-
 
     if (loading) {
         return <div className="loading"><h4>Đang tải thông tin khách hàng...</h4></div>

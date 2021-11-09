@@ -1,8 +1,7 @@
 import axios from 'axios';
 import React, { useState } from 'react';
-import swal from 'sweetalert';
+import Swal from 'sweetalert2';
 import { Button } from 'react-bootstrap';
-
 
 function AddCategory() {
 
@@ -55,10 +54,10 @@ function AddCategory() {
 
         axios.post(`/api/store-category`, formData).then(res => {
             if (res.data.status === 200) {
-                swal('Tạo loại sản phẩm thành công', res.data.message, 'success')
+                Swal.fire('Tạo loại sản phẩm thành công', res.data.message, 'success')
                 setError([]);
             } else if (res.data.status === 400) {
-                swal('Vui lòng điền đầy đủ thông tin', '', 'error');
+                Swal.fire('Kiểm tra dữ liệu nhập', '', 'error');
                 setError(res.data.errors);
             }
         })
@@ -85,12 +84,12 @@ function AddCategory() {
                                 <label>Slug</label>
                                 <input type='text' name='slug' placeholder="Nhập slug..." onChange={handleInput} value={categoryInput.slug} className='form-control' />
                             </div>
-                            <div className='notifyText'>{errorlist.slug}</div>
+                            <small className='text-danger'>{errorlist.slug}</small>
                             <div className='form-group mb-3'>
                                 <label>Tên loại sản phẩm</label>
                                 <input type='text' name='name' onChange={handleInput} placeholder="Nhập tên loại sản phẩm..." value={categoryInput.name} className='form-control' />
                             </div>
-                            <div className='notifyText'>{errorlist.name}</div>
+                            <small className='text-danger'>{errorlist.name}</small>
                             <div className='form-group mb-3'>
                                 <label>Mô tả</label>
                                 <input type='text' name='description' placeholder="Nhập mô tả..." onChange={handleInput} value={categoryInput.description} className='form-control' />
@@ -99,8 +98,7 @@ function AddCategory() {
                                 <label>Hình ảnh</label>
                                 <input type='file' name='image' onChange={handleImage} className='form-control' />
                             </div>
-
-                            <div className='notifyText'>{errorlist.image}</div>
+                            <small className='text-danger'>{errorlist.image}</small>
                             <div className='form-group mb-3'>
                                 <label>Trạng thái</label>
                                 <input type='checkbox' name='status' className='form-check-input ms-5' id="flexCheckChecked" onChange={handleCheckbox} defaultChecked={allCheckbox.status === 1 ? true : false} />

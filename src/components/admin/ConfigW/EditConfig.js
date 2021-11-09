@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import swal from "sweetalert";
+import Swal from "sweetalert2";
 import { Button } from 'react-bootstrap';
 
 function EditConfig(props) {
@@ -16,7 +16,7 @@ function EditConfig(props) {
             if (res.data.status === 200) {
                 setConfig(res.data.config);
             } else if (res.data.status === 404) {
-                swal('Error', res.data.message, 'error')
+                Swal.fire('Error', res.data.message, 'error')
             }
             setloading(false);
         });
@@ -34,14 +34,14 @@ function EditConfig(props) {
 
         axios.put(`/api/update-config/0`, data).then(res => {
             if (res.data.status === 200) {
-                swal('Success', res.data.message, 'success');
+                Swal.fire('Thành công', res.data.message, 'success');
                 setError([]);
             }
             else if (res.data.status === 422) {
-                swal('Warning', 'You need to fill in all the information', 'warning')
+                Swal.fire('Thông báo', 'Kiểm tra dữ liệu nhập', 'warning')
                 setError(res.data.errors)
             } else if (res.data.status === 404) {
-                swal('Error', res.data.message, 'error')
+                Swal.fire('Thông báo', res.data.message, 'error')
             }
         })
     }
@@ -50,11 +50,10 @@ function EditConfig(props) {
     }
     return (
         <div className='container-fluid px-4'>
-          
                 <h4>Cấu hình Website</h4>
                 <div id="emailHelp" className="form-text mb-4">Have a good day.</div>
                 <div className="box px-3">
-                <form onSubmit={configSubmit}>
+                <form onSubmit={configSubmit} className='pb-2'>
                     <div className="mb-3">
                         <label className="form-label">Tên website</label>
                         <input type='text' name='name' onChange={handleInput} value={configInput.name} className='form-control' />

@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useState } from 'react';
-import swal from 'sweetalert';
+import Swal from 'sweetalert2';
 import { Button } from 'react-bootstrap';
 
 function AddProrucer() {
@@ -30,10 +30,7 @@ function AddProrucer() {
 
     const submitProducer = (e) => {
         e.preventDefault();
-
-
         const formData = new FormData();
-
 
         formData.append('name', producerInput.name);
         formData.append('slug', producerInput.slug);
@@ -48,10 +45,10 @@ function AddProrucer() {
 
         axios.post(`/api/store-producer`, formData).then(res => {
             if (res.data.status === 200) {
-                swal('Tạo thương hiệu thành công', res.data.message, 'success')
+                Swal.fire('Tạo thương hiệu thành công', res.data.message, 'success')
                 setError([]);
             } else if (res.data.status === 400) {
-                swal('Vui lòng điền đầy đủ thông tin', '', 'error');
+                Swal.fire('Vui lòng điền đầy đủ thông tin', '', 'error');
                 setError(res.data.errors);
             }
         })
@@ -78,19 +75,19 @@ function AddProrucer() {
                                 <input type='text' name='slug' placeholder="Nhập slug..."
                                     onChange={handleInput} value={producerInput.slug} className='form-control' />
                             </div>
-                            <div className='notifyText'>{errorlist.slug}</div>
+                            <div className='text-danger'>{errorlist.slug}</div>
                             <div className='form-group mb-3'>
                                 <label>Tên thương hiệu</label>
                                 <input type='text' name='name' placeholder="Nhập tên thương hiệu..."
                                     onChange={handleInput} value={producerInput.name} className='form-control' />
                             </div>
-                            <div className='notifyText'>{errorlist.name}</div>
+                            <div className='text-danger'>{errorlist.name}</div>
                             <div className='form-group mb-3'>
                                 <label>Mô tả</label>
                                 <input type='text' name='description' placeholder="Nhập mô tả..."
                                     onChange={handleInput} value={producerInput.description} className='form-control' />
                             </div>
-                            <div className='notifyText'>{errorlist.description}</div>
+                            <div className='text-danger'>{errorlist.description}</div>
                             <div className='form-group mb-3'>
                                 <label>Trạng thái</label>
                                 <input type='checkbox' name='status' className='form-check-input ms-5' id="flexCheckChecked" onChange={handleCheckbox} defaultChecked={allCheckbox.status === 1 ? true : false} />
@@ -105,7 +102,7 @@ function AddProrucer() {
                                 <input type='text' name='meta_title' placeholder="Nhập meta title..."
                                     onChange={handleInput} value={producerInput.meta_title} className='form-control' />
                             </div>
-                            <div className='notifyText'>{errorlist.meta_title}</div>
+                            <div className='text-danger'>{errorlist.meta_title}</div>
                             <div className='form-group mb-3'>
                                 <label>Meta keywords</label>
                                 <input type='text' name='meta_keyword' placeholder="Nhập meta keywords..."

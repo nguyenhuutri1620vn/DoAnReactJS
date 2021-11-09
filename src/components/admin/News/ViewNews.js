@@ -1,9 +1,10 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import swal from "sweetalert";
 import { Button } from 'react-bootstrap';
 import ReactPaginate from 'react-paginate';
+import Swal from 'sweetalert2'
+
 
 function ViewNews() {
     document.title = 'Danh sách tin tức';
@@ -12,10 +13,8 @@ function ViewNews() {
     const [news, setNews] = useState([]);
     const [loading, setLoading] = useState(true);
 
-
     const newsPerPage = 5;
     const pagesVisited = pageNumber * newsPerPage;
-
 
     useEffect(() => {
         axios.get(`/api/view-news`).then(res => {
@@ -36,32 +35,34 @@ function ViewNews() {
 
         const thisClicked = e.currentTarget;
         thisClicked.innerText = "Đang xóa..."
-
-        swal({
+        Swal.fire({
             title: "Có chắc là muốn xóa chưa?",
             text: "Khi mà đã xóa rồi thì không hoàn tác được đâu đấy!",
             icon: "warning",
-            buttons: true,
-            dangerMode: true,
-        })
-            .then((willDelete) => {
-                if (willDelete) {
-                    swal("Poof! Tin tức đã được xóa!", {
-                        icon: "success",
-                    });
-                    axios.delete(`/api/delete-news/${id}`).then(res => {
-                        if (res.data.status === 200) {
-                            thisClicked.closest('tr').remove();
-                        } else if (res.data.status === 404) {
-                            thisClicked.innerText = "Xóa"
-                        }
-                    })
-                } else {
-                    swal("Tin tức đã được an toàn!");
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Xóa !!',
+            cancelButtonText: 'Không'
+          }).then((result) => {
+            if (result.isConfirmed) {
+              Swal.fire(
+                'Deleted!',
+                'Your file has been deleted.',
+                'success'
+              )
+              axios.delete(`/api/delete-news/${id}`).then(res => {
+                if (res.data.status === 200) {
+                    thisClicked.closest('tr').remove();
+                } else if (res.data.status === 404) {
                     thisClicked.innerText = "Xóa"
                 }
-            });
-
+            })
+            }else {
+                Swal.fire("Tin tức đã được an toàn!");
+                thisClicked.innerText = "Xóa"
+            }
+          })
     }
 
     var display_news = '';
@@ -73,7 +74,7 @@ function ViewNews() {
                 return item;
             } else if (item.name.toString().toLowerCase().includes(search.toLowerCase())) {
                 return item;
-            }else {
+            } else {
                 return null;
             }
         }).map((item) => {
@@ -82,8 +83,8 @@ function ViewNews() {
                     <td className='text-center'>{item.id}</td>
                     <td>{item.name}</td>
                     <div ><td className="descrip--content">{item.meta_descrip}</td></div>
-                    <td className='text-center'><img src={`http://localhost:8000/${item.image}`} alt={item.name}  height="150"/></td>
-                    <td className="text-center">{item.status === 1 ? "Hiện":"Ẩn"}</td>
+                    <td className='text-center'><img src={`http://localhost:8000/${item.image}`} alt={item.name} height="150" /></td>
+                    <td className="text-center">{item.status === 1 ? "Hiện" : "Ẩn"}</td>
                     <td className='text-center'><Link to={`/admin/edit-news/${item.id}`}><Button variant="warning" >Sửa</Button></Link></td>
                     <td className='text-center'> <Button variant="danger" onClick={(e) => deleteNews(e, item.id)}>Xóa</Button></td>
                 </tr>

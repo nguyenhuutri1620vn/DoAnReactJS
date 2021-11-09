@@ -26,7 +26,7 @@ function AdminPrivateRoute({ ...rest }) {
 
     axios.interceptors.response.use(undefined, function axiosRetryInterceptor(err) {
         if (err.response.status === 401) {
-            swal('Unanthorized', err.response.data.message, 'warning');
+            swal('Truy cập trái phép', err.response.data.message, 'warning');
             history.push('/');
         }
         return Promise.reject(err);
@@ -41,7 +41,7 @@ function AdminPrivateRoute({ ...rest }) {
             history.push('/403')
         } else if (error.response.status === 404) //page not found
         {
-            swal('404', 'Page not found', 'warning');
+            swal('404', 'Không tìm thấy trang', 'warning');
             history.push('/404')
         }
         return Promise.reject(error)
@@ -51,7 +51,7 @@ function AdminPrivateRoute({ ...rest }) {
 
     if (loading) {
 
-        return <h4>Loading...</h4>
+        return <h4>Đang tải dữ liệu...</h4>
     }
 
     return (

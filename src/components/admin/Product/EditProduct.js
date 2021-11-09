@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import swal from "sweetalert";
+import Swal from "sweetalert2";
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { Link, useHistory } from "react-router-dom";
@@ -58,7 +58,7 @@ function EditProduct(props) {
                 setProduct(res.data.product);
                 setCheckbox(res.data.product);
             } else if (res.data.status === 404) {
-                swal('Có lỗi', res.data.message, 'error');
+                Swal.fire('Có lỗi', res.data.message, 'error');
                 history.push('/admin/view-product')
             }
             setLoading(false);
@@ -91,14 +91,14 @@ function EditProduct(props) {
 
         axios.post(`/api/update-product/${product_id}`, formData).then(res => {
             if (res.data.status === 200) {
-                swal('Cập nhật thành công', res.data.message, 'success');
+                Swal.fire('Cập nhật thành công', res.data.message, 'success');
                 history.push('/admin/view-product');
                 setError([]);
             } else if (res.data.status === 422) {
-                swal('Vui lòng nhập đầy đủ thông tin', '', 'error');
+                Swal.fire('Vui lòng nhập đầy đủ thông tin', '', 'error');
                 setError(res.data.errors);
             } else if (res.data.status === 404) {
-                swal('Có lỗi', res.data.message, 'error');
+                Swal.fire('Có lỗi', res.data.message, 'error');
                 history.push('/admin/view-product');
             }
         })

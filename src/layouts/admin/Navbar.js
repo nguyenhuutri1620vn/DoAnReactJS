@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React from 'react'
 import { Link } from 'react-router-dom'
-import swal from 'sweetalert';
+import Swal from 'sweetalert2';
 import { useHistory } from "react-router";
 
 const Navbar = () => {
@@ -16,7 +16,7 @@ const Navbar = () => {
                 localStorage.removeItem('auth_token')
                 localStorage.removeItem('auth_name')
 
-                swal('Success', res.data.message, 'success')
+                Swal.fire('Success', res.data.message, 'success')
 
                 history.push('/');
             }

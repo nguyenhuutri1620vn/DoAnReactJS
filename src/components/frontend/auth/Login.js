@@ -3,12 +3,13 @@ import React, { useState } from "react";
 import { Button, Col, Container, FloatingLabel, Form, Row } from "react-bootstrap";
 import { useHistory } from "react-router";
 import { Link } from "react-router-dom";
-import swal from "sweetalert";
+import Swal from "sweetalert2";
 import bglogin from '../../../assets/frontend/image/background-login.png';
 
-document.title = "CHINGU | Đăng nhập"
 
 function Login() {
+    document.title = "CHINGU | Đăng nhập"
+
     const history = useHistory();
     const [loginInput, setLogin] = useState({
         username: '',
@@ -33,15 +34,15 @@ function Login() {
                 if (res.data.status === 200) {
                     localStorage.setItem('auth_token', res.data.token)
                     localStorage.setItem('auth_name', res.data.username)
-                    swal('Đăng nhập thành công', res.data.message, 'success')
-                    history.push('/');
+                    Swal.fire('Đăng nhập thành công', res.data.message, 'success')
+                    history.push("/");
                     if (res.data.role === 'admin') {
                         history.push('/admin/dashboard')
-                    } else {
-
+                    } else if(res.data.role === 'staff'){
+                        history.push('/admin/dashboard')
                     }
                 } else if (res.data.status === 401) {
-                    swal('Thông báo', res.data.message, 'warning')
+                    Swal.fire('Thông báo', res.data.message, 'warning')
                 } else {
                     setLogin({ ...loginInput, error_list: res.data.validation_err })
                 }
@@ -58,7 +59,7 @@ function Login() {
                 </Col>
                 <Col>
                     <div className='input-area'>
-                        <h1 className='title-login mb-5'>~Đăng nhập~</h1>
+                        <h1 className='title-login mb-5'>Đăng nhập</h1>
                         <Form onSubmit={loginSubmit} className='custom-form-register'>
                             <FloatingLabel
                                 controlId="floatingInput"

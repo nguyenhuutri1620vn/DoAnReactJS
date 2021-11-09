@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useState } from "react";
-import swal from 'sweetalert'
+import Swal from 'sweetalert2'
 import { useHistory } from "react-router";
 import { Col, Container, Form, Row, Button } from "react-bootstrap";
 import bglogin from '../../../assets/frontend/image/background-login.png';
@@ -43,7 +43,7 @@ function Register() {
                 if (res.data.status === 200) {
                     localStorage.setItem('auth_token', res.data.token)
                     localStorage.setItem('auth_name', res.data.username)
-                    swal('Đăng ký thành công', res.data.message, 'success');
+                    Swal.fire('Đăng ký thành công', res.data.message, 'success');
                     history.push('/');
                     window.location.reload();
                 } else {
@@ -62,7 +62,6 @@ function Register() {
                 </Col>
                 <Col>
                     <div className='input-area'>
-
                         <Form className='custom-form-register' onSubmit={registerSubmit}>
                             <Row className="mb-3 ">
                                 <Form.Group as={Col} controlId="formGridUsername">

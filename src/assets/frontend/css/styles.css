@@ -782,7 +782,7 @@ a {
 
 .descrip--content{
   display: -webkit-box;
-  -webkit-line-clamp: 5;
+  -webkit-line-clamp: 7;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1228,11 +1228,9 @@ div.h6, h6 {
   padding-bottom: 5px;
 }
 
-@import url('http://fonts.cdnfonts.com/css/charlotte-2');
 .title-login {
   text-align: center;
   font-size: 40px;
-  font-family: 'charlotte', sans-serif;
   color: #D5B85A;
 }
 

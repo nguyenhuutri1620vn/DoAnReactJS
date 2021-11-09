@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import swal from "sweetalert";
+import Swal from "sweetalert2";
 import { Button } from 'react-bootstrap';
 import ReactPaginate from 'react-paginate';
 
@@ -35,34 +35,32 @@ function ViewCategory() {
 
         const thisClicked = e.currentTarget;
         thisClicked.innerText = "Đang xóa..."
-
-        swal({
-            title: "Có chắc là muốn xóa chưa?",
-            text: "Khi mà đã xóa rồi thì không hoàn tác được đâu đấy!",
+        Swal.fire({
+            title: "Bạn muốn xóa loại sản phẩm?",
+            text: "Khi mà đã xóa rồi thì không hoàn tác được!",
             icon: "warning",
-            buttons: true,
-            dangerMode: true,
-        })
-            .then((willDelete) => {
-                if (willDelete) {
-                    swal("Poof! Loại sản phẩm đã được xóa!", {
-                        icon: "success",
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Đồng ý!',
+            cancelButtonText: 'Hủy!'
+          }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire("Poof! Loại sản phẩm đã được xóa!", {
+                    icon: "success",
+                });
+                axios.delete(`/api/delete-category/${id}`).then(res => {
+                    if (res.data.status === 200) {
+                        thisClicked.closest('tr').remove();
 
-                    });
-                    axios.delete(`/api/delete-category/${id}`).then(res => {
-                        if (res.data.status === 200) {
-                            thisClicked.closest('tr').remove();
-
-                        } else if (res.data.status === 404) {
-                            thisClicked.innerText = "Xóa"
-                        }
-                    })
-                } else {
-                    swal("Loại sản phẩm đã được an toàn!");
-                    thisClicked.innerText = "Xóa"
-                }
-            });
-
+                    } else if (res.data.status === 404) {
+                        thisClicked.innerText = "Xóa"
+                    }
+                })
+            }else {
+                thisClicked.innerText = "Xóa"
+            }
+          })
     }
     var viewcategory_HTMLTABLE = null;
     if (loading) {

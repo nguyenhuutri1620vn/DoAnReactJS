@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import swal from "sweetalert";
 import { Button } from 'react-bootstrap';
 import ReactPaginate from 'react-paginate';
+import Swal from "sweetalert2";
 
 function ViewProducer() {
     document.title = 'Danh sách thương hiệu';
@@ -31,33 +32,34 @@ function ViewProducer() {
         const thisClicked = e.currentTarget;
         thisClicked.innerText = "Đang xóa..."
 
-        swal({
-            title: "Có chắc là muốn xóa chưa?",
-            text: "Khi mà đã xóa rồi thì không hoàn tác được đâu đấy!",
+        Swal.fire({
+            title: "Xác nhận xóa thương hiệu?",
+            text: "Khi mà đã xóa rồi thì không hoàn tác được!",
             icon: "warning",
-            buttons: true,
-            dangerMode: true,
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Đồng ý!',
+            cancelButtonText: 'Hủy!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire(
+                    'Poof! Thương hiệu đã được xóa!',
+                    '',
+                    'success'
+                )
+                axios.delete(`/api/delete-producer/${id}`).then(res => {
+                    if (res.data.status === 200) {
+                        thisClicked.closest('tr').remove();
+                        // history.push(`admin/view-producer`);
+                    } else if (res.data.status === 404) {
+                        thisClicked.innerText = "Xóa"
+                    }
+                })
+            } else {
+                thisClicked.innerText = "Xóa"
+            }
         })
-            .then((willDelete) => {
-                if (willDelete) {
-                    swal("Poof! Thương hiệu đã được xóa!", {
-                        icon: "success",
-
-                    });
-                    axios.delete(`/api/delete-producer/${id}`).then(res => {
-                        if (res.data.status === 200) {
-                            thisClicked.closest('tr').remove();
-                            // history.push(`admin/view-producer`);
-                        } else if (res.data.status === 404) {
-                            thisClicked.innerText = "Xóa"
-                        }
-                    })
-                } else {
-                    swal("Thương hiệu vẫn an toàn nha!");
-                    thisClicked.innerText = "Xóa"
-                }
-            });
-
     }
 
     var viewproducer_HTMLTABLE = null;
@@ -65,15 +67,15 @@ function ViewProducer() {
         <h3>Đang tải trang danh sách thương hiệu, vui lòng đợi...</h3>
     } else {
         viewproducer_HTMLTABLE =
-            producerList.slice(pagesVisited, pagesVisited + producerPerPage).filter((item) => {
+            producerList.filter((item) => {
                 if (search === '') {
                     return item;
                 } else if (item.name.toString().toLowerCase().includes(search.toLowerCase())) {
                     return item;
                 } else {
-                    return item;
+                    return "";
                 }
-            }).map((item) => {
+            }).slice(pagesVisited, pagesVisited + producerPerPage).map((item) => {
                 return (
                     <tr key={item.id}>
                         <td className='text-center'>{item.id}</td>

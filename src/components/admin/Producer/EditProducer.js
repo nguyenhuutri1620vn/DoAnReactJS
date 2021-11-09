@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
-import swal from "sweetalert";
+import Swal from "sweetalert2";
 import { Button } from 'react-bootstrap';
 
 function EditProducer(props) {
@@ -30,7 +30,7 @@ function EditProducer(props) {
                 setProducer(res.data.producer);
                 setCheckbox(res.data.producer);
             } else if (res.data.status === 404) {
-                swal('Error', res.data.message, 'error');
+                Swal.fire('Error', res.data.message, 'error');
                 history.push('/admin/view-producer')
             }
             setLoading(false);
@@ -57,14 +57,14 @@ function EditProducer(props) {
 
         axios.post(`/api/update-producer/${product_id}`, formData).then(res => {
             if (res.data.status === 200) {
-                swal('Chỉnh sửa thành công', res.data.message, 'success');
+                Swal.fire('Chỉnh sửa thành công', res.data.message, 'success');
                 history.push('/admin/view-producer');
                 setError([]);
             } else if (res.data.status === 422) {
-                swal('Vui lòng nhập đầy đủ thông tin', '', 'error');
+                Swal.fire('Kiểm tra dữ liệu nhập', '', 'error');
                 setError(res.data.errors);
             } else if (res.data.status === 404) {
-                swal('Error', res.data.message, 'error');
+                Swal.fire('Error', res.data.message, 'error');
                 history.push('/admin/view-producer');
             }
         })

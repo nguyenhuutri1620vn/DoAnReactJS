@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import swal from "sweetalert";
+import Swal from "sweetalert2";
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { InputGroup } from 'react-bootstrap';
@@ -90,11 +90,11 @@ function AddProduct() {
 
         axios.post(`/api/store-product`, formData).then(res => {
             if (res.data.status === 200) {
-                swal('Tạo sản phẩm thành công', res.data.message, 'success');
+                Swal.fire('Tạo sản phẩm thành công', res.data.message, 'success');
                 setError([]);
 
             } else if (res.data.status === 422) {
-                swal('Vui lòng điền đầy đủ thông tin', '', 'error');
+                Swal.fire('Kiểm tra dữ liệu nhập', '', 'error');
                 setError(res.data.errors);
             }
         })

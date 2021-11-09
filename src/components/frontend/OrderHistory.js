@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Breadcrumb, Col, ListGroup, Row, Table } from 'react-bootstrap';
 import { Link, useHistory } from 'react-router-dom';
-import swal from 'sweetalert';
+import Swal from 'sweetalert2';
 
 
 function OrderHistory() {
@@ -19,7 +19,7 @@ function OrderHistory() {
                 setloading(false);
             } else if (res.data.status === 419) {
                 history.push('/product');
-                swal('Thông báo', res.data.message, 'error');
+                Swal.fire('Thông báo', res.data.message, 'error');
             }
         })
     }, [history])
@@ -29,8 +29,19 @@ function OrderHistory() {
     } else {
         var orderHistory_HTML = '';
         orderHistory_HTML = order.map((item, idx) => {
+            let price = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.total_price);
+            function statusorder() {
+                if(item.status === 0){
+                    return <p>Đang chờ duyệt</p>
+                }else if(item.status === 1){
+                    return <p>Đang giao</p>
+                }else if(item.status === 2){
+                    return <p>Giao thành công</p>
+                }else if(item.status === 3){
+                    return <p>Đơn hàng đã bị hủy</p>
+                }
+            }
             return (
-
                 <tr key={idx}>
                     <td>#</td>
                     <td className='text-center'>
@@ -38,8 +49,8 @@ function OrderHistory() {
                         </Link>
                     </td>
                     <td className='text-center'>{item.number}</td>
-                    <td className='text-center'>{item.total_price}</td>
-                    <td className='text-center'>{item.status === 0 ? "Đang giao" : "Đã giao"}</td>
+                    <td className='text-center'>{price}</td>
+                    <td className='text-center'>{statusorder()}</td>
                 </tr>
 
             )

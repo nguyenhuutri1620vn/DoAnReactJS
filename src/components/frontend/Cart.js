@@ -2,11 +2,11 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Button, Card, Col, Row } from 'react-bootstrap';
 import { Link, useHistory } from 'react-router-dom';
-import swal from 'sweetalert';
+import Swal from 'sweetalert2';
 import { BsFillTrashFill } from "react-icons/bs";
-document.title = `ChingMusic | Giỏ hàng`;
 
 function Cart() {
+    document.title = `ChingMusic | Giỏ hàng`;
 
     const [cart, setCart] = useState([]);
     const [loading, setloading] = useState(true);
@@ -16,9 +16,11 @@ function Cart() {
     let totalCartPrice = 0;
     let totalOrder = 0;
 
+    
+
     if (!localStorage.getItem('auth_token')) {
         history.push('/login');
-        swal("Thông tin", "Đăng nhập để tiếp tục", 'error')
+        Swal.fire("Thông tin", "Đăng nhập để tiếp tục", 'error')
     }
 
     const handleDecrement = (cartID) => {
@@ -41,10 +43,10 @@ function Cart() {
     function updateQuantity(cartID, scope) {
         axios.put(`/api/update-cart/${cartID}/${scope}`).then(res => {
             if (res.data.status === 200) {
-                // swal("Success", res.data.message, 'success');
+                // Swal.fire("Success", res.data.message, 'success');
                 console.log(res.data.message);
             } else if (res.data.status === 401) {
-                swal("Thông báo", res.data.message, 'erorr');
+                Swal.fire("Thông báo", res.data.message, 'erorr');
             }
         });
     }
@@ -56,10 +58,10 @@ function Cart() {
 
         axios.delete(`/api/deleteitemcart/${cart_id}`).then(res => {
             if (res.data.status === 200) {
-                swal("Xóa thành công", res.data.message, 'success');
+                Swal.fire("Xóa thành công", res.data.message, 'success');
                 thisClicked.closest("tr").remove();
             } else if (res.data.status === 404) {
-                swal("Thông báo", res.data.message, 'error');
+                Swal.fire("Thông báo", res.data.message, 'error');
                 thisClicked.innerText = "Xóa";
             }
         })
@@ -74,7 +76,7 @@ function Cart() {
                     setloading(false);
                 } else if (res.data.status === 401) {
                     history.push('/product');
-                    swal('Thông báo', res.data.message, 'error');
+                    Swal.fire('Thông báo', res.data.message, 'error');
                 }
             }
         })
@@ -109,10 +111,10 @@ function Cart() {
                                 </thead>
                                 <tbody>
                                     {cart.map((item, idx) => {
-                                        let selling_p = new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 3 }).format(parseInt(item.product.selling_price));
-                                        let total_p = new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 3 }).format(parseInt(item.product.selling_price * item.quantity));
+                                        let selling_p = new  Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.product.selling_price);
+                                        let total_p = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.product.selling_price * item.quantity);
                                         totalCartPrice += parseInt(item.product.selling_price * item.quantity);
-                                        total_quantity += item.quantity * 10;
+                                        total_quantity += item.quantity * 30000;
                                         totalOrder = totalCartPrice + total_quantity;
                                         return (
                                             <tr key={idx}>
@@ -160,17 +162,17 @@ function Cart() {
                     </Col>
                 </Col>
                 <Col>
-                    <Card style={{ width: '22rem' }} border="warning">
+                    <Card style={{ width: '22rem' }}>
                         <Card.Body>
                             <Card.Text>
                                 <h5>Tổng sản phẩm:
-                                    <span className="float-end">{totalCartPrice}</span>
+                                    <span className="float-end">{ Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(totalCartPrice)}</span>
                                 </h5>
-                                <h5>Phí di chuyển (10$/1P):
-                                    <span className="float-end">{total_quantity}</span>
+                                <h5>Phí di chuyển (30k/1P):
+                                    <span className="float-end">{ Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(total_quantity)}</span>
                                 </h5>
                                 <h5>Tổng hóa đơn:
-                                    <span className="float-end">{totalOrder}</span>
+                                    <span className="float-end">{ Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(totalOrder)}</span>
                                 </h5>
                             </Card.Text>
                             <Button variant="secondary" className="w-100" href="/checkout">Chuyển trang thanh toán</Button>

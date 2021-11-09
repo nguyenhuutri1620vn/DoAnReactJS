@@ -4,9 +4,9 @@ import { Row, Col, Figure, Breadcrumb } from 'react-bootstrap';
 import ReactPaginate from 'react-paginate';
 import { Link } from 'react-router-dom';
 
-document.title = "Chingu | Tin tức"
 
 function News() {
+    document.title = "Chingu | Tin tức"
 
     const [content, setContent] = useState([]);
     const [loading, setloading] = useState(true);

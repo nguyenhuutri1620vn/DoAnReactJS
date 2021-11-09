@@ -29,7 +29,6 @@ function Slidebar() {
                 if (itemp.cateID === item.id) {
                     i++;
                     product_count = i;
-
                 }
             })
             return (

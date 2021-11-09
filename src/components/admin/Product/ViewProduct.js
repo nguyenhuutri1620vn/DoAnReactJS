@@ -4,6 +4,7 @@ import axios from 'axios';
 import { Button } from 'react-bootstrap';
 import swal from "sweetalert";
 import ReactPaginate from 'react-paginate';
+import Swal from "sweetalert2";
 
 
 function ViewProduct() {
@@ -36,57 +37,61 @@ function ViewProduct() {
 
         const thisClicked = e.currentTarget;
         thisClicked.innerText = "Deleting"
-
-        swal({
+        Swal.fire({
             title: "Có chắc là muốn xóa chưa?",
             text: "Khi mà đã xóa rồi thì không hoàn tác được đâu đấy!",
             icon: "warning",
-            buttons: true,
-            dangerMode: true,
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Đồng ý!',
+            cancelButtonText: 'Hủy!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire(
+                    'Xóa thành công',
+                    'Poof! Sản phẩm đã được xóa!',
+                    'success'
+                )
+                axios.delete(`/api/delete-product/${id}`).then(res => {
+                    if (res.data.status === 200) {
+                        thisClicked.closest('tr').remove();
+                    } else if (res.data.status === 404) {
+                        thisClicked.innerText = "Xóa"
+                    }
+                })
+            } else {
+                thisClicked.innerText = "Xóa"
+            }
         })
-            .then((willDelete) => {
-                if (willDelete) {
-                    swal("Poof! Sản phẩm đã được xóa!", {
-                        icon: "success",
-                    });
-                    axios.delete(`/api/delete-product/${id}`).then(res => {
-                        if (res.data.status === 200) {
-                            thisClicked.closest('tr').remove();
-                        } else if (res.data.status === 404) {
-                            thisClicked.innerText = "Xóa"
-                        }
-                    })
-                } else {
-                    swal("Sản phẩm vẫn an toàn nhen!");
-                    thisClicked.innerText = "Xóa"
-                }
-            });
     }
 
     var display_product = '';
     if (loading) {
-        return <h4>Đang tải trang danh sách sản phẩm, đợi tí nha...</h4>
+        return <h4>Đang tải trang danh sách sản phẩm, vui lòng chờ...</h4>
     } else {
-        display_product = product.slice(pagesVisited, pagesVisited + productPerPage).filter((item) => {
+        display_product = product.sort((a, b) => (b.id - a.id)).slice(pagesVisited, pagesVisited + productPerPage).filter((item) => {
             if (search === '') {
                 return item;
             } else if (item.name.toString().toLowerCase().includes(search.toLowerCase())) {
                 return item;
-            }else {
+            } else {
                 return null;
             }
         }).map((item) => {
+            let original_price = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.original_price);
+            let selling_price = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.selling_price);
             return (
                 <tr key={item.id}>
                     <td className='text-center'>{item.id}</td>
                     <td>{item.category.name}</td>
                     <td>{item.producer.name}</td>
                     <td>{item.name}</td>
-                    <td className='text-center'>{item.original_price}</td>
-                    <td className='text-center'>{item.selling_price}</td>
+                    <td className='text-center'>{original_price}</td>
+                    <td className='text-center'>{selling_price}</td>
                     <td className='text-center'>{item.number}</td>
                     <td className='text-center'><img src={`http://localhost:8000/${item.image}`} width='100px' alt={item.name} /></td>
-                    <td className='text-center'>{item.status === 1 ? "Hiện":"Ẩn"}</td>
+                    <td className='text-center'>{item.status === 1 ? "Hiện" : "Ẩn"}</td>
                     <td className='text-center'><Link to={`/admin/edit-product/${item.id}`} className='btn btn-warning'>Sửa</Link></td>
                     <td className='text-center'><Button variant="danger" onClick={(e) => deleteProduct(e, item.id)}>Xóa</Button></td>
                 </tr>

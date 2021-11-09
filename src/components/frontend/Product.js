@@ -7,14 +7,13 @@ import { Link } from "react-router-dom";
 
 import Slidebar from "../../layouts/frontend/Slidebar";
 
-document.title = "Chingu | Sản phẩm"
 
 function Product() {
+    document.title = "Chingu | Sản phẩm"
 
     const [product, setProduct] = useState([]);
     const [loading, setloading] = useState(true);
     const [pageNumber, setPageNumber] = useState(0);
-
     const productPerPage = 12;
     const pagesVisited = pageNumber * productPerPage;
 
@@ -23,6 +22,7 @@ function Product() {
     const handleChangPage = ({ selected }) => {
         setPageNumber(selected);
     }
+    
     useEffect(() => {
         axios.get(`/api/product`).then(res => {
             if (res.data.status === 200) {
@@ -31,14 +31,11 @@ function Product() {
             setloading(false);
         });
     }, [])
-
     if (loading) {
-        return <div className='loading'><h4>Loading...</h4></div>
+        return <div className='loading'><h4>Đang tải sản phẩm...</h4></div>
     } else {
-
         var product_HTML = '';
         product_HTML = product.slice(pagesVisited, pagesVisited + productPerPage).map((item) => {
-
             let original_p = new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 3 }).format(parseInt(item.original_price));
             let selling_p = new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 3 }).format(parseInt(item.selling_price));
             return (
@@ -98,8 +95,8 @@ function Product() {
         var productPopular_HTML = '';
         productPopular_HTML = product.slice(pagesVisited, pagesVisited + productPerPage).map((item) => {
             if (item.popular === 1) {
-                let original_p = new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 3 }).format(parseInt(item.original_price));
-                let selling_p = new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 3 }).format(parseInt(item.selling_price));
+                let original_price = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.original_price);
+                let selling_price = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.selling_price);
                 return (
                     <Card className='card-product' key={item.id}>
                         <Link to={`category/${item.category.slug}/${item.id}`} className='link-product'>
@@ -111,8 +108,8 @@ function Product() {
                                 <Card.Text className='card-text'>
                                     <p className="card-user-name small">Loại sản phẩm: {item.category.name}</p>
                                     <p className="card-user-name small">Thương hiệu: {item.producer.name}</p>
-                                    <del className="card-user-name smaill">Giá gốc: {original_p} VNĐ</del>
-                                    <p className="card-user-name selling-price">Giá bán: {selling_p} VNĐ</p>
+                                    <del className="card-user-name smaill">Giá gốc: {original_price} VNĐ</del>
+                                    <p className="card-user-name selling-price">Giá bán: {selling_price} VNĐ</p>
                                 </Card.Text>
                                 <div className="card-bottom">
                                     <Button variant="danger"><BsFillCartCheckFill /></Button>

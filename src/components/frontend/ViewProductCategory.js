@@ -4,7 +4,7 @@ import { Breadcrumb, Card, Button } from "react-bootstrap";
 import { BsFillCartCheckFill } from "react-icons/bs";
 import ReactPaginate from "react-paginate";
 import { Link, useHistory } from "react-router-dom";
-import swal from "sweetalert";
+import Swal from "sweetalert2";
 import Slidebar from "../../layouts/frontend/Slidebar";
 
 function ViewProductCategory(props) {
@@ -33,10 +33,10 @@ function ViewProductCategory(props) {
                     setProduct(res.data.product_data.product);
                     setCategory(res.data.product_data.category);
                 } else if (res.data.status === 400) {
-                    swal('Thông báo', res.data.message, 'error');
+                    Swal.fire('Thông báo', res.data.message, 'error');
                 } else if (res.data.status === 404) {
                     history.push('/product');
-                    swal('Thông báo', res.data.message, 'error');
+                    Swal.fire('Thông báo', res.data.message, 'error');
                 }
                 setloading(false);
             }
@@ -53,8 +53,8 @@ function ViewProductCategory(props) {
         var product_HTML = '';
         if (productCount) {
             product_HTML = product.slice(pagesVisited, pagesVisited + productPerPage).map((item, idx) => {
-                let original_p = new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 3 }).format(parseInt(item.original_price));
-                let selling_p = new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 3 }).format(parseInt(item.selling_price));
+                let original_price = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.original_price);
+                let selling_price = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.selling_price);
                 return (
                     <Card className='card-product' key={idx}>
                         <Link to={`/category/${item.category.slug}/${item.id}`} className='link-product'>
@@ -66,8 +66,8 @@ function ViewProductCategory(props) {
                                 <Card.Text className='card-text'>
                                     <p className="card-user-name small">Loại sản phẩm: {item.category.name}</p>
                                     <p className="card-user-name small">Thương hiệu: {item.producer.name}</p>
-                                    <del className="card-user-name smaill">Giá gốc: {original_p} VNĐ</del>
-                                    <p className="card-user-name selling-price">Giá bán: {selling_p} VNĐ</p>
+                                    <del className="card-user-name smaill">Giá gốc: {original_price} VNĐ</del>
+                                    <p className="card-user-name selling-price">Giá bán: {selling_price} VNĐ</p>
                                 </Card.Text>
                                 <div className="card-bottom">
                                     <Button variant="danger"><BsFillCartCheckFill /></Button>

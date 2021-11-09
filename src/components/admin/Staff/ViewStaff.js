@@ -1,8 +1,9 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import swal from "sweetalert";
 import ReactPaginate from 'react-paginate';
-
+import Swal from "sweetalert2";
+import { Button } from 'react-bootstrap'
+import Moment from "react-moment";
 
 function ViewStaff() {
     document.title = 'Danh sách nhân viên';
@@ -35,35 +36,32 @@ function ViewStaff() {
         e.preventDefault();
 
         const thisClicked = e.currentTarget;
-        thisClicked.innerText = "Đợi tí..."
-
-        swal({
-            title: "Có chắc là muốn xóa chưa?",
-            text: "Khi mà đã xóa rồi thì không hoàn tác được đâu đấy!",
+        thisClicked.innerText = "→ → →"
+        Swal.fire({
+            title: "Xác nhận xóa quyền nhân viên",
+            text: "Khi mà đã xóa rồi thì không thể hoàn tác !",
             icon: "warning",
-            buttons: true,
-            dangerMode: true,
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Xác nhận!',
+            cancelButtonText: 'Để sau!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire("Poof! Đã hủy bỏ quyền nhân viên của tài khoản!", {
+                    icon: "success",
+                });
+                axios.put(`/api/isUser/${id}`).then(res => {
+                    if (res.data.status === 200) {
+                        thisClicked.closest('tr').remove();
+                    } else if (res.data.status === 404) {
+                        thisClicked.innerText = "→ Khách hàng"
+                    }
+                })
+            } else {
+                thisClicked.innerText = "→ Khách hàng"
+            }
         })
-            .then((willAdmin) => {
-                if (willAdmin) {
-                    swal("Poof! Nhân viên sẽ trở lại thành nhân viên!", {
-                        icon: "success",
-
-                    });
-                    axios.put(`/api/isAdmin/${id}`).then(res => {
-                        if (res.data.status === 200) {
-                            thisClicked.closest('tr').remove();
-
-                        } else if (res.data.status === 404) {
-                            thisClicked.innerText = "→ Khách hàng"
-                        }
-                    })
-                } else {
-                    swal("Giữ được việc rồi nhá!");
-                    thisClicked.innerText = "→ Khách hàng"
-                }
-            });
-
     }
 
     var display_staff = '';
@@ -75,21 +73,20 @@ function ViewStaff() {
                 return item;
             } else if (item.username.toString().toLowerCase().includes(search.toLowerCase())) {
                 return item;
-            }else {
+            } else {
                 return item;
             }
         }).map((item) => {
-
             return (
-
                 <tr key={item.id}>
                     <td className='col-3 col-sm-1'>{item.id}</td>
                     <td className='col-3 col-sm-1'>{item.username}</td>
-                    <td className='col-3 col-sm-2'>{item.fullname}</td>
-                    <td className='col-3 col-sm-2'>{item.email}</td>
+                    <td className='col-3 col-sm-1'>{item.fullname}</td>
+                    <td className='col-3 col-sm-1'>{item.email}</td>
                     <td className='col-3 col-sm-1'>{item.phone}</td>
+                    <td className='col-3 col-sm-1'><Moment format="DD/MM/YYYY">{item.updated_at}</Moment></td>
                     <td className='text-center'>
-                        <button onClick={(e) => becomeAdmin(e, item.id)} className="btn btn-info border">→ Khách hàng</button>
+                        <Button onClick={(e) => becomeAdmin(e, item.id)} variant="danger">→ Khách hàng</Button>
                     </td>
                 </tr>
             );
@@ -122,10 +119,11 @@ function ViewStaff() {
                             <tr>
                                 <th>ID</th>
                                 <th className='col-3 col-sm-1'>Username</th>
-                                <th className='col-3 col-sm-2'>Họ và tên</th>
-                                <th className='col-3 col-sm-2'>Email</th>
+                                <th className='col-3 col-sm-1'>Họ và tên</th>
+                                <th className='col-3 col-sm-1'>Email</th>
                                 <th className='col-3 col-sm-1'>Điện thoại</th>
-                                <th className='col-3 col-sm-1'>Role</th>
+                                <th className='col-3 col-sm-1'>Ngày nhận việc</th>
+                                <th className='col-3 col-sm-1'>Thao tác</th>
                             </tr>
                         </thead>
                         <tbody>

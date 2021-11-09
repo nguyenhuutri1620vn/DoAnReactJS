@@ -2,11 +2,10 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Breadcrumb, Col, ListGroup, Row, Table } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
-import swal from 'sweetalert';
-
-document.title = "CHINGU | Đơn hàng chi tiết"
+import Swal from 'sweetalert2';
 
 function OrderItem(props) {
+    document.title = "CHINGU | Đơn hàng chi tiết"
 
     const [loading, setloading] = useState(true);
     const history = useHistory();
@@ -22,7 +21,7 @@ function OrderItem(props) {
                 setloading(false);
             } else if (res.data.status === 419) {
                 history.push('/product');
-                swal('Thông báo', res.data.message, 'error');
+                Swal.fire('Thông báo', res.data.message, 'error');
             }
         })
     }, [history, props.match.params.id])
@@ -32,6 +31,7 @@ function OrderItem(props) {
     } else {
         var orderHistory_HTML = '';
         orderHistory_HTML = orderItem.map((item, idx) => {
+            let price = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.price);
             return (
                 <tr key={idx}>
                     <td>#</td>
@@ -47,7 +47,7 @@ function OrderItem(props) {
                         >
                         </img>
                     </td>
-                    <td className='text-center'>{item.price}</td>
+                    <td className='text-center'>{price}</td>
                 </tr>
             )
         })

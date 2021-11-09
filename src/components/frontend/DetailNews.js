@@ -4,8 +4,8 @@ import { Breadcrumb, Figure, Col, Row } from 'react-bootstrap';
 import { useHistory, Link } from 'react-router-dom';
 import Moment from 'react-moment';
 
-document.title = "Chingu | Chi tiết tin tức"
 function DetailNews(props) {
+    document.title = "Chingu | Chi tiết tin tức"
 
     const [content, setContent] = useState([]);
     const [relatedConent, setRelatedContent] = useState([]);

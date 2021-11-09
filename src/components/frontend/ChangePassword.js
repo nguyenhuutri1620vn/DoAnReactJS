@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { useState } from 'react';
 import { Breadcrumb, Col, Form, ListGroup, Row, Button } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
-import swal from 'sweetalert';
+import Swal from 'sweetalert2';
 
 
 function ChangePassword() {
@@ -12,7 +12,7 @@ function ChangePassword() {
     const history = useHistory();
 
     if (!localStorage.getItem('auth_token')) {
-        swal("Thông báo", "Đăng nhập để tiếp tục", 'error');
+        Swal.fire("Thông báo", "Đăng nhập để tiếp tục", 'error');
         history.push('/login');
     }
 
@@ -33,7 +33,7 @@ function ChangePassword() {
         axios.post(`/api/change-password`, data).then(res => {
             if (res.data.status === 200) {
                 setError([]);
-                swal('Đổi mật khẩu thành công', res.data.message, 'success');
+                Swal.fire('Đổi mật khẩu thành công', res.data.message, 'success');
             } else if (res.data.status === 422) {
                 setError(res.data.error);
             } else if (res.data.status === 419) {

@@ -11,7 +11,8 @@
  * Copyright 2011-2021 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  */
- @import url('http://fonts.cdnfonts.com/css/montserrat');
+
+@import url('http://fonts.cdnfonts.com/css/montserrat');
 :root {
   --bs-blue: #0d6efd;
   --bs-indigo: #6610f2;
@@ -10607,6 +10608,7 @@ html, body {
   margin-left: -225px;
   background-color: #f9fafc;
 }
+
 .content {
   min-height: 250px;
   padding: 15px;
@@ -10615,9 +10617,11 @@ html, body {
   padding-left: 15px;
   padding-right: 15px;
 }
+
 .sb-sidenav-toggled #layoutSidenav #layoutSidenav_nav {
   transform: translateX(0);
 }
+
 .box {
   position: relative;
   border-radius: 3px;
@@ -10627,6 +10631,7 @@ html, body {
   width: 100%;
   box-shadow: 0 1px 1px rgb(0 0 0 / 10%);
 }
+
 .sb-sidenav-toggled #layoutSidenav #layoutSidenav_content:before {
   content: "";
   display: block;
@@ -11032,12 +11037,15 @@ html, body {
   color: rgb(198, 197, 202);
   border: 1px solid rgb(198, 197, 202);
 }
-.h-50{
+
+.h-50 {
   height: 200px;
 }
-.margin-container{
+
+.margin-container {
   margin-top: 180px;
 }
+
 .descrip-text-content {
   display: -webkit-box;
   -webkit-line-clamp: 6;
@@ -11046,4 +11054,28 @@ html, body {
   text-overflow: ellipsis;
   word-break: break-word;
   font-size: 13px;
+}
+
+.custom-cart-admin-sp {
+  background-color: #00c0ef !important;
+  height: 150px;
+}
+
+.custom-cart-admin-bv {
+  background-color: #00a65a !important;
+  height: 150px;
+}
+
+.custom-cart-admin-dh {
+  background-color: #ddd !important;
+  height: 150px;
+}
+
+.custom-cart-admin-nv {
+  background-color: #dd4b39 !important;
+  height: 150px;
+}
+
+.custom-header-cart {
+  background-color: rgba(0, 0, 0, .03);
 }

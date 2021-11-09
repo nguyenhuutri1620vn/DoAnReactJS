@@ -25,6 +25,7 @@
     "react-scripts": "4.0.3",
     "reactjs-hooks-pagination": "^1.0.17",
     "sweetalert": "^2.1.2",
+    "sweetalert2": "^11.1.9",
     "web-vitals": "^1.1.2"
   },
   "scripts": {

@@ -39,11 +39,8 @@ function App() {
 
           <PublicRoute path="/" name='Home' />
 
-         
-
           <Route path='/403' exact={true} name="Page403" component={Page403} />
           <Route path='/404' component={Page404} />
-
 
           <Route path="/login">
             {localStorage.getItem('auth_token') ? <Redirect to='/' /> : <Login />}

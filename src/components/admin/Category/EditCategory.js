@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
-import swal from "sweetalert";
+import Swal from "sweetalert2";
 import { Button } from 'react-bootstrap';
 
 function EditCategory(props) {
@@ -45,7 +45,7 @@ function EditCategory(props) {
                 setCategory(res.data.category);
                 setCheckbox(res.data.category);
             } else if (res.data.status === 404) {
-                swal('Error', res.data.message, 'error')
+                Swal.fire('Error', res.data.message, 'error')
                 history.push('/admin/view-category')
             }
             setloading(false);
@@ -71,11 +71,11 @@ function EditCategory(props) {
         const category_id = props.match.params.id;
         axios.post(`/api/update-category/${category_id}`, formData).then(res => {
             if (res.data.status === 200) {
-                swal('Cập nhật loại sản phẩm thành công', res.data.message, 'success')
+                Swal.fire('Cập nhật loại sản phẩm thành công', res.data.message, 'success')
                 setError([]);
                 history.push('/admin/view-category')
-            } else if (res.data.status === 400) {
-                swal('Vui lòng điền đầy đủ thông tin', '', 'error');
+            } else if (res.data.status === 422) {
+                Swal.fire('Vui lòng điền đầy đủ thông tin', '', 'error');
                 setError(res.data.errors);
             }
         })
@@ -113,10 +113,11 @@ function EditCategory(props) {
                                 <input type='text' name='name' placeholder="Nhập tên loại sản phẩm..." onChange={handleInput} value={categoryInput.name} className='form-control' />
                             </div>
                             <small className='text-danger'>{error.name}</small>
-                            <div className='form-group mb-3'>
+                            <div className='form-group'>
                                 <label>Mô tả</label>
                                 <textarea name='description' placeholder="Nhập mô tả..." onChange={handleInput} value={categoryInput.description} className='form-control' />
                             </div>
+                            <small className='text-danger'>{error.description}</small>
                             <div className='col-md-6 form-group mb-3'>
                                 <label>Hình ảnh</label>
                                 <input type='file' name='image' onChange={handleImage} className='form-control' />
@@ -145,9 +146,9 @@ function EditCategory(props) {
                                 <textarea name='meta_descrip' placeholder="Nhập meta description..." onChange={handleInput} value={categoryInput.meta_descrip || ""} className='form-control' />
                             </div>
                         </div>
+                        <Button type='submit' variant="outline-primary" className='px-4 mx-3'>Cập nhật</Button>
                     </div>
                 </div>
-                <Button type='submit' variant="outline-primary" className='px-4 mx-3'>Cập nhật</Button>
             </form>
         </div >
     )

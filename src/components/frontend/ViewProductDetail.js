@@ -2,14 +2,12 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Breadcrumb, Button, Card, Col, Figure, Row } from 'react-bootstrap'
 import { Link, useHistory } from 'react-router-dom';
-import swal from 'sweetalert';
+import Swal from 'sweetalert2';
 import Moment from 'react-moment';
 import { BsFillCartCheckFill } from 'react-icons/bs';
 
 
 function ViewProductDetail(props) {
-
-
     const [category, setCategory] = useState([]);
     const [product, setProduct] = useState([]);
     const [relatedProduct, setRelatedProduct] = useState([]);
@@ -36,14 +34,14 @@ function ViewProductDetail(props) {
         }
         axios.post(`/api/add-to-cart`, data).then(res => {
             if (res.data.status === 201) {
-                swal("Thêm giỏ hàng thành công", res.data.message, "success");
+                Swal.fire("Thêm giỏ hàng thành công", res.data.message, "success");
             } else if (res.data.status === 409) {
-                swal("Thông báo", res.data.message, "warning");
+                Swal.fire("Thông báo", res.data.message, "warning");
             } else if (res.data.status === 401) {
-                swal("Có lỗi", res.data.message, "error");
+                Swal.fire("Có lỗi", res.data.message, "error");
                 history.push('/login');
             }else if (res.data.status === 404) {
-                swal("Thông báo", res.data.message, "warning");
+                Swal.fire("Thông báo", res.data.message, "warning");
             }
 
         });
@@ -64,7 +62,7 @@ function ViewProductDetail(props) {
                     setloading(false);
                 } else if (res.data.status === 404) {
                     history.push('/product');
-                    swal('Thông báo', res.data.message, 'error');
+                    Swal.fire('Thông báo', res.data.message, 'error');
                 }
             }
         })
