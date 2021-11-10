@@ -1,60 +1,45 @@
-import axios from "axios";
-import React, { useEffect, useState } from "react";
-import { Breadcrumb, Card, Button } from "react-bootstrap";
-import { BsFillCartCheckFill } from "react-icons/bs";
-import ReactPaginate from "react-paginate";
-import { Link, useHistory } from "react-router-dom";
-import Swal from "sweetalert2";
-import Slidebar from "../../layouts/frontend/Slidebar";
+import axios from 'axios';
+import React, { useEffect, useState } from 'react'
+import { Breadcrumb, Button, Card } from 'react-bootstrap';
+import { BsFillCartCheckFill } from 'react-icons/bs';
+import { Link, useHistory } from 'react-router-dom';
+import Swal from 'sweetalert2';
+import Slidebar from '../../layouts/frontend/Slidebar';
 
-function ViewProductCategory(props) {
+function Search(props) {
+    document.title = `Từ khóa ${props.match.params.name}`
+
     const [product, setProduct] = useState([]);
-    const [category, setCategory] = useState([]);
-    const [pageNumber, setPageNumber] = useState(0);
-    const [loading, setloading] = useState(true);
-    const history = useHistory();
+    const [loading, setLoading] = useState(true);
     const [quantity, setQuantity] = useState(1);
-
     const productCount = product.length;
-
-    const productPerPage = 12;
-    const pagesVisited = pageNumber * productPerPage;
-
-    const pageCount = Math.ceil(product.length / productPerPage);
-    const handleChangPage = ({ selected }) => {
-        setPageNumber(selected);
-    }
-
+    const history = useHistory();
     useEffect(() => {
         let isMounterd = true;
-
-        const product_slug = props.match.params.slug;
-        axios.get(`/api/fetchproducts/${product_slug}`).then(res => {
+        const search_name = props.match.params.name;
+        axios.get(`/api/search/${search_name}`).then(res => {
             if (isMounterd) {
                 if (res.data.status === 200) {
-                    setProduct(res.data.product_data.product);
-                    setCategory(res.data.product_data.category);
-                } else if (res.data.status === 400) {
-                    Swal.fire('Thông báo', res.data.message, 'error');
-                } else if (res.data.status === 404) {
-                    history.push('/product');
-                    Swal.fire('Thông báo', res.data.message, 'error');
+                    setProduct(res.data.product);
+                } else {
+                    console.log('fails');
                 }
-                setloading(false);
+                setLoading(false)
             }
-        })
-
+        });
         return () => {
             isMounterd = false;
         }
-    }, [props.match.params.slug, history])
+    }, [props.match.params.name, history])
 
     if (loading) {
-        return <div className='loading'><h4>Vui lòng chờ...</h4></div>
+        return (
+            <div className='container loading'><h4>Đang tìm sẩm phẩm...</h4></div>
+        )
     } else {
-        var product_HTML = '';
+        var product_HTML = ''
         if (productCount) {
-            product_HTML = product.slice(pagesVisited, pagesVisited + productPerPage).map((item, idx) => {
+            product_HTML = product.map((item, idx) => {
                 const submitAddtoCart = (e) => {
                     e.preventDefault();
                     setQuantity(1);
@@ -73,7 +58,6 @@ function ViewProductCategory(props) {
                         } else if (res.data.status === 404) {
                             Swal.fire("Thông báo", res.data.message, "warning");
                         }
-
                     });
                 }
                 let original_price = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.original_price);
@@ -103,49 +87,35 @@ function ViewProductCategory(props) {
             })
         } else {
             product_HTML =
-                <div>
-                    <h4>Không có sản phẩm nào là {category.name}</h4>
+                <div className="mx-4">
+                    <h4>Không tìm thấy sản phẩm với thừ khóa {props.match.params.name}</h4>
                 </div>
         }
     }
-    document.title = `CHINGU | ${category.name}`
-
     return (
         <div className='container product-home'>
-
             <Slidebar />
             <div className='container product-container'>
                 <Breadcrumb>
-                    <Breadcrumb.Item href="/product" className='link-product'>
+                    <Breadcrumb.Item href="/home" className='link-product'>
                         Trang chủ
                     </Breadcrumb.Item>
-                    <Breadcrumb.Item href={`../category/${category.slug}`}>
-                        {category.name}
+                    <Breadcrumb.Item href="/product">
+                        Sản phẩm
+                    </Breadcrumb.Item>
+                    <Breadcrumb.Item>
+                        Tìm kiếm với từ khóa '{props.match.params.name}'
                     </Breadcrumb.Item>
                 </Breadcrumb>
                 <div className='featured_product'>
                     <div className='box_category_home'>
                         <div className="cards-product">
-
                             {product_HTML}
-
                         </div>
                     </div>
                 </div>
-                <ReactPaginate
-                    previousLabel={'←'}
-                    nextLabel={'→'}
-                    pageCount={pageCount}
-                    onPageChange={handleChangPage}
-                    containerClassName={"paginationBttns"}
-                    previousLinkClassName={"previousBttn"}
-                    nextLinkClassName={"nextBttn"}
-                    disabledClassName={"paginationDisable"}
-                    activeClassName={"paginationActive"}
-                >
-                </ReactPaginate>
             </div>
         </div>
     )
 }
-export default ViewProductCategory;
+export default Search

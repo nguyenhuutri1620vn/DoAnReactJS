@@ -1,21 +1,25 @@
 import React, { useEffect, useState } from "react";
 import { Link } from 'react-router-dom'
-import swal from "sweetalert";
+import Swal from "sweetalert2";
 import { useHistory } from "react-router";
 import axios from "axios";
 import { BsCartCheckFill, BsSearch } from 'react-icons/bs';
 import logo from '../../assets/frontend/image/logo.png';
 
 import '../../assets/frontend/css/styles.css';
-import { Button} from "react-bootstrap";
 function Navbar() {
-
 
   const history = useHistory();
   const [user, setUser] = useState([]);
   const [category, setCategory] = useState([]);
   const [producer, setProducer] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState();
+
+  const searchInput = (e) => {
+    e.persist();
+    setSearch([e.target.value])
+  }
 
   useEffect(() => {
     axios.get(`/api/home`).then(res => {
@@ -30,7 +34,7 @@ function Navbar() {
         setUser(res.data.user);
       } else if (res.data.status === 401) {
         history.push('/login');
-        swal('Warning', res.data.message, 'error');
+        Swal.fire('Thông báo', res.data.message, 'error');
       }
       setLoading(false);
 
@@ -62,7 +66,7 @@ function Navbar() {
         localStorage.removeItem('auth_token')
         localStorage.removeItem('auth_name')
 
-        swal('Success', res.data.message, 'success')
+        Swal.fire('Success', res.data.message, 'success')
 
         history.push('/');
       }
@@ -81,13 +85,13 @@ function Navbar() {
     AuthButtons = (
       <div>
         <Link to={`/profile`} className='link-top-last'>Xin chào, {user.fullname}</Link>
-        <button className="btn btn-danger btn-sm" type='submit' onClick={logoutSubmit}><span className='textNav'>Đăng xuất</span></button>
+        <button className="btn btn-danger btn-sm" type='submit' onClick={logoutSubmit}>
+          <span className='textNav'>Đăng xuất</span>
+        </button>
       </div>
     )
   }
-
   return (
-
     <div className='chingu-top chingu-top-sticky'>
       <div className='navbar-wrapper container-wrapper'>
         <div className='container navbar'>
@@ -120,11 +124,11 @@ function Navbar() {
           <div className='header-with-search__search-section'>
             <div className='chingu-searchbar chingu-searchbar--focus'>
               <div className='chingu-searchbar__main'>
-                <form className='chingu-searchbar-input'>
-                  <input className='chingu-searchbar-input__input' placeholder='Nhập sản phẩm cần tìm...' />
+                <form className='chingu-searchbar-input' id="myform">
+                  <input type='text' className='chingu-searchbar-input__input' placeholder='Nhập sản phẩm cần tìm...' value={search} name='search' onChange={searchInput} />
                 </form>
               </div>
-              <Button className='btn btn-dark btn--s btn--inline py-1'><BsSearch /></Button>
+              <Link className='link-product' to={`/product/${search}`}><button type='submit' form='myform' className='btn btn-dark btn--s btn--inline py-1'><BsSearch /></button></Link>
             </div>
           </div>
           <div className='header-with-search__cart-wrapper'>

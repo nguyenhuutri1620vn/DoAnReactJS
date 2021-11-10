@@ -12,7 +12,7 @@ import ViewProductCategory from "../components/frontend/ViewProductCategory";
 import ViewProductDetail from "../components/frontend/ViewProductDetail";
 import DetailNews from "../components/frontend/DetailNews";
 import OrderDetail from "../components/frontend/OrderDetail";
-
+import Search from "../components/frontend/Search";
 
 const PublicRoutesList = [
 
@@ -30,6 +30,7 @@ const PublicRoutesList = [
     { path: '/category/:slug', exact: true, name: 'ViewProductCategory', component: ViewProductCategory },
     { path: '/category/:category/:product', exact: true, name: 'ViewProductDetail', component: ViewProductDetail },
     { path: '/news/:content', exact: true, name: 'DetailNews', component: DetailNews },
+    { path: '/product/:name', exact: true, name: 'Search', component: Search },
 
 ];
 export default PublicRoutesList;

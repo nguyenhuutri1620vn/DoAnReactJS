@@ -30,7 +30,7 @@ function EditProducer(props) {
                 setProducer(res.data.producer);
                 setCheckbox(res.data.producer);
             } else if (res.data.status === 404) {
-                Swal.fire('Error', res.data.message, 'error');
+                Swal.fire('Thông báo', res.data.message, 'error');
                 history.push('/admin/view-producer')
             }
             setLoading(false);

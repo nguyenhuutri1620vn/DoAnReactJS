@@ -1,8 +1,9 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Card, Carousel, Button, Container, Row, Col } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link , useHistory } from 'react-router-dom';
 import { BsFillCartCheckFill } from 'react-icons/bs';
+import Swal from 'sweetalert2';
 
 
 function Home() {
@@ -14,6 +15,8 @@ function Home() {
     const [productFeatured, setProductFeatured] = useState([]);
     const [productPopular, setProductPopular] = useState([]);
     const [loading, setloading] = useState(true);
+    const [quantity, setQuantity] = useState(1);
+    const history = useHistory();
 
     useEffect(() => {
         axios.get(`/api/home`).then(res => {
@@ -33,7 +36,6 @@ function Home() {
     } else {
         var category_HTML = '';
         category_HTML = category.map((item) => {
-
             return (
                 <Card className="card-category" key={item.id}>
                     <Link to={`/category/${item.slug}`} className='link'>
@@ -48,8 +50,28 @@ function Home() {
         })
         var featured_HTML = '';
         featured_HTML = productFeatured.slice(0, 8).map((item) => {
-            let original_p = new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 3 }).format(parseInt(item.original_price));
-            let selling_p = new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 3 }).format(parseInt(item.selling_price));
+            const submitAddtoCart = (e) => {
+                e.preventDefault();
+                setQuantity(1);
+                const data = {
+                    productID: item.id,
+                    quantity: quantity,
+                }
+                axios.post(`/api/add-to-cart`, data).then(res => {
+                    if (res.data.status === 201) {
+                        Swal.fire("Thêm giỏ hàng thành công", res.data.message, "success");
+                    } else if (res.data.status === 409) {
+                        Swal.fire("Thông báo", res.data.message, "warning");
+                    } else if (res.data.status === 401) {
+                        Swal.fire("Có lỗi", res.data.message, "error");
+                        history.push('/login');
+                    } else if (res.data.status === 404) {
+                        Swal.fire("Thông báo", res.data.message, "warning");
+                    }
+                });
+            }
+            let original_p = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.original_price);
+            let selling_p = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.selling_price);
             return (
                 <Card className='card-product' key={item.id}>
                     <Link to={`/category/${item.category.slug}/${item.id}`} className='link-product'>
@@ -65,7 +87,7 @@ function Home() {
                                 <p className="card-user-name selling-price">Giá bán: {selling_p} VNĐ</p>
                             </Card.Text>
                             <div className="card-bottom">
-                                <Button variant="danger"><BsFillCartCheckFill /></Button>
+                                <Button variant="danger" onClick={submitAddtoCart}><BsFillCartCheckFill /></Button>
                                 <div className="card-watching">Chỉ còn: {item.number}</div>
                             </div>
                         </Card.Body>
@@ -75,8 +97,28 @@ function Home() {
         })
         var popular_HTML = '';
         popular_HTML = productPopular.slice(0, 8).map((item) => {
-            let original_p = new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 3 }).format(parseInt(item.original_price));
-            let selling_p = new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 3 }).format(parseInt(item.selling_price));
+            const submitAddtoCart = (e) => {
+                e.preventDefault();
+                setQuantity(1);
+                const data = {
+                    productID: item.id,
+                    quantity: quantity,
+                }
+                axios.post(`/api/add-to-cart`, data).then(res => {
+                    if (res.data.status === 201) {
+                        Swal.fire("Thêm giỏ hàng thành công", res.data.message, "success");
+                    } else if (res.data.status === 409) {
+                        Swal.fire("Thông báo", res.data.message, "warning");
+                    } else if (res.data.status === 401) {
+                        Swal.fire("Có lỗi", res.data.message, "error");
+                        history.push('/login');
+                    } else if (res.data.status === 404) {
+                        Swal.fire("Thông báo", res.data.message, "warning");
+                    }
+                });
+            }
+            let original_p = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.original_price);
+            let selling_p = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.selling_price);
             return (
                 <Card className='card-product' key={item.id}>
                     <Link to={`/category/${item.category.slug}/${item.id}`} className='link-product'>
@@ -91,7 +133,7 @@ function Home() {
                                 <del className="card-user-name smaill">Giá gốc: {original_p} VNĐ</del>
                                 <p className="card-user-name selling-price">Giá bán: ${selling_p} VNĐ</p>
                             </Card.Text>
-                            <Button variant="danger"><BsFillCartCheckFill /></Button>
+                            <Button variant="danger" onClick={submitAddtoCart}><BsFillCartCheckFill /></Button>
                         </Card.Body>
                     </Link>
                 </Card>

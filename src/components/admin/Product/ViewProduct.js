@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { Button } from 'react-bootstrap';
-import swal from "sweetalert";
 import ReactPaginate from 'react-paginate';
 import Swal from "sweetalert2";
 

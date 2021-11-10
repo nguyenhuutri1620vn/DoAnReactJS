@@ -52,7 +52,6 @@ function OrderHistory() {
                     <td className='text-center'>{price}</td>
                     <td className='text-center'>{statusorder()}</td>
                 </tr>
-
             )
         })
     }

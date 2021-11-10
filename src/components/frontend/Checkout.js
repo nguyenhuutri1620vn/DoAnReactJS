@@ -14,7 +14,6 @@ function Checkout() {
     const [district, setDistrict] = useState([]);
     const [show, setShow] = useState(false);
 
-    const handleShow = () => setShow(true);
     const handleClose = () => setShow(false);
     // const handleShow = () => setShow(true);
     const [checkoutInput, setCheckoutInput] = useState({
@@ -175,6 +174,7 @@ function Checkout() {
                 break;
 
             case 'paypal':
+                setShow(true);
                 axios.post(`/api/validate-order`, data).then(res => {
                     if (res.data.status === 200) {
                         setError([]);
@@ -311,7 +311,7 @@ function Checkout() {
                                         Thanh toán Razorpay
                                     </Button>
                                     <Button variant="warning" type="submit" className="w-100 mt-2"
-                                        onClick={((e) => submitCheckOut(e, 'paypal')), handleShow}
+                                        onClick={(e) => submitCheckOut(e, 'paypal')}
                                     >
                                         Thanh toán PayPal
                                     </Button>
