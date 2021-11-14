@@ -78,8 +78,8 @@ function ViewProductDetail(props) {
         var relatedProduct_HTML = '';
         relatedProduct_HTML = relatedProduct.slice(0, 5).map((item, idx) => {
             if (item.id !== product.id) {
-                let original_p = new Intl.NumberFormat('en-IN', {maximumSignificantDigits: 3 }).format(parseInt(item.original_price));
-                let selling_p = new Intl.NumberFormat('en-IN', {maximumSignificantDigits: 3 }).format(parseInt(item.selling_price));
+                let original_p = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.original_price);
+                let selling_p = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.selling_price);
                 return (
                     <Card className='card-product-related mx-2' key={idx}>
                         <Link to={`/category/${item.category.slug}/${item.id}`} className='link-product'>
@@ -103,8 +103,8 @@ function ViewProductDetail(props) {
             }
         });
     }
-    let original_p = new Intl.NumberFormat('en-IN', {maximumSignificantDigits: 3 }).format(parseInt(product.original_price));
-    let selling_p = new Intl.NumberFormat('en-IN', {maximumSignificantDigits: 3 }).format(parseInt(product.selling_price));
+    let original_p = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(product.original_price);
+    let selling_p = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(product.selling_price);
     return (
         <div className='container mt-2'>
             <Breadcrumb className="mb-2">

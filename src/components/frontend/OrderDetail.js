@@ -20,7 +20,7 @@ function OrderItem(props) {
                 setOrder(res.data.order);
                 setloading(false);
             } else if (res.data.status === 419) {
-                history.push('/product');
+                history.push('/login');
                 Swal.fire('Thông báo', res.data.message, 'error');
             }
         })

@@ -1,7 +1,10 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { Card, Col, Row } from 'react-bootstrap';
+import { Accordion, Card, Col, Row, Table, Button } from 'react-bootstrap';
+import { Bar } from 'react-chartjs-2';
 import { Link } from 'react-router-dom';
+import { jsPDF } from "jspdf";
+import 'jspdf-autotable'
 
 function Dashboard() {
     document.title = 'Chingu | Thống kê';
@@ -10,7 +13,15 @@ function Dashboard() {
     const [content, setContent] = useState([]);
     const [order, setOrder] = useState([]);
     const [user, setUser] = useState([]);
+    const [month, setMonth] = useState([])
+    const [priceMonth, setPriceMonth] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [orderday, setOrderDay] = useState([]);
+    const [ordermoneyday, setOrderMoneyDay] = useState([]);
+    const [productSold, setProductSold] = useState([]);
+    const [productDetailSold, setProductDetailSold] = useState([]);
+
+    let total_price = [];
 
     useEffect(() => {
         axios.get(`/api/dashboard`).then(res => {
@@ -18,11 +29,87 @@ function Dashboard() {
             setContent(res.data.content);
             setOrder(res.data.order);
             setUser(res.data.user);
+            setMonth(res.data.month);
+            setPriceMonth(res.data.totalprice);
+            setOrderDay(res.data.orderday);
+            setOrderMoneyDay(res.data.money_day);
+            setProductSold(res.data.productsold);
+            setProductDetailSold(res.data.productdetailsold);
         });
         setLoading(false);
     }, []);
 
-    if(loading){
+    for (let i = 0; i <= 11; i++) {
+        total_price.push(priceMonth[i] / 1000000)
+    }
+
+    const data = {
+        labels: ["Một", "Hai", "Ba", "Bốn", "Năm", "Sáu", "Bảy", "Tám", "Chín", "Mười", "Mười một", "Mười hai"],
+        datasets: [
+            {
+                label: '# Đơn hàng (đơn vị tính: mỗi)',
+                data: month,
+                backgroundColor: 'rgb(255, 99, 132)',
+                stack: 'Stack 0',
+            },
+            {
+                label: '# Tổng tiền (đơn vị tính: triệu)',
+                data: total_price,
+                backgroundColor: 'rgb(75, 192, 192)',
+                stack: 'Stack 1',
+            },
+        ],
+    };
+
+    const OutPutPDF = (e) => {
+        e.preventDefault();
+        var today = new Date();
+        var dd = String(today.getDate()).padStart(2, '0');
+        var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+        var yyyy = today.getFullYear();
+        today = dd + '/' + mm + '/' + yyyy;
+        const marginLeft = 40;
+        const doc = new jsPDF("portrait", "pt", "A4");
+        doc.setFontSize(15);
+        doc.setFont('Times-Roman');
+        const title = `THE REPORT ${today} OF CHINGMUSIC WEBSITE`;
+        const headers = [["Product name", "Quantity", "Price"]];
+        const orders = `Total order: ${orderday}`
+        const product_sold = `Total product sold ${productSold} include:`
+        const total_price = `Total price: ${ordermoneyday}`
+        const data = productDetailSold.map((item) =>
+            [item.product.name, item.count, item.price]
+        )
+        let content = {
+            startY: 120,
+            head: headers,
+            body: data
+        };
+
+        doc.text(title, marginLeft + 100, 60);
+        doc.text(orders, marginLeft, 80);
+        doc.text(product_sold, marginLeft, 100);
+        doc.autoTable(content);
+        doc.text(total_price, marginLeft, 320);
+        doc.text("Sign,", marginLeft + 400, 700);
+        doc.save("BaoCaoTheoNgay.pdf");
+    }
+
+    const options = {
+        tension: 1,
+        scaleBeginAtZero: true,
+        scaleStartValue: 0,
+        scales: {
+            yAxes: [
+                {
+                    ticks: {
+                        beginAtZero: true,
+                    },
+                },
+            ],
+        },
+    };
+    if (loading) {
         return <div className="container loading"><h4>Đang tải dữ liệu</h4></div>
     }
     return (
@@ -81,7 +168,53 @@ function Dashboard() {
                     </Card>
                 </Col>
             </Row>
-        </div>
+            <Row className='mt-2'>
+                <h4>Bán hàng và doanh thu</h4>
+
+                <Accordion defaultActiveKey="0">
+                    <Accordion.Item eventKey="0">
+                        <Accordion.Header>Theo ngày hiện tại</Accordion.Header>
+                        <Accordion.Body>
+                        <Button className='float-end' variant='primary' onClick={OutPutPDF}>Xuất file pdf</Button>
+
+                            <h6>Số đơn hàng: {orderday}</h6>
+                            <h6>Thành tiền: {Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(ordermoneyday)}</h6>
+                            <h6>Số sản phẩm đã bán <span className="text-danger">{productSold}</span> bao gồm: 
+                            </h6>
+                            <Table striped bordered hover>
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Tên sản phẩm</th>
+                                        <th>Số lượng</th>
+                                        <th>Thành tiền</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {productDetailSold.map((item, idx) => {
+                                        return (
+                                            <tr key={idx}>
+                                                <td>{item.id}</td>
+                                                <td>{item.product.name}</td>
+                                                <td>{item.count}</td>
+                                                <td>{Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.price)}</td>
+                                            </tr>
+                                        )
+                                    })}
+                                </tbody>
+                                
+                            </Table>
+                        </Accordion.Body>
+                    </Accordion.Item>
+                    <Accordion.Item eventKey="1">
+                        <Accordion.Header>Theo tháng</Accordion.Header>
+                        <Accordion.Body>
+                            <Bar data={data} options={options} />
+                        </Accordion.Body>
+                    </Accordion.Item>
+                </Accordion>
+            </Row>
+        </div >
     )
 }
 export default Dashboard;

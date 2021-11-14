@@ -16,8 +16,6 @@ function Cart() {
     let totalCartPrice = 0;
     let totalOrder = 0;
 
-    
-
     if (!localStorage.getItem('auth_token')) {
         history.push('/login');
         Swal.fire("Thông tin", "Đăng nhập để tiếp tục", 'error')
