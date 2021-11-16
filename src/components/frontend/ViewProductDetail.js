@@ -76,7 +76,7 @@ function ViewProductDetail(props) {
         return <div className='loading'><h4>Đang tải, vui lòng đợi...</h4></div>
     } else {
         var relatedProduct_HTML = '';
-        relatedProduct_HTML = relatedProduct.slice(0, 5).map((item, idx) => {
+        relatedProduct_HTML = relatedProduct.sort(function() {return 0.5 - Math.random()}).slice(0, 5).map((item, idx) => {
             if (item.id !== product.id) {
                 let original_p = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.original_price);
                 let selling_p = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.selling_price);
@@ -159,7 +159,7 @@ function ViewProductDetail(props) {
             </div>
             <hr />
             <h4 className="text-uppercase title_category_home">Sản phẩm liên quan</h4>
-            <div className="related-area">
+            <div className="related-area mt-2 mb-2">
                 {relatedProduct_HTML}
             </div>
         </div>

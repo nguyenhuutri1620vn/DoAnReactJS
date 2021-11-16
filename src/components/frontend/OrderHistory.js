@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Breadcrumb, Col, ListGroup, Row, Table } from 'react-bootstrap';
 import { Link, useHistory } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import Moment from 'react-moment';
 
 
 function OrderHistory() {
@@ -28,7 +29,7 @@ function OrderHistory() {
         return <div className="loading"><h4>Đang tải trang, vui lòng đợi ...</h4></div>
     } else {
         var orderHistory_HTML = '';
-        orderHistory_HTML = order.map((item, idx) => {
+        orderHistory_HTML = order.sort((a, b) => (b.id - a.id)).map((item, idx) => {
             let price = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.total_price);
             function statusorder() {
                 if(item.status === 0){
@@ -41,6 +42,7 @@ function OrderHistory() {
                     return <p>Đơn hàng đã bị hủy</p>
                 }
             }
+            
             return (
                 <tr key={idx}>
                     <td>#</td>
@@ -50,6 +52,7 @@ function OrderHistory() {
                     </td>
                     <td className='text-center'>{item.number}</td>
                     <td className='text-center'>{price}</td>
+                    <td className='text-center'>{<Moment format="DD/MM/YYYY">{item.created_at}</Moment>}</td>
                     <td className='text-center'>{statusorder()}</td>
                 </tr>
             )
@@ -89,6 +92,7 @@ function OrderHistory() {
                                     <th className='text-center'>Mã đơn hàng</th>
                                     <th className='text-center'>Số lượng</th>
                                     <th className='text-center'>Tổng tiền</th>
+                                    <th className='text-center'>Ngày mua</th>
                                     <th className='text-center'>Trạng thái</th>
                                 </tr>
                             </thead>

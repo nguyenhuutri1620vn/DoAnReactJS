@@ -36,7 +36,7 @@ function AdminPrivateRoute({ ...rest }) {
     }, function (error) {
         if (error.response.status === 403) //access denied
         {
-            Swal.fire('z', error.response.data.message, 'warning');
+            Swal.fire('Thông báo', error.response.data.message, 'warning');
             history.push('/403')
         } else if (error.response.status === 404) //page not found
         {

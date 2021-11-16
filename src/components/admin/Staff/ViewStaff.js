@@ -4,6 +4,7 @@ import ReactPaginate from 'react-paginate';
 import Swal from "sweetalert2";
 import { Button } from 'react-bootstrap'
 import Moment from "react-moment";
+import { Link } from "react-router-dom";
 
 function ViewStaff() {
     document.title = 'Danh sách nhân viên';
@@ -79,12 +80,14 @@ function ViewStaff() {
         }).map((item) => {
             return (
                 <tr key={item.id}>
-                    <td className='col-3 col-sm-1'>{item.id}</td>
                     <td className='col-3 col-sm-1'>{item.username}</td>
                     <td className='col-3 col-sm-1'>{item.fullname}</td>
                     <td className='col-3 col-sm-1'>{item.email}</td>
                     <td className='col-3 col-sm-1'>{item.phone}</td>
                     <td className='col-3 col-sm-1'><Moment format="DD/MM/YYYY">{item.updated_at}</Moment></td>
+                    <td className='text-center'>
+                        <Link className="btn btn-warning" to={`/admin/edit-staff/${item.id}`}>Đổi mật khẩu</Link>
+                    </td>
                     <td className='text-center'>
                         <Button onClick={(e) => becomeAdmin(e, item.id)} variant="danger">→ Khách hàng</Button>
                     </td>
@@ -117,12 +120,12 @@ function ViewStaff() {
                     <table className='table table-hover table-bordered'>
                         <thead className='text-center'>
                             <tr>
-                                <th>ID</th>
                                 <th className='col-3 col-sm-1'>Username</th>
                                 <th className='col-3 col-sm-1'>Họ và tên</th>
                                 <th className='col-3 col-sm-1'>Email</th>
                                 <th className='col-3 col-sm-1'>Điện thoại</th>
                                 <th className='col-3 col-sm-1'>Ngày nhận việc</th>
+                                <th className='col-3 col-sm-1'>Sửa</th>
                                 <th className='col-3 col-sm-1'>Thao tác</th>
                             </tr>
                         </thead>

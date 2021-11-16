@@ -35,7 +35,7 @@ function Home() {
         return <div className='loading'><h4>Chào mừng tới ChinguMusic, vui lòng chờ...</h4></div>
     } else {
         var category_HTML = '';
-        category_HTML = category.map((item) => {
+        category_HTML = category.slice(0, 8).map((item) => {
             return (
                 <Card className="card-category" key={item.id}>
                     <Link to={`/category/${item.slug}`} className='link'>
@@ -49,7 +49,7 @@ function Home() {
             )
         })
         var featured_HTML = '';
-        featured_HTML = productFeatured.slice(0, 8).map((item) => {
+        featured_HTML = productFeatured.sort((a, b) => (b.id - a.id)).slice(0, 8).map((item) => {
             const submitAddtoCart = (e) => {
                 e.preventDefault();
                 setQuantity(1);
@@ -96,7 +96,7 @@ function Home() {
             )
         })
         var popular_HTML = '';
-        popular_HTML = productPopular.slice(0, 8).map((item) => {
+        popular_HTML = productPopular.sort((a, b) => (b.id - a.id)).slice(0, 8).map((item) => {
             const submitAddtoCart = (e) => {
                 e.preventDefault();
                 setQuantity(1);
@@ -140,7 +140,7 @@ function Home() {
             )
         })
         var content_html = '';
-        content_html = content.slice(0, 3).map((item) => {
+        content_html = content.sort((a, b) => (b.id - a.id)).slice(0,7 ).map((item) => {
             if (item.id !== 4 && item.id !== 5 && item.id !== 6) {
                 return (
                     <div className='col-md-6' key={item.id}>

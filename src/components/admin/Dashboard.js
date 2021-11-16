@@ -20,7 +20,7 @@ function Dashboard() {
     const [ordermoneyday, setOrderMoneyDay] = useState([]);
     const [productSold, setProductSold] = useState([]);
     const [productDetailSold, setProductDetailSold] = useState([]);
-
+    const [check, setCheck] = useState([]);
     let total_price = [];
 
     useEffect(() => {
@@ -36,6 +36,9 @@ function Dashboard() {
             setProductSold(res.data.productsold);
             setProductDetailSold(res.data.productdetailsold);
         });
+        axios.get(`/api/check-admin-staff`).then(res => {
+            setCheck(res.data.users);
+        })
         setLoading(false);
     }, []);
 
@@ -112,109 +115,148 @@ function Dashboard() {
     if (loading) {
         return <div className="container loading"><h4>Đang tải dữ liệu</h4></div>
     }
-    return (
-        <div className="container pt-3">
-            <Row>
-                <Col>
-                    <Card className="custom-cart-admin-sp">
-                        <Card.Body className="pt-4">
-                            <h1 className="text-light">
-                                {product.length}
-                            </h1>
-                            <h4 className="text-light">Sản phẩm</h4>
-                        </Card.Body>
-                        <Link to="/admin/view-product" className="link-product">
-                            <Card.Header className="text-light text-center custom-header-cart">DANH SÁCH SẢN PHẨM</Card.Header>
-                        </Link>
-                    </Card>
-                </Col>
-                <Col>
-                    <Card className="custom-cart-admin-bv">
-                        <Card.Body className="pt-4">
-                            <h1 className="text-light">
-                                {content.length}
-                            </h1>
-                            <h4 className="text-light">Bài viết</h4>
-                        </Card.Body>
-                        <Link to="/admin/view-news" className="link-product">
-                            <Card.Header className="text-light text-center">DANH SÁCH BÀI VIẾT</Card.Header>
-                        </Link>
-                    </Card>
-                </Col>
-                <Col>
-                    <Card className="custom-cart-admin-dh">
-                        <Card.Body className="pt-4">
-                            <h1 className="text-light">
-                                {order.length}
-                            </h1>
-                            <h4 className="text-light">Đơn hàng</h4>
-                        </Card.Body>
-                        <Link to="/admin/view-order" className="link-product">
-                            <Card.Header className="text-light text-center">DANH SÁCH ĐƠN HÀNG</Card.Header>
-                        </Link>
-                    </Card>
-                </Col>
-                <Col>
-                    <Card className="custom-cart-admin-nv">
-                        <Card.Body className="pt-4">
-                            <h1 className="text-light">
-                                {user.length}
-                            </h1>
-                            <h4 className="text-light">Nhân viên</h4>
-                        </Card.Body>
-                        <Link to="/admin/view-staff" className="link-product">
-                            <Card.Header className="text-light text-center">DANH SÁCH NHÂN VIÊN</Card.Header>
-                        </Link>
-                    </Card>
-                </Col>
-            </Row>
-            <Row className='mt-2'>
-                <h4>Bán hàng và doanh thu</h4>
+    if (check.role_as === 2) {
+        return (
+            <div className="container pt-3">
+                <Row>
+                    <Col>
+                        <Card className="custom-cart-admin-sp">
+                            <Card.Body className="pt-4">
+                                <h1 className="text-light">
+                                    {product.length}
+                                </h1>
+                                <h4 className="text-light">Sản phẩm</h4>
+                            </Card.Body>
+                            <Link to="/admin/view-product" className="link-product">
+                                <Card.Header className="text-light text-center custom-header-cart">DANH SÁCH SẢN PHẨM</Card.Header>
+                            </Link>
+                        </Card>
+                    </Col>
+                    <Col>
+                        <Card className="custom-cart-admin-bv">
+                            <Card.Body className="pt-4">
+                                <h1 className="text-light">
+                                    {content.length}
+                                </h1>
+                                <h4 className="text-light">Bài viết</h4>
+                            </Card.Body>
+                            <Link to="/admin/view-news" className="link-product">
+                                <Card.Header className="text-light text-center">DANH SÁCH BÀI VIẾT</Card.Header>
+                            </Link>
+                        </Card>
+                    </Col>
+                    <Col>
+                        <Card className="custom-cart-admin-dh">
+                            <Card.Body className="pt-4">
+                                <h1 className="text-light">
+                                    {order.length}
+                                </h1>
+                                <h4 className="text-light">Đơn hàng</h4>
+                            </Card.Body>
+                            <Link to="/admin/view-order" className="link-product">
+                                <Card.Header className="text-light text-center">DANH SÁCH ĐƠN HÀNG</Card.Header>
+                            </Link>
+                        </Card>
+                    </Col>
+                    <Col>
+                        <Card className="custom-cart-admin-nv">
+                            <Card.Body className="pt-4">
+                                <h1 className="text-light">
+                                    {user.length}
+                                </h1>
+                                <h4 className="text-light">Nhân viên</h4>
+                            </Card.Body>
+                            <Link to="/admin/view-staff" className="link-product">
+                                <Card.Header className="text-light text-center">DANH SÁCH NHÂN VIÊN</Card.Header>
+                            </Link>
+                        </Card>
+                    </Col>
+                </Row>
+                <Row className='mt-2'>
+                    <h4>Bán hàng và doanh thu</h4>
+                    <Accordion defaultActiveKey="0">
+                        <Accordion.Item eventKey="0">
+                            <Accordion.Header>Theo ngày hiện tại</Accordion.Header>
+                            <Accordion.Body>
+                                <Button className='float-end' variant='primary' onClick={OutPutPDF}>Xuất file pdf</Button>
 
-                <Accordion defaultActiveKey="0">
-                    <Accordion.Item eventKey="0">
-                        <Accordion.Header>Theo ngày hiện tại</Accordion.Header>
-                        <Accordion.Body>
+                                <h6>Số đơn hàng: {orderday}</h6>
+                                <h6>Thành tiền: {Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(ordermoneyday)}</h6>
+                                <h6>Số sản phẩm đã bán <span className="text-danger">{productSold}</span> bao gồm:
+                                </h6>
+                                <Table striped bordered hover>
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Tên sản phẩm</th>
+                                            <th>Số lượng</th>
+                                            <th>Thành tiền</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {productDetailSold.map((item, idx) => {
+                                            return (
+                                                <tr key={idx}>
+                                                    <td>{item.id}</td>
+                                                    <td>{item.product.name}</td>
+                                                    <td>{item.count}</td>
+                                                    <td>{Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.price)}</td>
+                                                </tr>
+                                            )
+                                        })}
+                                    </tbody>
+
+                                </Table>
+                            </Accordion.Body>
+                        </Accordion.Item>
+                        <Accordion.Item eventKey="1">
+                            <Accordion.Header>Theo tháng</Accordion.Header>
+                            <Accordion.Body>
+                                <Bar data={data} options={options} />
+                            </Accordion.Body>
+                        </Accordion.Item>
+                    </Accordion>
+                </Row>
+            </div >
+        )
+    } else {
+        return (
+            <div className='container pt-3'>
+                <Card>
+                    <Card.Header as="h5">Theo ngày hiện tại</Card.Header>
+                    <Card.Body>
                         <Button className='float-end' variant='primary' onClick={OutPutPDF}>Xuất file pdf</Button>
 
-                            <h6>Số đơn hàng: {orderday}</h6>
-                            <h6>Thành tiền: {Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(ordermoneyday)}</h6>
-                            <h6>Số sản phẩm đã bán <span className="text-danger">{productSold}</span> bao gồm: 
-                            </h6>
-                            <Table striped bordered hover>
-                                <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>Tên sản phẩm</th>
-                                        <th>Số lượng</th>
-                                        <th>Thành tiền</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {productDetailSold.map((item, idx) => {
-                                        return (
-                                            <tr key={idx}>
-                                                <td>{item.id}</td>
-                                                <td>{item.product.name}</td>
-                                                <td>{item.count}</td>
-                                                <td>{Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.price)}</td>
-                                            </tr>
-                                        )
-                                    })}
-                                </tbody>
-                                
-                            </Table>
-                        </Accordion.Body>
-                    </Accordion.Item>
-                    <Accordion.Item eventKey="1">
-                        <Accordion.Header>Theo tháng</Accordion.Header>
-                        <Accordion.Body>
-                            <Bar data={data} options={options} />
-                        </Accordion.Body>
-                    </Accordion.Item>
-                </Accordion>
-            </Row>
-        </div >
-    )
+                        <h6>Số đơn hàng: {orderday}</h6>
+                        <h6>Thành tiền: {Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(ordermoneyday)}</h6>
+                        <h6>Số sản phẩm đã bán <span className="text-danger">{productSold}</span> bao gồm:
+                        </h6>
+                        <Table striped bordered hover>
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Tên sản phẩm</th>
+                                    <th>Số lượng</th>
+                                    <th>Thành tiền</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {productDetailSold.map((item, idx) => {
+                                    return (
+                                        <tr key={idx}>
+                                            <td>{item.id}</td>
+                                            <td>{item.product.name}</td>
+                                            <td>{item.count}</td>
+                                            <td>{Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.price)}</td>
+                                        </tr>
+                                    )
+                                })}
+                            </tbody>
+                        </Table>
+                    </Card.Body>
+                </Card>
+            </div>
+        )
+    }
 }
 export default Dashboard;

@@ -34,7 +34,7 @@ function News() {
         return <div className="loading"><h4>Đang tải tin tức...</h4></div>
     } else {
         var content_HTML = '';
-        content_HTML = content.slice(pagesVisited, pagesVisited + contentPerPage).map((item, idx) => {
+        content_HTML = content.sort((a, b) => (b.id - a.id)).slice(pagesVisited, pagesVisited + contentPerPage).map((item, idx) => {
             return (
                 <Row key={idx}>
                     <Col xs={3}>

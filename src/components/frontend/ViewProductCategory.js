@@ -54,7 +54,7 @@ function ViewProductCategory(props) {
     } else {
         var product_HTML = '';
         if (productCount) {
-            product_HTML = product.slice(pagesVisited, pagesVisited + productPerPage).map((item, idx) => {
+            product_HTML = product.sort((a, b) => (b.id - a.id)).slice(pagesVisited, pagesVisited + productPerPage).map((item, idx) => {
                 const submitAddtoCart = (e) => {
                     e.preventDefault();
                     setQuantity(1);
@@ -103,7 +103,7 @@ function ViewProductCategory(props) {
             })
         } else {
             product_HTML =
-                <div>
+                <div className='container'>
                     <h4>Không có sản phẩm nào là {category.name}</h4>
                 </div>
         }

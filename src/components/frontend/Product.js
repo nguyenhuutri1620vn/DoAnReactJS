@@ -39,7 +39,7 @@ function Product() {
     } else {
 
         var product_HTML = '';
-        product_HTML = product.slice(pagesVisited, pagesVisited + productPerPage).map((item) => {
+        product_HTML = product.sort(function() {return 0.5 - Math.random()}).slice(pagesVisited, pagesVisited + productPerPage).map((item) => {
             const submitAddtoCart = (e) => {
                 e.preventDefault();
                 setQuantity(1);
@@ -87,7 +87,7 @@ function Product() {
             )
         });
         var productFeatured_HTML = '';
-        productFeatured_HTML = product.slice(pagesVisited, pagesVisited + productPerPage).map((item) => {
+        productFeatured_HTML = product.slice(pagesVisited, pagesVisited + productPerPage).sort(function() {return 0.5 - Math.random()}).map((item) => {
             if (item.featured === 1) {
                 const submitAddtoCart = (e) => {
                     e.preventDefault();
@@ -139,7 +139,7 @@ function Product() {
             }
         });
         var productPopular_HTML = '';
-        productPopular_HTML = product.slice(pagesVisited, pagesVisited + productPerPage).map((item) => {
+        productPopular_HTML = product.slice(pagesVisited, pagesVisited + productPerPage).sort(function() {return 0.5 - Math.random()}).map((item) => {
             if (item.popular === 1) {
                 const submitAddtoCart = (e) => {
                     e.preventDefault();

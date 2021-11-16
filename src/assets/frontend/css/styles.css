@@ -300,8 +300,10 @@ input {
 
 .footer {
   padding-top: 10px;
-  bottom: 0;
   border-top: 1px solid rgb(168, 157, 157);
+  left: 0;
+  bottom: 0;
+  width: 100%;
 }
 
 .carousel {
@@ -762,6 +764,7 @@ a {
   margin-left: var(--spacing);
   margin-bottom: var(--spacing);
   margin-bottom: 15px;
+  height: 300px;
 }
 
 .content {

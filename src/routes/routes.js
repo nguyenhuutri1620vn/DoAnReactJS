@@ -1,5 +1,5 @@
 import Dashboard from "../components/admin/Dashboard";
-import Profile from "../components/admin/Profile";
+import EditStaff from "../components/admin/Staff/EditStaff";
 
 import AddCategory from "../components/admin/Category/AddCategory";
 import ViewCategory from "../components/admin/Category/ViewCategory";
@@ -12,7 +12,6 @@ import EditProducer from "../components/admin/Producer/EditProducer";
 import AddProduct from "../components/admin/Product/AddProduct";
 import ViewProduct from "../components/admin/Product/ViewProduct";
 import EditProduct from "../components/admin/Product/EditProduct";
-
 
 import AddNews from "../components/admin/News/AddNews";
 import ViewNews from "../components/admin/News/ViewNews";
@@ -29,7 +28,7 @@ import OrderView from "../components/admin/Order/OrderView";
 const routes = [
     {path: '/admin', exact: true, name: 'Admin'},
     {path: '/admin/dashboard', exact: true, name: 'Dashboard', component: Dashboard},
-    {path: '/admin/profile', exact: true, name: 'Profile', component: Profile},
+    {path: '/admin/edit-staff/:id', exact: true, name: 'EditStaff', component: EditStaff},
 
     //category
     {path: '/admin/add-category', exact: true, name: 'AddCategory', component: AddCategory},
