@@ -49,7 +49,7 @@ function Home() {
             )
         })
         var featured_HTML = '';
-        featured_HTML = productFeatured.sort((a, b) => (b.id - a.id)).slice(0, 8).map((item) => {
+        featured_HTML = productFeatured.sort(function() {return 0.5 - Math.random()}).slice(0, 8).map((item) => {
             const submitAddtoCart = (e) => {
                 e.preventDefault();
                 setQuantity(1);
@@ -96,7 +96,7 @@ function Home() {
             )
         })
         var popular_HTML = '';
-        popular_HTML = productPopular.sort((a, b) => (b.id - a.id)).slice(0, 8).map((item) => {
+        popular_HTML = productPopular.sort(function() {return 0.5 - Math.random()}).slice(0, 8).map((item) => {
             const submitAddtoCart = (e) => {
                 e.preventDefault();
                 setQuantity(1);

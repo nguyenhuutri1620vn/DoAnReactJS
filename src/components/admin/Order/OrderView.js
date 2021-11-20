@@ -164,7 +164,7 @@ function OrderView() {
                     )
                 } else {
                     return (
-                        <p className="text-danger" id="ordercancel_customer">Đơn hàng đã hủy</p>
+                        <p className="text-danger" id="ordercancel_customer">Đơn hàng nhân viên hủy</p>
                     )
                 } 
             }
@@ -203,15 +203,6 @@ function OrderView() {
         <div className="container pt-2">
             <div className="px-2">
                 <h4 >Danh sách đơn hàng</h4>
-                <div className="input-group mb-3">
-                    <select className="custom-select">
-                        <option>Tất cả đơn hàng</option>
-                        <option defaultValue>Đơn hàng chờ duyệt</option>
-                        <option>Đơn hàng đang giao</option>
-                        <option>Đơn hàng đã giao</option>
-                        <option>Đơn hàng đã hủy</option>
-                    </select>
-                </div>
             </div>
             <div className="content">
                 <div className="row">

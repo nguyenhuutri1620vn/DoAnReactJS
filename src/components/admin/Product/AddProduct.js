@@ -166,6 +166,7 @@ function AddProduct() {
                                     value={productInput.description}
                                 />
                             </div>
+                            <small className='text-danger'>{errorlist.description}</small>
                         </div>
                         <div className="tab-pane card-body fade" id="seo-tags" role="tabpanel" aria-labelledby="profile-tab">
                             <div className='form-group mb-3'>

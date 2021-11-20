@@ -25,6 +25,41 @@ function OrderHistory() {
         })
     }, [history])
 
+    const CancelOrder = (e, id) => {
+        e.preventDefault();
+        const thisClicked = e.currentTarget;
+        Swal.fire({
+            title: "Xác nhận xóa sản phẩm?",
+            text: "Khi mà đã xóa rồi thì không hoàn tác được!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Đồng ý!',
+            cancelButtonText: 'Hủy!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire(
+                    'Xóa thành công',
+                    'Poof! Sản phẩm đã được xóa!',
+                    'success'
+                )
+                axios.post(`/api/cancel-order-cus/${id}`).then(res => {
+                    if (res.data.status === 200) {
+                        console.log(res.data.message);
+                        thisClicked.closest('tr').remove();
+                    } else if (res.data.status === 404) {
+                        console.log(res.data.message);
+                    }
+                })
+            } else {
+
+            }
+        })
+
+    }
+
+
     if (loading) {
         return <div className="loading"><h4>Đang tải trang, vui lòng đợi ...</h4></div>
     } else {
@@ -32,17 +67,22 @@ function OrderHistory() {
         orderHistory_HTML = order.sort((a, b) => (b.id - a.id)).map((item, idx) => {
             let price = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.total_price);
             function statusorder() {
-                if(item.status === 0){
-                    return <p>Đang chờ duyệt</p>
-                }else if(item.status === 1){
-                    return <p>Đang giao</p>
-                }else if(item.status === 2){
-                    return <p>Giao thành công</p>
-                }else if(item.status === 3){
-                    return <p>Đơn hàng đã bị hủy</p>
+                if (item.status === 0) {
+                    return (
+                        <div>
+                            <p>Đang chờ duyệt.</p>
+                            <Link className="text-danger" onClick={(e) => CancelOrder(e, item.id)}>Hủy đơn hàng</Link>
+                        </div>
+                    )
+                } else if (item.status === 1) {
+                    return <p className='text-info'>Đang giao</p>
+                } else if (item.status === 2) {
+                    return <p className='text-success'>Giao thành công</p>
+                } else if (item.status === 3) {
+                    return <p className='text-danger'>Đơn hàng nhân viên hủy</p>
                 }
             }
-            
+
             return (
                 <tr key={idx}>
                     <td>#</td>

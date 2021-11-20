@@ -3,12 +3,14 @@ import React, { useEffect, useState } from 'react';
 import { Accordion, Card, Col, Row, Table, Button } from 'react-bootstrap';
 import { Bar } from 'react-chartjs-2';
 import { Link } from 'react-router-dom';
+import Calendar from 'react-calendar';
 import { jsPDF } from "jspdf";
 import 'jspdf-autotable'
 
 function Dashboard() {
     document.title = 'Chingu | Thống kê';
 
+    const [showCalendar, setShowCalendar] = useState(false);
     const [product, setProduct] = useState([]);
     const [content, setContent] = useState([]);
     const [order, setOrder] = useState([]);
@@ -21,8 +23,12 @@ function Dashboard() {
     const [productSold, setProductSold] = useState([]);
     const [productDetailSold, setProductDetailSold] = useState([]);
     const [check, setCheck] = useState([]);
+    const [value, setValue] = useState(new Date());
     let total_price = [];
-
+    const handleChange = value => {
+        setValue(value);
+        setShowCalendar(false);
+    };
     useEffect(() => {
         axios.get(`/api/dashboard`).then(res => {
             setProduct(res.data.product);
@@ -112,6 +118,29 @@ function Dashboard() {
             ],
         },
     };
+    const Submitday = (value) => {
+        function formatDate(date) {
+            var d = new Date(date),
+                month = '' + (d.getMonth() + 1),
+                day = '' + d.getDate(),
+                year = d.getFullYear();
+        
+            if (month.length < 2) 
+                month = '0' + month;
+            if (day.length < 2) 
+                day = '0' + day;
+        
+            return [year, month, day].join('-');
+        }
+        axios.post(`/api/day-order/${formatDate(value)}`).then(res=>{
+            if (res.data.status === 200){
+                setOrderDay(res.data.orderday);
+                setOrderMoneyDay(res.data.money_day);
+                setProductSold(res.data.productsold);
+                setProductDetailSold(res.data.productdetailsold);
+            }
+        })
+    }
     if (loading) {
         return <div className="container loading"><h4>Đang tải dữ liệu</h4></div>
     }
@@ -176,8 +205,21 @@ function Dashboard() {
                     <h4>Bán hàng và doanh thu</h4>
                     <Accordion defaultActiveKey="0">
                         <Accordion.Item eventKey="0">
-                            <Accordion.Header>Theo ngày hiện tại</Accordion.Header>
+                            <Accordion.Header>Theo ngày</Accordion.Header>
                             <Accordion.Body>
+                                <input
+                                    value={value.toLocaleDateString()}
+                                    onFocus={() => setShowCalendar(true)}
+                                    className="form-control my-2"
+                                />
+                                <div className='calendar-container'>
+                                    <Calendar
+                                        onChange={handleChange}
+                                        value={value}
+                                        className={showCalendar ? "" : "hide"}
+                                        onClickDay={Submitday}
+                                    />
+                                </div>
                                 <Button className='float-end' variant='primary' onClick={OutPutPDF}>Xuất file pdf</Button>
 
                                 <h6>Số đơn hàng: {orderday}</h6>

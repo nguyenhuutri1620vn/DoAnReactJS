@@ -37,7 +37,6 @@ function Product() {
     if (loading) {
         return <div className='loading'><h4>Đang tải sản phẩm...</h4></div>
     } else {
-
         var product_HTML = '';
         product_HTML = product.sort(function() {return 0.5 - Math.random()}).slice(pagesVisited, pagesVisited + productPerPage).map((item) => {
             const submitAddtoCart = (e) => {
@@ -87,7 +86,7 @@ function Product() {
             )
         });
         var productFeatured_HTML = '';
-        productFeatured_HTML = product.slice(pagesVisited, pagesVisited + productPerPage).sort(function() {return 0.5 - Math.random()}).map((item) => {
+        productFeatured_HTML = product.sort(function() {return 0.5 - Math.random()}).slice(pagesVisited, pagesVisited + productPerPage).map((item) => {
             if (item.featured === 1) {
                 const submitAddtoCart = (e) => {
                     e.preventDefault();
@@ -139,7 +138,7 @@ function Product() {
             }
         });
         var productPopular_HTML = '';
-        productPopular_HTML = product.slice(pagesVisited, pagesVisited + productPerPage).sort(function() {return 0.5 - Math.random()}).map((item) => {
+        productPopular_HTML = product.sort(function() {return 0.5 - Math.random()}).slice(pagesVisited, pagesVisited + productPerPage).map((item) => {
             if (item.popular === 1) {
                 const submitAddtoCart = (e) => {
                     e.preventDefault();
@@ -243,7 +242,7 @@ function Product() {
                     containerClassName={"paginationBttns"}
                     previousLinkClassName={"previousBttn"}
                     nextLinkClassName={"nextBttn"}
-                    disabledClassName={"paginationDisable"}
+                    disabledClassName={"p0aginationDisable"}
                     activeClassName={"paginationActive"}
                 >
                 </ReactPaginate>

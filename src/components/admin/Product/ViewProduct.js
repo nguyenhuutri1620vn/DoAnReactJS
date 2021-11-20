@@ -14,7 +14,7 @@ function ViewProduct() {
     const [product, setProduct] = useState([]);
     const [loading, setLoading] = useState(true);
 
-    const productPerPage = 5;
+    const productPerPage = 20;
     const pagesVisited = pageNumber * productPerPage;
 
     const pageCount = Math.ceil(product.length / productPerPage);
@@ -35,10 +35,10 @@ function ViewProduct() {
         e.preventDefault();
 
         const thisClicked = e.currentTarget;
-        thisClicked.innerText = "Deleting"
+        thisClicked.innerText = "Đang xóa"
         Swal.fire({
-            title: "Có chắc là muốn xóa chưa?",
-            text: "Khi mà đã xóa rồi thì không hoàn tác được đâu đấy!",
+            title: "Xác nhận xóa sản phẩm?",
+            text: "Khi mà đã xóa rồi thì không hoàn tác được!",
             icon: "warning",
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
@@ -71,7 +71,7 @@ function ViewProduct() {
     } else {
         display_product = product.sort((a, b) => (b.id - a.id)).slice(pagesVisited, pagesVisited + productPerPage).filter((item) => {
             if (search === '') {
-                return item;
+                return item;            
             } else if (item.name.toString().toLowerCase().includes(search.toLowerCase())) {
                 return item;
             } else {
@@ -94,8 +94,8 @@ function ViewProduct() {
                     <td className='text-center'><Link to={`/admin/edit-product/${item.id}`} className='btn btn-warning'>Sửa</Link></td>
                     <td className='text-center'><Button variant="danger" onClick={(e) => deleteProduct(e, item.id)}>Xóa</Button></td>
                 </tr>
-            );
-        });
+            )
+        })
     }
 
 
