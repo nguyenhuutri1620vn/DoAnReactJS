@@ -132,6 +132,7 @@ function Dashboard() {
         
             return [year, month, day].join('-');
         }
+        console.log(formatDate(value));
         axios.post(`/api/day-order/${formatDate(value)}`).then(res=>{
             if (res.data.status === 200){
                 setOrderDay(res.data.orderday);

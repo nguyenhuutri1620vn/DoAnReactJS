@@ -69,31 +69,58 @@ function ViewStaff() {
     if (loading) {
         return <h4>Danh sách nhân viên đang tải, vui lòng đợi...</h4>
     } else {
-        display_staff = staff.slice(pagesVisited, pagesVisited + staffPerPage).filter((item) => {
-            if (search === '') {
-                return item;
-            } else if (item.username.toString().toLowerCase().includes(search.toLowerCase())) {
-                return item;
-            } else {
-                return item;
-            }
-        }).map((item) => {
-            return (
-                <tr key={item.id}>
-                    <td className='col-3 col-sm-1'>{item.username}</td>
-                    <td className='col-3 col-sm-1'>{item.fullname}</td>
-                    <td className='col-3 col-sm-1'>{item.email}</td>
-                    <td className='col-3 col-sm-1'>{item.phone}</td>
-                    <td className='col-3 col-sm-1'><Moment format="DD/MM/YYYY">{item.updated_at}</Moment></td>
-                    <td className='text-center'>
-                        <Link className="btn btn-warning" to={`/admin/edit-staff/${item.id}`}>Đổi mật khẩu</Link>
-                    </td>
-                    <td className='text-center'>
-                        <Button onClick={(e) => becomeAdmin(e, item.id)} variant="danger">→ Khách hàng</Button>
-                    </td>
-                </tr>
-            );
-        });
+        if (search !== '') {
+            display_staff =
+                staff.sort((a, b) => (b.id - a.id)).filter((item) => {
+                    if (item.username.toString().toLowerCase().includes(search.toLowerCase())) {
+                        return item
+                    } else {
+                        return null
+                    }
+                }).map((item) => {
+                    return (
+                        <tr key={item.id}>
+                            <td className='col-3 col-sm-1'>{item.username}</td>
+                            <td className='col-3 col-sm-1'>{item.fullname}</td>
+                            <td className='col-3 col-sm-1'>{item.email}</td>
+                            <td className='col-3 col-sm-1'>{item.phone}</td>
+                            <td className='col-3 col-sm-1'><Moment format="DD/MM/YYYY">{item.updated_at}</Moment></td>
+                            <td className='text-center'>
+                                <Link className="btn btn-warning" to={`/admin/edit-staff/${item.id}`}>Đổi mật khẩu</Link>
+                            </td>
+                            <td className='text-center'>
+                                <Button onClick={(e) => becomeAdmin(e, item.id)} variant="danger">→ Khách hàng</Button>
+                            </td>
+                        </tr>
+                    )
+                })
+        } else {
+            display_staff = staff.slice(pagesVisited, pagesVisited + staffPerPage).filter((item) => {
+                if (search === '') {
+                    return item;
+                } else if (item.username.toString().toLowerCase().includes(search.toLowerCase())) {
+                    return item;
+                } else {
+                    return item;
+                }
+            }).map((item) => {
+                return (
+                    <tr key={item.id}>
+                        <td className='col-3 col-sm-1'>{item.username}</td>
+                        <td className='col-3 col-sm-1'>{item.fullname}</td>
+                        <td className='col-3 col-sm-1'>{item.email}</td>
+                        <td className='col-3 col-sm-1'>{item.phone}</td>
+                        <td className='col-3 col-sm-1'><Moment format="DD/MM/YYYY">{item.updated_at}</Moment></td>
+                        <td className='text-center'>
+                            <Link className="btn btn-warning" to={`/admin/edit-staff/${item.id}`}>Đổi mật khẩu</Link>
+                        </td>
+                        <td className='text-center'>
+                            <Button onClick={(e) => becomeAdmin(e, item.id)} variant="danger">→ Khách hàng</Button>
+                        </td>
+                    </tr>
+                );
+            })
+        }
     }
 
 

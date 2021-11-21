@@ -560,17 +560,25 @@ a {
   margin-bottom: var(--spacing);
   border-radius: 1%;
 }
-
+.image-thanks{
+  position: relative;
+  height: 100px;
+  width: 100px;
+}
 .card-product-related {
   overflow: hidden;
   background-color: white;
   box-shadow: rgba(100, 100, 111, 0.2) 7px 7px 29px 0px;
-  width: calc(calc(100% / var(--columns)) - var(--spacing));
+  /* width: calc(calc(100% / var(--columns)) - var(--spacing)); */
   margin-left: var(--spacing);
   margin-bottom: var(--spacing);
   border-radius: 1%;
+  width: 300px;
 }
-
+.thanks-you{
+  height: 400px;
+  
+}
 .card-category {
   overflow: hidden;
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
@@ -596,7 +604,9 @@ a {
   flex-shrink: 0;
   padding: 5px;
 }
-
+.ig-c{
+  width: 100px
+}
 .card-image-related {
   height: 150px;
   width: 50%;

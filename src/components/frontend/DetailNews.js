@@ -28,7 +28,7 @@ function DetailNews(props) {
         return <div className="loading"><h4>Đang tải...</h4></div>
     } else {
         var content_HTML = '';
-        content_HTML = relatedConent.slice(0, 4).map((item, idx) => {
+        content_HTML = relatedConent.sort((a, b) => (b.id - a.id)).slice(0, 4).map((item, idx) => {
             return (
                 <Row className="related_news" key={idx}>
                     <Link className="link-to-default" to={`/news/${item.id}`}>

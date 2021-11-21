@@ -83,8 +83,8 @@ function Home() {
                             <Card.Text className='card-text'>
                                 <p className="card-user-name small">Loại sản phẩm: {item.category.name}</p>
                                 <p className="card-user-name small">Thương hiệu: {item.producer.name}</p>
-                                <del className="card-user-name smaill">Giá gốc: {original_p} VNĐ</del>
-                                <p className="card-user-name selling-price">Giá bán: {selling_p} VNĐ</p>
+                                <del className="card-user-name smaill">Giá gốc: {original_p}</del>
+                                <p className="card-user-name selling-price">Giá bán: {selling_p}</p>
                             </Card.Text>
                             <div className="card-bottom">
                                 <Button variant="danger" onClick={submitAddtoCart}><BsFillCartCheckFill /></Button>
@@ -130,8 +130,8 @@ function Home() {
                             <Card.Text className='card-text'>
                                 <p className="card-user-name small">Loại sản phẩm: {item.category.name}</p>
                                 <p className="card-user-name small">Thương hiệu: {item.producer.name}</p>
-                                <del className="card-user-name smaill">Giá gốc: {original_p} VNĐ</del>
-                                <p className="card-user-name selling-price">Giá bán: ${selling_p} VNĐ</p>
+                                <del className="card-user-name smaill">Giá gốc: {original_p}</del>
+                                <p className="card-user-name selling-price">Giá bán: ${selling_p}</p>
                             </Card.Text>
                             <Button variant="danger" onClick={submitAddtoCart}><BsFillCartCheckFill /></Button>
                         </Card.Body>

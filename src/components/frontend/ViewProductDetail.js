@@ -1,10 +1,11 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { Breadcrumb, Button, Card, Col, Figure, Row } from 'react-bootstrap'
+import { Breadcrumb, Button, Card, Col, Figure, Row, Tab, Tabs } from 'react-bootstrap'
 import { Link, useHistory } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import Moment from 'react-moment';
 import { BsFillCartCheckFill } from 'react-icons/bs';
+import ReactPlayer from 'react-player'
 
 
 function ViewProductDetail(props) {
@@ -40,7 +41,7 @@ function ViewProductDetail(props) {
             } else if (res.data.status === 401) {
                 Swal.fire("Có lỗi", res.data.message, "error");
                 history.push('/login');
-            }else if (res.data.status === 404) {
+            } else if (res.data.status === 404) {
                 Swal.fire("Thông báo", res.data.message, "warning");
             }
 
@@ -76,21 +77,23 @@ function ViewProductDetail(props) {
         return <div className='loading'><h4>Đang tải, vui lòng đợi...</h4></div>
     } else {
         var relatedProduct_HTML = '';
-        relatedProduct_HTML = relatedProduct.sort(function() {return 0.5 - Math.random()}).slice(0, 5).map((item, idx) => {
+        relatedProduct_HTML = relatedProduct.sort(function () { return 0.5 - Math.random() }).slice(0, 4).map((item, idx) => {
             if (item.id !== product.id) {
                 let original_p = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.original_price);
                 let selling_p = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.selling_price);
                 return (
                     <Card className='card-product-related mx-2' key={idx}>
                         <Link to={`/category/${item.category.slug}/${item.id}`} className='link-product'>
-                            <Card.Img
-                                src={`http://localhost:8000/${item.image}`}
-                                className='card-image' />
+                            
+                                <Card.Img
+                                    src={`http://localhost:8000/${item.image}`}
+                                    className='card-image' />
+                       
                             <Card.Body>
                                 <Card.Title>{item.name}</Card.Title>
                                 <Card.Text className='card-text'>
-                                    <del className="card-user-name smaill">Giá gốc: {original_p} VNĐ</del>
-                                    <p className="card-user-name selling-price">Giá bán: ${selling_p} VNĐ</p>
+                                    <del className="card-user-name smaill">Giá gốc: {original_p}</del>
+                                    <p className="card-user-name selling-price">Giá bán: ${selling_p}</p>
                                 </Card.Text>
                             </Card.Body>
                         </Link>
@@ -138,8 +141,8 @@ function ViewProductDetail(props) {
                         {/* <p className="brand-info">Brand: <Link to="" className="link-to"> Taylor</Link></p> */}
                     </div>
                     <div className='price-area'>
-                        <del className="ori-price">Giá gốc: {original_p} VNĐ</del>
-                        <p className=" text-danger mt-2">Giá bán: ${selling_p} VNĐ</p>
+                        <del className="ori-price">Giá gốc: {original_p}</del>
+                        <p className=" text-danger mt-2">Giá bán: ${selling_p}</p>
                     </div>
                     <label className="btn-sm btn-success px-4 mt-2">Còn hàng</label>
                     <br />
@@ -155,7 +158,17 @@ function ViewProductDetail(props) {
             <hr />
             <div className="desription-text">
                 <h4 className="text-uppercase title_category_home">Mô tả</h4>
-                <div dangerouslySetInnerHTML={{ __html: product.description }} className="container"></div>
+                <Tabs defaultActiveKey="home" id="uncontrolled-tab-example" className="mb-3">
+                    <Tab eventKey="home" title="Thông tin sản phẩm">
+                        <div dangerouslySetInnerHTML={{ __html: product.description }} className="container"></div>
+                    </Tab>
+                    <Tab eventKey="video" title="Video">
+                        <div>
+                            <ReactPlayer url={product.video} width='1120px' height='500px' />
+                        </div>
+                    </Tab>
+                </Tabs>
+
             </div>
             <hr />
             <h4 className="text-uppercase title_category_home">Sản phẩm liên quan</h4>

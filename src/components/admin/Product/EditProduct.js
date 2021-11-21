@@ -77,6 +77,7 @@ function EditProduct(props) {
         formData.append('name', productInput.name);
         formData.append('slug', productInput.slug);
         formData.append('description', productInput.description);
+        formData.append('video', productInput.video);
 
         formData.append('meta_title', productInput.meta_title);
         formData.append('meta_keyword', productInput.meta_keyword);
@@ -166,8 +167,8 @@ function EditProduct(props) {
                                 <label>Mô tả</label>
                                 <CKEditor
                                     editor={ClassicEditor}
-
                                     name='description'
+                                    edit
                                     onChange={handleDescrip}
                                     // value={productInput.description}
                                     data={productInput.description}
@@ -216,30 +217,31 @@ function EditProduct(props) {
                                     <label>Hình ảnh</label>
                                     <input type='file' name='image' onChange={handleImage} className='form-control' />
                                     <img src={`http://localhost:8000/${[productInput.image]}`} width='200px' className='mt-4' alt={productInput.name} />
-
                                 </div>
                                 <small className='text-danger'>{errorlist.image}</small>
                                 <div className='col-md-4 form-group mb-3'>
+                                    <label>Video (URL)</label>
+                                    <input type='text' name='video' value={productInput.video}  onChange={handleInput} className='form-control' />
+                                </div>
+                                <div className='col-md-12 form-group mb-3'>
                                     <label>Nổi bật</label>
-                                    <input type='checkbox' name='featured' className='form-check-input ms-5' id="featuredCheckChecked" onChange={handleCheckbox} defaultChecked={allCheckbox.featured === 1 ? true : false} />
-                                    <label className="form-check-label " htmlFor="featuredCheckChecked">
+                                    <input type='checkbox' name='featured' className='form-check-input ms-2' id="featuredCheckChecked" onChange={handleCheckbox} defaultChecked={allCheckbox.featured === 1 ? true : false} />
+                                    <label className="form-check-label me-5" htmlFor="featuredCheckChecked">
                                         Check
                                     </label>
-                                </div>
-                                <div className='col-md-4 form-group mb-3'>
-                                    <label>Phổ biến</label>
-                                    <input type='checkbox' name='popular' className='form-check-input ms-5' id="popularCheckChecked" onChange={handleCheckbox} defaultChecked={allCheckbox.popular === 1 ? true : false} />
-                                    <label className="form-check-label " htmlFor="popularCheckChecked">
+                                    <label >Phổ biến</label>
+                                    <input type='checkbox' name='popular' className='form-check-input ms-2' id="popularCheckChecked" onChange={handleCheckbox} defaultChecked={allCheckbox.popular === 1 ? true : false} />
+                                    <label className="form-check-label me-5" htmlFor="popularCheckChecked">
                                         Check
                                     </label>
-                                </div>
-                                <div className='col-md-4 form-group mb-3'>
-                                    <label>Trạng thái</label>
-                                    <input type='checkbox' name='status' className='form-check-input ms-5' onChange={handleCheckbox} defaultChecked={allCheckbox.status === 1 ? true : false} />
-                                    <label className="form-check-label " htmlFor="statusCheckChecked">
+
+                                    <label className='mx-2'>Trạng thái</label>
+                                    <input type='checkbox' name='status' className='form-check-input ms-2' onChange={handleCheckbox} defaultChecked={allCheckbox.status === 1 ? true : false} />
+                                    <label className="form-check-label me-5" htmlFor="statusCheckChecked">
                                         Hiện
                                     </label>
                                 </div>
+
                             </div>
                         </div>
                     </div>

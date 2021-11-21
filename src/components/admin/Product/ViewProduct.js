@@ -54,7 +54,7 @@ function ViewProduct() {
                 )
                 axios.delete(`/api/delete-product/${id}`).then(res => {
                     if (res.data.status === 200) {
-                        thisClicked.closest('tr').remove();
+                        thisClicked.innerText = "Đã xóa"
                     } else if (res.data.status === 404) {
                         thisClicked.innerText = "Xóa"
                     }
@@ -69,33 +69,54 @@ function ViewProduct() {
     if (loading) {
         return <h4>Đang tải trang danh sách sản phẩm, vui lòng chờ...</h4>
     } else {
-        display_product = product.sort((a, b) => (b.id - a.id)).slice(pagesVisited, pagesVisited + productPerPage).filter((item) => {
-            if (search === '') {
-                return item;            
-            } else if (item.name.toString().toLowerCase().includes(search.toLowerCase())) {
-                return item;
-            } else {
-                return null;
-            }
-        }).map((item) => {
-            let original_price = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.original_price);
-            let selling_price = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.selling_price);
-            return (
-                <tr key={item.id}>
-                    <td className='text-center'>{item.id}</td>
-                    <td>{item.category.name}</td>
-                    <td>{item.producer.name}</td>
-                    <td>{item.name}</td>
-                    <td className='text-center'>{original_price}</td>
-                    <td className='text-center'>{selling_price}</td>
-                    <td className='text-center'>{item.number}</td>
-                    <td className='text-center'><img src={`http://localhost:8000/${item.image}`} width='100px' alt={item.name} /></td>
-                    <td className='text-center'>{item.status === 1 ? "Hiện" : "Ẩn"}</td>
-                    <td className='text-center'><Link to={`/admin/edit-product/${item.id}`} className='btn btn-warning'>Sửa</Link></td>
-                    <td className='text-center'><Button variant="danger" onClick={(e) => deleteProduct(e, item.id)}>Xóa</Button></td>
-                </tr>
-            )
-        })
+        if (search !== '') {
+            display_product =
+                product.sort((a, b) => (b.id - a.id)).filter((item) => {
+                    if (item.name.toString().toLowerCase().includes(search.toLowerCase())) {
+                        return item
+                    } else {
+                        return null
+                    }
+                }).map((item) => {
+                    let original_price = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.original_price);
+                    let selling_price = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.selling_price);
+                    return (
+                        <tr key={item.id}>
+                            <td className='text-center'>{item.id}</td>
+                            <td>{item.category.name}</td>
+                            <td>{item.producer.name}</td>
+                            <td>{item.name}</td>
+                            <td className='text-center'>{original_price}</td>
+                            <td className='text-center'>{selling_price}</td>
+                            <td className='text-center'>{item.number}</td>
+                            <td className='text-center'><img src={`http://localhost:8000/${item.image}`} width='100px' alt={item.name} /></td>
+                            <td className='text-center'>{item.status === 1 ? "Hiện" : "Ẩn"}</td>
+                            <td className='text-center'><Link to={`/admin/edit-product/${item.id}`} className='btn btn-warning'>Sửa</Link></td>
+                            <td className='text-center'><Button variant="danger" onClick={(e) => deleteProduct(e, item.id)}>Xóa</Button></td>
+                        </tr>
+                    )
+                })
+        } else {
+            display_product = product.sort((a, b) => (b.id - a.id)).slice(pagesVisited, pagesVisited + productPerPage).map((item) => {
+                let original_price = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.original_price);
+                let selling_price = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.selling_price);
+                return (
+                    <tr key={item.id}>
+                        <td className='text-center'>{item.id}</td>
+                        <td>{item.category.name}</td>
+                        <td>{item.producer.name}</td>
+                        <td>{item.name}</td>
+                        <td className='text-center'>{original_price}</td>
+                        <td className='text-center'>{selling_price}</td>
+                        <td className='text-center'>{item.number}</td>
+                        <td className='text-center'><img src={`http://localhost:8000/${item.image}`} width='100px' alt={item.name} /></td>
+                        <td className='text-center'>{item.status === 1 ? "Hiện" : "Ẩn"}</td>
+                        <td className='text-center'><Link to={`/admin/edit-product/${item.id}`} className='btn btn-warning'>Sửa</Link></td>
+                        <td className='text-center'><Button variant="danger" onClick={(e) => deleteProduct(e, item.id)}>Xóa</Button></td>
+                    </tr>
+                )
+            })
+        }
     }
 
 

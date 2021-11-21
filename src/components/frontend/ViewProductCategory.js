@@ -89,8 +89,8 @@ function ViewProductCategory(props) {
                                 <Card.Text className='card-text'>
                                     <p className="card-user-name small">Loại sản phẩm: {item.category.name}</p>
                                     <p className="card-user-name small">Thương hiệu: {item.producer.name}</p>
-                                    <del className="card-user-name small">Giá gốc: {original_price} VNĐ</del>
-                                    <p className="card-user-name selling-price">Giá bán: {selling_price} VNĐ</p>
+                                    <del className="card-user-name small">Giá gốc: {original_price}</del>
+                                    <p className="card-user-name selling-price">Giá bán: {selling_price}</p>
                                 </Card.Text>
                                 <div className="card-bottom">
                                     <Button variant="danger" onClick={submitAddtoCart}><BsFillCartCheckFill /></Button>

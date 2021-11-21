@@ -44,57 +44,77 @@ function ViewCategory() {
             cancelButtonColor: '#d33',
             confirmButtonText: 'Đồng ý!',
             cancelButtonText: 'Hủy!'
-          }).then((result) => {
+        }).then((result) => {
             if (result.isConfirmed) {
-                Swal.fire("Poof! Loại sản phẩm đã được xóa!", {
-                    icon: "success",
-                });
+
                 axios.delete(`/api/delete-category/${id}`).then(res => {
                     if (res.data.status === 200) {
-                        thisClicked.closest('tr').remove();
-
+                        Swal.fire("Poof! Loại sản phẩm đã được xóa!", {
+                            icon: "success",
+                        });
+                        thisClicked.innerText = "Đã xóa..."
                     } else if (res.data.status === 404) {
                         thisClicked.innerText = "Xóa"
                     }
                 })
-            }else {
+            } else {
                 thisClicked.innerText = "Xóa"
             }
-          })
+        })
     }
     var viewcategory_HTMLTABLE = null;
     if (loading) {
         <h3>Đang tải danh sách loại sản phẩm, vui lòng đợi...</h3>
     } else {
-        viewcategory_HTMLTABLE =
-            categoryList.slice(pagesVisited, pagesVisited + categoryPerPage).filter((item) => {
-                if (search === '') {
-                    return item;
-                } else if (item.name.toString().toLowerCase().includes(search.toLowerCase())) {
-                    return item;
-                } else {
-                    return null;
-                }
-            }).map((item) => {
-                return (
-                    <tr key={item.id}>
-                        <td className='text-center'>{item.id}</td>
-                        <td>{item.name}</td>
-                        <td>{item.slug}</td>
-                        <td className='text-center'><img src={`http://localhost:8000/${item.image}` } width="150" alt={item.name} /></td>
-                        <td className='text-center'>{item.status === 1 ? 'Hiện' : 'Ẩn'}</td>
-                        <td className='text-center'>
-                            <Link to={`edit-category/${item.id}`}><Button variant="warning" >Sửa</Button></Link>
-                        </td>
+        if (search !== '') {
+            viewcategory_HTMLTABLE =
+                categoryList.filter((item) => {
+                    if (item.name.toString().toLowerCase().includes(search.toLowerCase())) {
+                        return item
+                    } else {
+                        return null
+                    }
+                }).map((item) => {
+                    return (
+                        <tr key={item.id}>
+                            <td className='text-center'>{item.id}</td>
+                            <td>{item.name}</td>
+                            <td>{item.slug}</td>
+                            <td className='text-center'><img src={`http://localhost:8000/${item.image}`} width="150" alt={item.name} /></td>
+                            <td className='text-center'>{item.status === 1 ? 'Hiện' : 'Ẩn'}</td>
+                            <td className='text-center'>
+                                <Link to={`edit-category/${item.id}`}><Button variant="warning" >Sửa</Button></Link>
+                            </td>
+                            <td className='text-center'>
+                                <Button variant="danger" onClick={(e) => deleteCategory(e, item.id)}>Xóa</Button>
+                            </td>
 
-                        <td className='text-center'>
-                            <Button variant="danger" onClick={(e) => deleteCategory(e, item.id)}>Xóa</Button>
-                        </td>
+                        </tr>
 
-                    </tr>
+                    )
+                })
+        } else {
+            viewcategory_HTMLTABLE =
+                categoryList.slice(pagesVisited, pagesVisited + categoryPerPage).map((item) => {
+                    return (
+                        <tr key={item.id}>
+                            <td className='text-center'>{item.id}</td>
+                            <td>{item.name}</td>
+                            <td>{item.slug}</td>
+                            <td className='text-center'><img src={`http://localhost:8000/${item.image}`} width="150" alt={item.name} /></td>
+                            <td className='text-center'>{item.status === 1 ? 'Hiện' : 'Ẩn'}</td>
+                            <td className='text-center'>
+                                <Link to={`edit-category/${item.id}`}><Button variant="warning" >Sửa</Button></Link>
+                            </td>
+                            <td className='text-center'>
+                                <Button variant="danger" onClick={(e) => deleteCategory(e, item.id)}>Xóa</Button>
+                            </td>
 
-                )
-            })
+                        </tr>
+
+                    )
+                })
+        }
     }
 
     const pageCount = Math.ceil(categoryList.length / categoryPerPage);

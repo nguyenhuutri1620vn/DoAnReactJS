@@ -25,7 +25,7 @@ function AdminPrivateRoute({ ...rest }) {
 
     axios.interceptors.response.use(undefined, function axiosRetryInterceptor(err) {
         if (err.response.status === 401) {
-            Swal.Fire('Chưa xác thực', err.response.data.message, 'warning');
+            Swal.fire('Chưa xác thực', err.response.data.message, 'warning');
             history.push('/');
         }
         return Promise.reject(err);
@@ -37,11 +37,11 @@ function AdminPrivateRoute({ ...rest }) {
         if (error.response.status === 403) //access denied
         {
             Swal.fire('Thông báo', error.response.data.message, 'warning');
-            history.push('/403')
+            history.push('/')
         } else if (error.response.status === 404) //page not found
         {
             Swal.fire('404', 'Không tìm thấy trang', 'warning');
-            history.push('/404')
+            history.push('/')
         }
         return Promise.reject(error)
     }

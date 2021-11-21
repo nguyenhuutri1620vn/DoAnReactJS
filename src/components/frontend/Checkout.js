@@ -233,7 +233,7 @@ function Checkout() {
                 </Modal>
                 <Row>
                     <Col xs={7}>
-                        <Card border="warning">
+                        <Card >
                             <Card.Header
                             >Thông tin đơn hàng của {checkoutInput.fullname}</Card.Header>
                             <Card.Body>

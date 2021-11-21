@@ -67,32 +67,47 @@ function ViewUser() {
     if (loading) {
         return <h4>Đang tải danh sách khách hàng, vui lòng đợi...</h4>
     } else {
-        display_users = users.slice(pagesVisited, pagesVisited + usersPerPage).filter((item) => {
-            if (search === '') {
-                return item;
-            } else if (item.username.toString().toLowerCase().includes(search.toLowerCase())) {
-                return item;
-            } else {
-                return item;
-            }
-        }).map((item) => {
-            return (
-                <tr key={item.id}>
-                    <td className='col-3 col-sm-1 text-center'>{item.id}</td>
-                    <td className='col-3 col-sm-1'>{item.username}</td>
-                    <td className='col-3 col-sm-1'>{item.fullname}</td>
-                    <td className='col-3 col-sm-1'>{item.email}</td>
-                    <td className='col-3 col-sm-1'>{item.phone}</td>
-                    <td className='col-3 col-sm-1'><Moment format="DD/MM/YYYY">{item.created_at}</Moment></td>
-                    <td className='text-center'>
-                        <button onClick={(e) => becomeAdmin(e, item.id)} className="btn btn-success">→ Nhân viên</button>
-                    </td>
-                </tr>
-            );
-        });
+        if (search !== '') {
+            display_users =
+                users.filter((item) => {
+                    if (item.username.toString().toLowerCase().includes(search.toLowerCase())) {
+                        return item
+                    } else {
+                        return null
+                    }
+                }).map((item) => {
+                    return (
+                        <tr key={item.id}>
+                            <td className='col-3 col-sm-1 text-center'>{item.id}</td>
+                            <td className='col-3 col-sm-1'>{item.username}</td>
+                            <td className='col-3 col-sm-1'>{item.fullname}</td>
+                            <td className='col-3 col-sm-1'>{item.email}</td>
+                            <td className='col-3 col-sm-1'>{item.phone}</td>
+                            <td className='col-3 col-sm-1'><Moment format="DD/MM/YYYY">{item.created_at}</Moment></td>
+                            <td className='text-center'>
+                                <button onClick={(e) => becomeAdmin(e, item.id)} className="btn btn-success">→ Nhân viên</button>
+                            </td>
+                        </tr>
+                    )
+                })
+        } else {
+            display_users = users.slice(pagesVisited, pagesVisited + usersPerPage).map((item) => {
+                return (
+                    <tr key={item.id}>
+                        <td className='col-3 col-sm-1 text-center'>{item.id}</td>
+                        <td className='col-3 col-sm-1'>{item.username}</td>
+                        <td className='col-3 col-sm-1'>{item.fullname}</td>
+                        <td className='col-3 col-sm-1'>{item.email}</td>
+                        <td className='col-3 col-sm-1'>{item.phone}</td>
+                        <td className='col-3 col-sm-1'><Moment format="DD/MM/YYYY">{item.created_at}</Moment></td>
+                        <td className='text-center'>
+                            <button onClick={(e) => becomeAdmin(e, item.id)} className="btn btn-success">→ Nhân viên</button>
+                        </td>
+                    </tr>
+                );
+            })
+        }
     }
-
-
     return (
         <div className='container px-4 mt-2'>
             <div className='card'>

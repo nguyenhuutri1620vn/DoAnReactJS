@@ -44,52 +44,75 @@ function ViewNews() {
             cancelButtonColor: '#d33',
             confirmButtonText: 'Xóa !!',
             cancelButtonText: 'Không'
-          }).then((result) => {
+        }).then((result) => {
             if (result.isConfirmed) {
-              Swal.fire(
-                'Deleted!',
-                'Your file has been deleted.',
-                'success'
-              )
-              axios.delete(`/api/delete-news/${id}`).then(res => {
-                if (res.data.status === 200) {
-                    thisClicked.closest('tr').remove();
-                } else if (res.data.status === 404) {
-                    thisClicked.innerText = "Xóa"
-                }
-            })
-            }else {
+                Swal.fire(
+                    'Deleted!',
+                    'Your file has been deleted.',
+                    'success'
+                )
+                axios.delete(`/api/delete-news/${id}`).then(res => {
+                    if (res.data.status === 200) {
+                        thisClicked.closest('tr').remove();
+                    } else if (res.data.status === 404) {
+                        thisClicked.innerText = "Xóa"
+                    }
+                })
+            } else {
                 Swal.fire("Tin tức đã được an toàn!");
                 thisClicked.innerText = "Xóa"
             }
-          })
+        })
     }
 
     var display_news = '';
     if (loading) {
         return <h4>Đang tải danh sách tin tức, vui lòng đợi....</h4>
     } else {
-        display_news = news.slice(pagesVisited, pagesVisited + newsPerPage).filter((item) => {
-            if (search === '') {
-                return item;
-            } else if (item.name.toString().toLowerCase().includes(search.toLowerCase())) {
-                return item;
-            } else {
-                return null;
-            }
-        }).map((item) => {
-            return (
-                <tr key={item.id}>
-                    <td className='text-center'>{item.id}</td>
-                    <td>{item.name}</td>
-                    <div ><td className="descrip--content">{item.meta_descrip}</td></div>
-                    <td className='text-center'><img src={`http://localhost:8000/${item.image}`} alt={item.name} height="150" /></td>
-                    <td className="text-center">{item.status === 1 ? "Hiện" : "Ẩn"}</td>
-                    <td className='text-center'><Link to={`/admin/edit-news/${item.id}`}><Button variant="warning" >Sửa</Button></Link></td>
-                    <td className='text-center'> <Button variant="danger" onClick={(e) => deleteNews(e, item.id)}>Xóa</Button></td>
-                </tr>
-            );
-        });
+        if (search !== '') {
+            display_news =
+                news.sort((a, b) => (b.id - a.id)).filter((item) => {
+                    if (item.name.toString().toLowerCase().includes(search.toLowerCase())) {
+                        return item
+                    } else {
+                        return null
+                    }
+                }).map((item) => {
+                    return (
+                        <tr key={item.id}>
+                            <td className='text-center'>{item.id}</td>
+                            <td>{item.name}</td>
+                            <div ><td className="descrip--content">{item.meta_descrip}</td></div>
+                            <td className='text-center'><img src={`http://localhost:8000/${item.image}`} alt={item.name} height="150" /></td>
+                            <td className="text-center">{item.status === 1 ? "Hiện" : "Ẩn"}</td>
+                            <td className='text-center'><Link to={`/admin/edit-news/${item.id}`}><Button variant="warning" >Sửa</Button></Link></td>
+                            <td className='text-center'> <Button variant="danger" onClick={(e) => deleteNews(e, item.id)}>Xóa</Button></td>
+                        </tr>
+                    )
+                })
+        } else {
+            display_news = news.slice(pagesVisited, pagesVisited + newsPerPage).filter((item) => {
+                if (search === '') {
+                    return item;
+                } else if (item.name.toString().toLowerCase().includes(search.toLowerCase())) {
+                    return item;
+                } else {
+                    return null;
+                }
+            }).map((item) => {
+                return (
+                    <tr key={item.id}>
+                        <td className='text-center'>{item.id}</td>
+                        <td>{item.name}</td>
+                        <div ><td className="descrip--content">{item.meta_descrip}</td></div>
+                        <td className='text-center'><img src={`http://localhost:8000/${item.image}`} alt={item.name} height="150" /></td>
+                        <td className="text-center">{item.status === 1 ? "Hiện" : "Ẩn"}</td>
+                        <td className='text-center'><Link to={`/admin/edit-news/${item.id}`}><Button variant="warning" >Sửa</Button></Link></td>
+                        <td className='text-center'> <Button variant="danger" onClick={(e) => deleteNews(e, item.id)}>Xóa</Button></td>
+                    </tr>
+                );
+            })
+        }
     }
 
     return (
