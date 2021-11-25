@@ -124,17 +124,17 @@ function Dashboard() {
                 month = '' + (d.getMonth() + 1),
                 day = '' + d.getDate(),
                 year = d.getFullYear();
-        
-            if (month.length < 2) 
+
+            if (month.length < 2)
                 month = '0' + month;
-            if (day.length < 2) 
+            if (day.length < 2)
                 day = '0' + day;
-        
+
             return [year, month, day].join('-');
         }
         console.log(formatDate(value));
-        axios.post(`/api/day-order/${formatDate(value)}`).then(res=>{
-            if (res.data.status === 200){
+        axios.post(`/api/day-order/${formatDate(value)}`).then(res => {
+            if (res.data.status === 200) {
                 setOrderDay(res.data.orderday);
                 setOrderMoneyDay(res.data.money_day);
                 setProductSold(res.data.productsold);
@@ -269,6 +269,20 @@ function Dashboard() {
                     <Card.Header as="h5">Theo ngày hiện tại</Card.Header>
                     <Card.Body>
                         <Button className='float-end' variant='primary' onClick={OutPutPDF}>Xuất file pdf</Button>
+                        <input
+                            value={value.toLocaleDateString()}
+                            onFocus={() => setShowCalendar(true)}
+                            className="form-control my-2"
+                        />
+                        <div className='calendar-container'>
+                            <Calendar
+                                onChange={handleChange}
+                                value={value}
+                                className={showCalendar ? "" : "hide"}
+                                onClickDay={Submitday}
+                            />
+                        </div>
+                        <Button className='float-end' variant='primary' onClick={OutPutPDF}>Xuất file pdf</Button>
 
                         <h6>Số đơn hàng: {orderday}</h6>
                         <h6>Thành tiền: {Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(ordermoneyday)}</h6>
@@ -295,6 +309,7 @@ function Dashboard() {
                                     )
                                 })}
                             </tbody>
+
                         </Table>
                     </Card.Body>
                 </Card>
