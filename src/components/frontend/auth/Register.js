@@ -41,11 +41,10 @@ function Register() {
         axios.get('/sanctum/csrf-cookie').then(response => {
             axios.post(`/api/register`, data).then(res => {
                 if (res.data.status === 200) {
-                    localStorage.setItem('auth_token', res.data.token)
-                    localStorage.setItem('auth_name', res.data.username)
+                    // localStorage.setItem('auth_token', res.data.token)
+                    // localStorage.setItem('auth_name', res.data.username)
                     Swal.fire('Đăng ký thành công', res.data.message, 'success');
-                    history.push('/');
-                    window.location.reload();
+                    history.push('/login');
                 } else {
                     setError(res.data.error);
                 }

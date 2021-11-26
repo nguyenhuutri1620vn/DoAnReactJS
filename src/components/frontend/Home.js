@@ -254,7 +254,7 @@ function Home() {
                 {/* Featured product */}
                 <div className='featured_product'>
                     <div className='box_category_home'>
-                        <h2 className='title_category_home'>Nhạc cụ nổi bật</h2>
+                        <h2 className='title_category_home'>Sản phẩm nổi bật</h2>
                         <div className="cards">
 
                             {featured_HTML}
@@ -267,7 +267,7 @@ function Home() {
                 {/* Popular product */}
                 <div className='popular_product'>
                     <div className='box_category_home'>
-                        <h2 className='title_category_home'>nhạc cụ phổ biến</h2>
+                        <h2 className='title_category_home'>Sản phẩm phổ biến</h2>
                         <div className='cards'>
 
                             {popular_HTML}

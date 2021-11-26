@@ -82,7 +82,7 @@ function Checkout() {
             purchase_units: [
                 {
                     amount: {
-                        value: totalOrder/23000,
+                        value: "0.1",
                     },
                 },
             ],

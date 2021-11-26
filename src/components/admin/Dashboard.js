@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState} from 'react';
 import { Accordion, Card, Col, Row, Table, Button } from 'react-bootstrap';
 import { Bar } from 'react-chartjs-2';
 import { Link } from 'react-router-dom';
@@ -262,13 +262,12 @@ function Dashboard() {
                 </Row>
             </div >
         )
-    } else {
+    } else{
         return (
             <div className='container pt-3'>
                 <Card>
                     <Card.Header as="h5">Theo ngày hiện tại</Card.Header>
                     <Card.Body>
-                        <Button className='float-end' variant='primary' onClick={OutPutPDF}>Xuất file pdf</Button>
                         <input
                             value={value.toLocaleDateString()}
                             onFocus={() => setShowCalendar(true)}
