@@ -11200,3 +11200,6 @@ html, body {
 .react-calendar.hide {
   display: none;
 }
+.card-product-dashboard{
+  height: 438px;
+}

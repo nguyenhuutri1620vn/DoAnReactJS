@@ -187,6 +187,7 @@ function OrderView() {
                     <td>{item.phone}</td>
                     <td >{price}</td>
                     <td className="text-center"><Moment format="DD/MM/YYYY hh:mm:ss">{item.created_at}</Moment></td>
+                    <td className="text-center">{item.payment_mode}</td>
                     <td className="text-center">{Order_text()}</td>
                     <td className="text-center">
                         {Order_Btn()}
@@ -219,7 +220,8 @@ function OrderView() {
                                                         <th className="text-center">Khách hàng</th>
                                                         <th className="text-center">Điện thoại</th>
                                                         <th className="text-center">Tổng tiền</th>
-                                                        <th className="text-center">Ngày tạo hóa đơn</th>
+                                                        <th className="text-center">Ngày mua hàng</th>
+                                                        <th className="text-center">Hình thức thanh toán</th>
                                                         <th className="text-center">Trạng thái</th>
                                                         <th className="text-center">Xử lý đơn</th>
                                                         <th className="text-center">Thao tác</th>

@@ -1,7 +1,7 @@
 import axios from 'axios';
-import React, { useEffect, useState} from 'react';
-import { Accordion, Card, Col, Row, Table, Button } from 'react-bootstrap';
-import { Bar } from 'react-chartjs-2';
+import React, { useEffect, useState } from 'react';
+import { Card, Col, Row, Table, Button, Form } from 'react-bootstrap';
+import { Bar, Doughnut } from 'react-chartjs-2';
 import { Link } from 'react-router-dom';
 import Calendar from 'react-calendar';
 import { jsPDF } from "jspdf";
@@ -11,6 +11,8 @@ function Dashboard() {
     document.title = 'Chingu | Thống kê';
 
     const [showCalendar, setShowCalendar] = useState(false);
+    const [showCalendarToDate, setShowCalendarToDate] = useState(false);
+
     const [product, setProduct] = useState([]);
     const [content, setContent] = useState([]);
     const [order, setOrder] = useState([]);
@@ -23,11 +25,19 @@ function Dashboard() {
     const [productSold, setProductSold] = useState([]);
     const [productDetailSold, setProductDetailSold] = useState([]);
     const [check, setCheck] = useState([]);
-    const [value, setValue] = useState(new Date());
+    const [totalproductdashboard, setTotalProductDashboard] = useState([]);
+    const [fromdate, setFromDate] = useState(new Date());
+    const [todate, setToDate] = useState (new Date());
+    const [year] = useState();
+
     let total_price = [];
-    const handleChange = value => {
-        setValue(value);
+    const handleChange = fromdate => {
+        setFromDate(fromdate);
         setShowCalendar(false);
+    };
+    const handleChangeToDate = todate => {
+        setToDate(todate);
+        setShowCalendarToDate(false);
     };
     useEffect(() => {
         axios.get(`/api/dashboard`).then(res => {
@@ -41,6 +51,7 @@ function Dashboard() {
             setOrderMoneyDay(res.data.money_day);
             setProductSold(res.data.productsold);
             setProductDetailSold(res.data.productdetailsold);
+            setTotalProductDashboard(res.data.totalproductdashboard);
         });
         axios.get(`/api/check-admin-staff`).then(res => {
             setCheck(res.data.users);
@@ -51,7 +62,16 @@ function Dashboard() {
     for (let i = 0; i <= 11; i++) {
         total_price.push(priceMonth[i] / 1000000)
     }
-
+    const selectYear = (e) => {
+        e.persist();
+        const year = e.target.value;
+        axios.post(`/api/get-year/${(year)}`).then(res => {
+            if (res.data.status === 200) {
+                setMonth(res.data.month);
+                setPriceMonth(res.data.totalprice);
+            }
+        })
+    }
     const data = {
         labels: ["Một", "Hai", "Ba", "Bốn", "Năm", "Sáu", "Bảy", "Tám", "Chín", "Mười", "Mười một", "Mười hai"],
         datasets: [
@@ -118,6 +138,21 @@ function Dashboard() {
             ],
         },
     };
+    const dataProduct = {
+        labels: [
+            'SP ĐÃ BÁN',
+            'SP TỒN KHO',
+        ],
+        datasets: [{
+            label: 'TỒN KHO VÀ ĐÃ BÁN',
+            data: totalproductdashboard,
+            backgroundColor: [
+                'rgb(255, 99, 132)',
+                'rgb(54, 162, 235)',
+            ],
+            hoverOffset: 4
+        }]
+    };
     const Submitday = (value) => {
         function formatDate(date) {
             var d = new Date(date),
@@ -131,9 +166,12 @@ function Dashboard() {
                 day = '0' + day;
 
             return [year, month, day].join('-');
+
         }
+        var from = formatDate(value)
+        var to = formatDate(todate)
         console.log(formatDate(value));
-        axios.post(`/api/day-order/${formatDate(value)}`).then(res => {
+        axios.post(`/api/day-order/${from}/${to}`).then(res => {
             if (res.data.status === 200) {
                 setOrderDay(res.data.orderday);
                 setOrderMoneyDay(res.data.money_day);
@@ -142,6 +180,7 @@ function Dashboard() {
             }
         })
     }
+  
     if (loading) {
         return <div className="container loading"><h4>Đang tải dữ liệu</h4></div>
     }
@@ -204,81 +243,124 @@ function Dashboard() {
                 </Row>
                 <Row className='mt-2'>
                     <h4>Bán hàng và doanh thu</h4>
-                    <Accordion defaultActiveKey="0">
-                        <Accordion.Item eventKey="0">
-                            <Accordion.Header>Theo ngày</Accordion.Header>
-                            <Accordion.Body>
-                                <input
-                                    value={value.toLocaleDateString()}
-                                    onFocus={() => setShowCalendar(true)}
-                                    className="form-control my-2"
-                                />
-                                <div className='calendar-container'>
-                                    <Calendar
-                                        onChange={handleChange}
-                                        value={value}
-                                        className={showCalendar ? "" : "hide"}
-                                        onClickDay={Submitday}
+                    <Row>
+                        <Col xs={4}>
+                            <Card className='card-product-dashboard'>
+                                <Card.Header>SẢN PHẨM TỒN KHO VÀ ĐÃ BÁN</Card.Header>
+                                <Card.Body>
+                                    <Doughnut data={dataProduct} />
+                                </Card.Body>
+                            </Card>
+                        </Col>
+                        <Col xs={8}>
+                            <Card>
+                                <Card.Header>DOANH THU THEO NĂM</Card.Header>
+                                <Card.Body>
+                                    <Form>
+                                        <Form.Select
+                                            size="sm"
+                                            defaultValue="0"
+                                            name="provinceID"
+                                            value={year}
+                                            onChange={selectYear}
+                                        >
+                                            <option value={2022} defaultChecked>2022</option>
+                                            <option value={2021}>2021</option>
+                                        </Form.Select>
+                                    </Form>
+                                    <Bar data={data} options={options} />
+                                </Card.Body>
+                            </Card>
+                        </Col>
+                    </Row>
+                    <Row className='mt-2'>
+                        <Col>
+                            <Card>
+                                <Card.Header>
+                                    DOANH THU THEO NGÀY
+                                </Card.Header>
+                                <Card.Body>
+                                    Từ
+                                    <input
+                                        value={fromdate.toLocaleDateString()}
+                                        onFocus={() => setShowCalendar(true)}
+                                        className="form-control my-2"
                                     />
-                                </div>
-                                <Button className='float-end' variant='primary' onClick={OutPutPDF}>Xuất file pdf</Button>
+                                    <div className='calendar-container'>
+                                        <Calendar
+                                            onChange={handleChange}
+                                            value={fromdate}
+                                            className={showCalendar ? "" : "hide"}
+                                            onClickDay={(value)=>Submitday(value)}
+                                        />
+                                    </div>
+                                    Đến
+                                    <input
+                                        value={todate.toLocaleDateString()}
+                                        onFocus={() => setShowCalendarToDate(true)}
+                                        className="form-control my-2"
+                                    />
+                                    <div className='calendar-container'>
+                                        <Calendar
+                                            onChange={handleChangeToDate}
+                                            value={todate}
+                                            className={showCalendarToDate ? "" : "hide"}
+                                            onClickDay={(value)=>Submitday(value)}
+                                        />
+                                    </div>
+                                    <Button className='float-end' variant='primary' onClick={OutPutPDF}>Xuất file pdf</Button>
 
-                                <h6>Số đơn hàng: {orderday}</h6>
-                                <h6>Thành tiền: {Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(ordermoneyday)}</h6>
-                                <h6>Số sản phẩm đã bán <span className="text-danger">{productSold}</span> bao gồm:
-                                </h6>
-                                <Table striped bordered hover>
-                                    <thead>
-                                        <tr>
-                                            <th>#</th>
-                                            <th>Tên sản phẩm</th>
-                                            <th>Số lượng</th>
-                                            <th>Thành tiền</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {productDetailSold.map((item, idx) => {
-                                            return (
-                                                <tr key={idx}>
-                                                    <td>{item.id}</td>
-                                                    <td>{item.product.name}</td>
-                                                    <td>{item.count}</td>
-                                                    <td>{Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.price)}</td>
-                                                </tr>
-                                            )
-                                        })}
-                                    </tbody>
-
-                                </Table>
-                            </Accordion.Body>
-                        </Accordion.Item>
-                        <Accordion.Item eventKey="1">
-                            <Accordion.Header>Theo tháng</Accordion.Header>
-                            <Accordion.Body>
-                                <Bar data={data} options={options} />
-                            </Accordion.Body>
-                        </Accordion.Item>
-                    </Accordion>
+                                    <h6>Số đơn hàng: {orderday}</h6>
+                                    <h6>Thành tiền: {Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(ordermoneyday)}</h6>
+                                    <h6>Số sản phẩm đã bán <span className="text-danger">{productSold}</span> bao gồm:
+                                    </h6>
+                                    <Table striped bordered hover>
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Tên sản phẩm</th>
+                                                <th>Số lượng</th>
+                                                <th>Thành tiền</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {productDetailSold.map((item, idx) => {
+                                                return (
+                                                    <tr key={idx}>
+                                                        <td>{item.id}</td>
+                                                        <td>{item.product.name}</td>
+                                                        <td>{item.count}</td>
+                                                        <td>{Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.price)}</td>
+                                                    </tr>
+                                                )
+                                            })}
+                                        </tbody>
+                                    </Table>
+                                </Card.Body>
+                            </Card>
+                        </Col>
+                    </Row>
                 </Row>
             </div >
         )
-    } else{
+    } else {
         return (
             <div className='container pt-3'>
                 <Card>
                     <Card.Header as="h5">Theo ngày hiện tại</Card.Header>
                     <Card.Body>
                         <input
-                            value={value.toLocaleDateString()}
+                            value={fromdate.toLocaleDateString()}
                             onFocus={() => setShowCalendar(true)}
                             className="form-control my-2"
                         />
                         <div className='calendar-container'>
                             <Calendar
                                 onChange={handleChange}
-                                value={value}
+                                value={fromdate}
                                 className={showCalendar ? "" : "hide"}
                                 onClickDay={Submitday}
+
                             />
                         </div>
                         <Button className='float-end' variant='primary' onClick={OutPutPDF}>Xuất file pdf</Button>

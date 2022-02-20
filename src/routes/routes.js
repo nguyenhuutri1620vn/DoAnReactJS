@@ -17,6 +17,10 @@ import AddNews from "../components/admin/News/AddNews";
 import ViewNews from "../components/admin/News/ViewNews";
 import EditNews from "../components/admin/News/EditNews";
 
+import AddDiscount from "../components/admin/Discount/AddDiscount";
+import ViewDiscount from "../components/admin/Discount/ViewDiscount";
+import EditDiscount from "../components/admin/Discount/EditDiscount";
+
 import ViewStaff from "../components/admin/Staff/ViewStaff";
 
 import ViewUser from "../components/admin/User/ViewUser";
@@ -50,6 +54,10 @@ const routes = [
     {path: '/admin/view-news', exact: true, name:'ViewNews', component: ViewNews},
     {path: '/admin/edit-news/:id', exact: true, name:'EditNews', component: EditNews},
 
+    //discount
+    {path: '/admin/add-discount', exact: true, name:'AddDiscount', component: AddDiscount},
+    {path: '/admin/view-discounts', exact: true, name:'VieDiscounts', component: ViewDiscount},
+    {path: '/admin/edit-discount/:id', exact: true, name:'EditDiscounts', component: EditDiscount},
     //users
     {path: '/admin/view-users', exact: true, name:'ViewUser', component: ViewUser},
     

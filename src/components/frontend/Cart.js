@@ -18,7 +18,7 @@ function Cart() {
 
     if (!localStorage.getItem('auth_token')) {
         history.push('/login');
-        Swal.fire("Thông tin", "Đăng nhập để tiếp tục", 'error')
+        Swal.fire("Thông báo", "Đăng nhập để tiếp tục", 'warning')
     }
 
     const handleDecrement = (cartID) => {
