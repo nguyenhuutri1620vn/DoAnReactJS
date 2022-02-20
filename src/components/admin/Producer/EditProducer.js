@@ -70,8 +70,6 @@ function EditProducer(props) {
         })
     }
 
-    console.log(allCheckbox.status);
-
     if (loading) {
         <h3>Đang tải trang chỉnh sửa thương hiệu, vui lòng đợi...</h3>
     }

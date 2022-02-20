@@ -13,7 +13,6 @@ function ViewCategory() {
     const [search, setSearch] = useState("");
     const [loading, setloading] = useState(true);
     const [categoryList, setcategoryList] = useState([]);
-
     const categoryPerPage = 5;
     const pagesVisited = pageNumber * categoryPerPage;
 

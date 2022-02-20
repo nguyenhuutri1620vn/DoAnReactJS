@@ -46,11 +46,9 @@ function ViewNews() {
             cancelButtonText: 'Không'
         }).then((result) => {
             if (result.isConfirmed) {
-                Swal.fire(
-                    'Deleted!',
-                    'Your file has been deleted.',
-                    'success'
-                )
+                Swal.fire("Poof! Loại sản phẩm đã được xóa!", {
+                    icon: "success",
+                });
                 axios.delete(`/api/delete-news/${id}`).then(res => {
                     if (res.data.status === 200) {
                         thisClicked.closest('tr').remove();
