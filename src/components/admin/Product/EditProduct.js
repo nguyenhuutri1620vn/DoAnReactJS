@@ -203,9 +203,8 @@ function EditProduct(props) {
 
                                 <div className='col-md-4 form-group mb-3'>
                                     <label>Giá bán</label>
-                                    <input type='text' name='selling_price' onChange={handleInput} value={productInput.selling_price} className='form-control' />
+                                    <input type='text' name='selling_price' onChange={handleInput} value={productInput.selling_price} className='form-control' disabled/>
                                 </div>
-                                <small className='text-danger'>{errorlist.selling_price}</small>
 
                                 <div className='col-md-4 form-group mb-3'>
                                     <label>Số lượng</label>

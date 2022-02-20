@@ -10,12 +10,14 @@ function AddProduct() {
     document.title = 'Tạo sản phẩm';
 
     const [categorylist, setCategorylist] = useState([]);
+    const [discountlist, setDiscountlist] = useState([]);
     const [producerlist, setProducerlist] = useState([]);
     const [errorlist, setError] = useState([]);
     const [picture, setPicture] = useState([]);
     const [productInput, setProduct] = useState({
         cateID: '',
         producerID: '',
+        discountID: '',
         name: '',
         description: '',
         video: '',
@@ -55,12 +57,16 @@ function AddProduct() {
         axios.get(`api/all-category`).then(res => {
             if (res.data.status === 200) {
                 setCategorylist(res.data.category);
-                console.log(res.data.category);
             }
         })
         axios.get(`api/all-producer`).then(res => {
             if (res.data.status === 200) {
                 setProducerlist(res.data.producer);
+            }
+        })
+        axios.get(`api/all-discount`).then(res => {
+            if (res.data.status === 200) {
+                setDiscountlist(res.data.discount);
             }
         })
     }, [])
@@ -74,6 +80,8 @@ function AddProduct() {
 
         formData.append('cateID', productInput.cateID);
         formData.append('producerID', productInput.producerID);
+        formData.append('discountID', productInput.discountID);
+
         formData.append('name', productInput.name);
         formData.append('description', productInput.description);
         formData.append('video', productInput.video);
@@ -120,10 +128,10 @@ function AddProduct() {
                     <div className="tab-content" id="myTabContent">
                         <div className="tab-pane card-body fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                             <div className='row'>
-                                <div className='col-md-6 form-group mb-3'>
+                                <div className='col-md-4 form-group mb-3'>
                                     <label>Loại sản phẩm</label>
                                     <select name='cateID' className='form-select' aria-label="Default select example" onChange={handleInput} value={productInput.cateID}>
-                                        <option>Chọn sản phẩm</option>
+                                        <option>Chọn loại sản phẩm</option>
                                         {
                                             categorylist.map((item) => {
                                                 return (
@@ -134,7 +142,7 @@ function AddProduct() {
                                     </select>
                                     <small className='text-danger'>{errorlist.cateID}</small>
                                 </div>
-                                <div className='col-md-6 form-group mb-3' >
+                                <div className='col-md-4 form-group mb-3' >
                                     <label>Thương hiệu</label>
                                     <select name='producerID' className='form-select' aria-label="Default select example" onChange={handleInput} value={productInput.producerID}>
                                         <option>Chọn Thương hiệu</option>
@@ -147,8 +155,22 @@ function AddProduct() {
                                         }
                                     </select>
                                     <small className='text-danger'>{errorlist.producerID}</small>
-
+                                    
                                 </div>
+                                <div className='col-md-4 form-group mb-3'>
+                                        <label>Mã giảm giá</label>
+                                        <select name='discountID' className='form-select' aria-label="Default select example" onChange={handleInput} value={productInput.discountID}>
+                                            <option>Chọn mã giảm giá</option>
+                                            {
+                                                discountlist.map((item) => {
+                                                    return (
+                                                        <option value={item.id} key={item.id}>{item.name}</option>
+                                                    )
+                                                })
+                                            }
+                                        </select>
+                                        <small className='text-danger'>{errorlist.discountID}</small>
+                                    </div>
                             </div>
                             <div className='form-group mb-3'>
                                 <label>Tên sản phẩm</label>
@@ -204,11 +226,10 @@ function AddProduct() {
                                     <label>Giá bán</label>
                                     <InputGroup >
                                         <InputGroup.Text>$</InputGroup.Text>
-                                        <input type='text' name='selling_price' placeholder="Nhập giá bán..."
-                                            onChange={handleInput} value={productInput.selling_price} className='form-control' />
+                                        <input type='text' name='selling_price'
+                                            onChange={handleInput} value={productInput.selling_price} className='form-control' disabled/>
                                     </InputGroup>
                                 </div>
-                                <small className='text-danger'>{errorlist.selling_price}</small>
 
                                 <div className='col-md-4 form-group mb-3'>
                                     <label>Số lượng</label>

@@ -138,7 +138,6 @@ function ViewProductDetail(props) {
                     <p className="time-created"><Moment format="DD/MM/YYYY">{product.created_at}</Moment></p>
                     <div className="inf-area">
                         <p className="cate-info">Loại sản phẩm:<Link to={`/category/${category.slug}`} className="link-to"> {product.category.name}</Link></p>
-                        {/* <p className="brand-info">Brand: <Link to="" className="link-to"> Taylor</Link></p> */}
                     </div>
                     <div className='price-area'>
                         <del className="ori-price">Giá gốc: {original_p}</del>
