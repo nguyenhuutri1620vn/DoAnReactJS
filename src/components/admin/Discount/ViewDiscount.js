@@ -62,12 +62,13 @@ function ViewDiscount() {
             }
         })
     }
-    
+    var show_paginate = false
     var viewdiscount_HTMLTABLE = null
     if (loading) {
         <h3>Đang tải danh sách loại sản phẩm, vui lòng đợi...</h3>
     } else {
         if (search !== '') {
+            show_paginate = true
             viewdiscount_HTMLTABLE =
                 discountList.filter((item) => {
                     if (item.name.toString().toLowerCase().includes(search.toLowerCase())) {
@@ -115,7 +116,28 @@ function ViewDiscount() {
                 })
         }
     }
-
+    function show_panigation (){
+        if (show_paginate === true){
+            return (
+                <ReactPaginate
+                disabledClassName={"pagination__link--disabled"}
+                previousLabel={'←'}
+                nextLabel={'→'}
+                pageCount={pageCount}
+                onPageChange={handleChangPage}
+                containerClassName={"paginationBttns"}
+                previousLinkClassName={"paginationPN"}
+                nextLinkClassName={"paginationPN"}
+                activeClassName={"paginationActive"}
+            >
+            </ReactPaginate>
+            )
+        }else {
+            return (
+                null
+             )
+        }
+    }
     return (
         <div className='container mt-2'>
         <div className='card'>
@@ -153,18 +175,7 @@ function ViewDiscount() {
                     </tbody>
                 </table>
             </div>
-            <ReactPaginate
-                disabledClassName={"pagination__link--disabled"}
-                previousLabel={'←'}
-                nextLabel={'→'}
-                pageCount={pageCount}
-                onPageChange={handleChangPage}
-                containerClassName={"paginationBttns"}
-                previousLinkClassName={"paginationPN"}
-                nextLinkClassName={"paginationPN"}
-                activeClassName={"paginationActive"}
-            >
-            </ReactPaginate>
+            {show_panigation()}
         </div>
 
     </div>

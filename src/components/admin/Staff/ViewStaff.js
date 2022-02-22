@@ -64,12 +64,14 @@ function ViewStaff() {
             }
         })
     }
+    var show_paginate = true;
 
     var display_staff = '';
     if (loading) {
         return <h4>Danh sách nhân viên đang tải, vui lòng đợi...</h4>
     } else {
         if (search !== '') {
+            show_paginate = false
             display_staff =
                 staff.sort((a, b) => (b.id - a.id)).filter((item) => {
                     if (item.username.toString().toLowerCase().includes(search.toLowerCase())) {
@@ -123,7 +125,28 @@ function ViewStaff() {
         }
     }
 
-
+    function show_panigation() {
+        if (show_paginate === true) {
+            return (
+                <ReactPaginate
+                    disabledClassName={"pagination__link--disabled"}
+                    previousLabel={'←'}
+                    nextLabel={'→'}
+                    pageCount={pageCount}
+                    onPageChange={handleChangPage}
+                    containerClassName={"paginationBttns"}
+                    previousLinkClassName={"paginationPN"}
+                    nextLinkClassName={"paginationPN"}
+                    activeClassName={"paginationActive"}
+                >
+                </ReactPaginate>
+            )
+        } else {
+            return (
+                null
+            )
+        }
+    }
     return (
         <div className='container px-4 mt-2'>
             <div className='card'>
@@ -161,18 +184,8 @@ function ViewStaff() {
                         </tbody>
                     </table>
                 </div>
-                <ReactPaginate
-                    previousLabel={'←'}
-                    nextLabel={'→'}
-                    pageCount={pageCount}
-                    onPageChange={handleChangPage}
-                    containerClassName={"paginationBttns"}
-                    previousLinkClassName={"previousBttn"}
-                    nextLinkClassName={"nextBttn"}
-                    disabledClassName={"paginationDisable"}
-                    activeClassName={"paginationActive"}
-                >
-                </ReactPaginate>
+                {show_panigation()}
+
             </div>
         </div>
     )

@@ -71,7 +71,17 @@ function ViewProductDetail(props) {
             isMounterd = false;
         }
     }, [props.match.params.category, props.match.params.product, history, product.name])
-
+    function quantity_HTML() {
+        if (product.quantity <= 0){
+            return (
+                <label className="btn-sm btn-danger px-4 mt-2">Hết hàng</label>
+            )
+        }else {
+            return (
+                <label className="btn-sm btn-success px-4 mt-2">Còn hàng</label>
+            )
+        }
+    }
 
     if (loading) {
         return <div className='loading'><h4>Đang tải, vui lòng đợi...</h4></div>
@@ -81,14 +91,15 @@ function ViewProductDetail(props) {
             if (item.id !== product.id) {
                 let original_p = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.original_price);
                 let selling_p = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.selling_price);
+
                 return (
                     <Card className='card-product-related mx-2' key={idx}>
                         <Link to={`/category/${item.category.slug}/${item.id}`} className='link-product'>
-                            
-                                <Card.Img
-                                    src={`http://localhost:8000/${item.image}`}
-                                    className='card-image' />
-                       
+
+                            <Card.Img
+                                src={`http://localhost:8000/${item.image}`}
+                                className='card-image' />
+
                             <Card.Body>
                                 <Card.Title>{item.name}</Card.Title>
                                 <Card.Text className='card-text'>
@@ -106,6 +117,7 @@ function ViewProductDetail(props) {
             }
         });
     }
+
     let original_p = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(product.original_price);
     let selling_p = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(product.selling_price);
     return (
@@ -143,7 +155,7 @@ function ViewProductDetail(props) {
                         <del className="ori-price">Giá gốc: {original_p}</del>
                         <p className=" text-danger mt-2">Giá bán: ${selling_p}</p>
                     </div>
-                    <label className="btn-sm btn-success px-4 mt-2">Còn hàng</label>
+                    {quantity_HTML()}
                     <br />
                     <label className="btn-sm btn-warning text-quantity mt-2">Còn lại: {product.number}</label>
                     <div className="input-group mt-3 w-25">

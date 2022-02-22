@@ -61,11 +61,13 @@ function ViewCategory() {
             }
         })
     }
+    var show_paginate = true
     var viewcategory_HTMLTABLE = null;
     if (loading) {
         <h3>Đang tải danh sách loại sản phẩm, vui lòng đợi...</h3>
     } else {
         if (search !== '') {
+            show_paginate = false
             viewcategory_HTMLTABLE =
                 categoryList.filter((item) => {
                     if (item.name.toString().toLowerCase().includes(search.toLowerCase())) {
@@ -120,7 +122,28 @@ function ViewCategory() {
     const handleChangPage = ({ selected }) => {
         setPageNumber(selected);
     }
-
+    function show_panigation() {
+        if (show_paginate === true) {
+            return (
+                <ReactPaginate
+                    disabledClassName={"pagination__link--disabled"}
+                    previousLabel={'←'}
+                    nextLabel={'→'}
+                    pageCount={pageCount}
+                    onPageChange={handleChangPage}
+                    containerClassName={"paginationBttns"}
+                    previousLinkClassName={"paginationPN"}
+                    nextLinkClassName={"paginationPN"}
+                    activeClassName={"paginationActive"}
+                >
+                </ReactPaginate>
+            )
+        } else {
+            return (
+                null
+            )
+        }
+    }
     return (
         <div className='container mt-2'>
             <div className='card'>
@@ -159,18 +182,7 @@ function ViewCategory() {
                         </tbody>
                     </table>
                 </div>
-                <ReactPaginate
-                    disabledClassName={"pagination__link--disabled"}
-                    previousLabel={'←'}
-                    nextLabel={'→'}
-                    pageCount={pageCount}
-                    onPageChange={handleChangPage}
-                    containerClassName={"paginationBttns"}
-                    previousLinkClassName={"paginationPN"}
-                    nextLinkClassName={"paginationPN"}
-                    activeClassName={"paginationActive"}
-                >
-                </ReactPaginate>
+                {show_panigation()}
             </div>
 
         </div>

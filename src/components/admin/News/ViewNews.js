@@ -62,12 +62,13 @@ function ViewNews() {
             }
         })
     }
-
+    var show_paginate = true
     var display_news = '';
     if (loading) {
         return <h4>Đang tải danh sách tin tức, vui lòng đợi....</h4>
     } else {
         if (search !== '') {
+            show_paginate = false
             display_news =
                 news.sort((a, b) => (b.id - a.id)).filter((item) => {
                     if (item.name.toString().toLowerCase().includes(search.toLowerCase())) {
@@ -112,7 +113,28 @@ function ViewNews() {
             })
         }
     }
-
+    function show_panigation() {
+        if (show_paginate === true) {
+            return (
+                <ReactPaginate
+                    disabledClassName={"pagination__link--disabled"}
+                    previousLabel={'←'}
+                    nextLabel={'→'}
+                    pageCount={pageCount}
+                    onPageChange={handleChangPage}
+                    containerClassName={"paginationBttns"}
+                    previousLinkClassName={"paginationPN"}
+                    nextLinkClassName={"paginationPN"}
+                    activeClassName={"paginationActive"}
+                >
+                </ReactPaginate>
+            )
+        } else {
+            return (
+                null
+            )
+        }
+    }
     return (
         <div className='container px-4 mt-2'>
             <div className='card'>
@@ -149,18 +171,7 @@ function ViewNews() {
                         </tbody>
                     </table>
                 </div>
-                <ReactPaginate
-                    disabledClassName={"pagination__link--disabled"}
-                    previousLabel={'Trang trước'}
-                    nextLabel={'Trang sau'}
-                    pageCount={pageCount}
-                    onPageChange={handleChangPage}
-                    containerClassName={"paginationBttns"}
-                    previousLinkClassName={"paginationPN"}
-                    nextLinkClassName={"paginationPN"}
-                    activeClassName={"paginationActive"}
-                >
-                </ReactPaginate>
+                {show_panigation()}
             </div>
         </div>
     )

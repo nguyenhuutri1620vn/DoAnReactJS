@@ -66,10 +66,13 @@ function ViewProduct() {
     }
 
     var display_product = '';
+    var show_paginate = true;
+
     if (loading) {
         return <h4>Đang tải trang danh sách sản phẩm, vui lòng chờ...</h4>
     } else {
         if (search !== '') {
+            show_paginate = false
             display_product =
                 product.sort((a, b) => (b.id - a.id)).filter((item) => {
                     if (item.name.toString().toLowerCase().includes(search.toLowerCase())) {
@@ -81,7 +84,7 @@ function ViewProduct() {
                     let original_price = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.original_price);
                     let selling_price = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.selling_price);
                     return (
-                        <tr key={item.id}>
+                        <tr key={item.id} className={item.number <= 0 ? "quantity-danger" : ""}>
                             <td className='text-center'>{item.id}</td>
                             <td>{item.category.name}</td>
                             <td>{item.producer.name}</td>
@@ -101,7 +104,7 @@ function ViewProduct() {
                 let original_price = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.original_price);
                 let selling_price = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.selling_price);
                 return (
-                    <tr key={item.id}>
+                    <tr key={item.id} className={item.number <= 0 ? "quantity-danger" : ""}>
                         <td className='text-center'>{item.id}</td>
                         <td>{item.category.name}</td>
                         <td>{item.producer.name}</td>
@@ -119,6 +122,28 @@ function ViewProduct() {
         }
     }
 
+    function show_panigation (){
+        if (show_paginate === true){
+            return (
+                <ReactPaginate
+                disabledClassName={"pagination__link--disabled"}
+                previousLabel={'←'}
+                nextLabel={'→'}
+                pageCount={pageCount}
+                onPageChange={handleChangPage}
+                containerClassName={"paginationBttns"}
+                previousLinkClassName={"paginationPN"}
+                nextLinkClassName={"paginationPN"}
+                activeClassName={"paginationActive"}
+            >
+            </ReactPaginate>
+            )
+        }else {
+            return (
+                null
+             )
+        }
+    }
 
     return (
         <div className='container px-4 mt-2'>
@@ -160,18 +185,8 @@ function ViewProduct() {
                         </tbody>
                     </table>
                 </div>
-                <ReactPaginate
-                    disabledClassName={"pagination__link--disabled"}
-                    previousLabel={'←'}
-                    nextLabel={'→'}
-                    pageCount={pageCount}
-                    onPageChange={handleChangPage}
-                    containerClassName={"paginationBttns"}
-                    previousLinkClassName={"paginationPN"}
-                    nextLinkClassName={"paginationPN"}
-                    activeClassName={"paginationActive"}
-                >
-                </ReactPaginate>
+               {show_panigation()}
+                
             </div>
         </div>
     )
