@@ -64,25 +64,32 @@ function ProductFeatured() {
             let selling_p = Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.selling_price);
             return (
                 <Card className='card-product' key={item.id}>
-                    <Link to={`/category/${item.category.slug}/${item.id}`} className='link-product'>
+                {item.discountID !== 1 ? <div className="percent-sale">{item.discount.percent}%</div> : <div></div>}
+                <Link to={`/category/${item.category.slug}/${item.id}`} className='link-product'>
+                    <div className="image-product-area">
                         <Card.Img
                             src={`http://localhost:8000/${item.image}`}
                             className='card-image' />
-                        <Card.Body>
-                            <Card.Title>{item.name}</Card.Title>
-                            <Card.Text className='card-text'>
-                                <p className="card-user-name small">Loại sản phẩm: {item.category.name}</p>
-                                <p className="card-user-name small">Thương hiệu: {item.producer.name}</p>
-                                <del className="card-user-name small">Giá gốc: {original_p}</del>
-                                <p className="card-user-name selling-price">Giá bán: {selling_p}</p>
-                            </Card.Text>
-                            <div className="card-bottom">
-                                <Button variant="danger" onClick={submitAddtoCart}><BsFillCartCheckFill /></Button>
-                                <div className="card-watching">Chỉ còn: {item.number}</div>
-                            </div>
-                        </Card.Body>
-                    </Link>
-                </Card>
+                    </div>
+                    <Card.Body>
+                        <Card.Title>{item.name}</Card.Title>
+                        <Card.Text className='card-text'>
+                            <p className="card-user-name small">Loại sản phẩm: {item.category.name}</p>
+                            <p className="card-user-name small">Thương hiệu: {item.producer.name}</p>
+                            <div className="card-price-area">
+                            {item.discountID !== 1 ? <div><del className="card-user-name">Giá gốc: {original_p} </del>
+                                <p className="card-user-name selling-price">Giá bán: {selling_p}</p></div> :
+                                <p className="card-user-name">Giá bán: {original_p}</p>
+                            }
+</div>
+                        </Card.Text>
+                        <div className="card-bottom">
+                            <Button variant="danger" onClick={submitAddtoCart}><BsFillCartCheckFill /></Button>
+                            <div className="card-watching">Chỉ còn: {item.number}</div>
+                        </div>
+                    </Card.Body>
+                </Link>
+            </Card >
             )
         });
     }

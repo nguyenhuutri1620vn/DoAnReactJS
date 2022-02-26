@@ -8,7 +8,6 @@ import Swal from 'sweetalert2';
 function Profile() {
     document.title = "CHINGU | Cập nhật thông tin"
 
-
     const [user, setUser] = useState([]);
     const [loading, setloading] = useState(true);
     const [errorlist, setError] = useState([]);

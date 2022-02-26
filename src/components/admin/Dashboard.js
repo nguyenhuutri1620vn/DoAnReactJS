@@ -153,25 +153,38 @@ function Dashboard() {
             hoverOffset: 4
         }]
     };
+
+    function formatDate(date) {
+        var d = new Date(date),
+            month = '' + (d.getMonth() + 1),
+            day = '' + d.getDate(),
+            year = d.getFullYear();
+
+        if (month.length < 2)
+            month = '0' + month;
+        if (day.length < 2)
+            day = '0' + day;
+
+        return [year, month, day].join('-');
+
+    }
+
     const Submitday = (value) => {
-        function formatDate(date) {
-            var d = new Date(date),
-                month = '' + (d.getMonth() + 1),
-                day = '' + d.getDate(),
-                year = d.getFullYear();
-
-            if (month.length < 2)
-                month = '0' + month;
-            if (day.length < 2)
-                day = '0' + day;
-
-            return [year, month, day].join('-');
-
-        }
-        var from = formatDate(value)
-        var to = formatDate(todate)
         console.log(formatDate(value));
-        axios.post(`/api/day-order/${from}/${to}`).then(res => {
+
+        axios.post(`/api/day-order/${formatDate(value)}/${formatDate(todate)}`).then(res => {
+            if (res.data.status === 200) {
+                setOrderDay(res.data.orderday);
+                setOrderMoneyDay(res.data.money_day);
+                setProductSold(res.data.productsold);
+                setProductDetailSold(res.data.productdetailsold);
+            }
+        })
+    }
+
+    const chooseDay = (value) => {
+        console.log(formatDate(value));
+        axios.post(`/api/day-order-staff/${formatDate(value)}`).then(res => {
             if (res.data.status === 200) {
                 setOrderDay(res.data.orderday);
                 setOrderMoneyDay(res.data.money_day);
@@ -299,6 +312,7 @@ function Dashboard() {
                                         value={todate.toLocaleDateString()}
                                         onFocus={() => setShowCalendarToDate(true)}
                                         className="form-control my-2"
+                                        disabled
                                     />
                                     <div className='calendar-container'>
                                         <Calendar
@@ -359,7 +373,7 @@ function Dashboard() {
                                 onChange={handleChange}
                                 value={fromdate}
                                 className={showCalendar ? "" : "hide"}
-                                onClickDay={Submitday}
+                                onClickDay={(value)=>chooseDay(value)}
 
                             />
                         </div>
