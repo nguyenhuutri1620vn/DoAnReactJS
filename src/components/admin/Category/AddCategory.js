@@ -51,12 +51,12 @@ function AddCategory() {
 
         formData.append('status', allCheckbox.status ? 1 : 0);
 
-
         axios.post(`/api/store-category`, formData).then(res => {
             if (res.data.status === 200) {
                 Swal.fire('Tạo loại sản phẩm thành công', res.data.message, 'success')
                 setError([]);
-            } else if (res.data.status === 400) {
+            } 
+            else if (res.data.status === 400) {
                 Swal.fire('Kiểm tra dữ liệu nhập', '', 'error');
                 setError(res.data.errors);
             }

@@ -1503,3 +1503,22 @@ div.h6, h6 {
 .card-price-area{
   height: 50px;
 }
+.product-rate-detail{
+  font-size: 24px;
+}
+.user-name-comment{
+  font-size: 15px;
+  font-weight: 400;
+}
+.content-comment-list{
+  font-size: 18px;
+  font-weight: 600;
+}
+.detail-comment-list{
+  font-size: 15px;
+  font-weight: 200;
+}
+.time-commet{
+  font-size: 12px;
+  color: gray;
+}

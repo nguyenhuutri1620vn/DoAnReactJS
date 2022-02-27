@@ -1,20 +1,44 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { Breadcrumb, Button, Card, Col, Figure, Row, Tab, Tabs } from 'react-bootstrap'
+import { Alert, Breadcrumb, Button, Card, Col, Figure, Form, Row, Tab, Tabs } from 'react-bootstrap'
 import { Link, useHistory } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import Moment from 'react-moment';
 import { BsFillCartCheckFill } from 'react-icons/bs';
 import ReactPlayer from 'react-player'
+import Rate from 'rc-rate';
+import 'rc-rate/assets/index.css';
+import ReactPaginate from 'react-paginate';
 
 
 function ViewProductDetail(props) {
     const [category, setCategory] = useState([]);
     const [product, setProduct] = useState([]);
+    const [pageNumber, setPageNumber] = useState(0);
     const [relatedProduct, setRelatedProduct] = useState([]);
+    const [error, setError] = useState([]);
+    const [enableComment, setEnableComment] = useState([]);
     const [loading, setloading] = useState(true);
+    const [commentList, setCommentList] = useState([])
+    const [rate, setRate] = useState(5)
     const [quantity, setQuantity] = useState(1);
+    const [comment, setComment] = useState({
+        userID: '',
+        productID: '',
+        content: '',
+        detail: '',
+        rate: 5
+    })
     const history = useHistory();
+
+    const commentPerPage = 5;
+    const pagesVisited = pageNumber * commentPerPage;
+    const pageCount = Math.ceil(commentList.length / commentPerPage);
+    const handleChangPage = ({ selected }) => {
+        setPageNumber(selected);
+    }
+
+    document.title = `ChingMusic | ${product.name}`;
 
     const handleDecrement = () => {
         if (quantity > 1) {
@@ -28,7 +52,6 @@ function ViewProductDetail(props) {
 
     const submitAddtoCart = (e) => {
         e.preventDefault();
-
         const data = {
             productID: product.id,
             quantity: quantity,
@@ -50,14 +73,13 @@ function ViewProductDetail(props) {
 
     useEffect(() => {
         let isMounterd = true;
-        document.title = `ChingMusic | ${product.name}`;
         const category_slug = props.match.params.category;
         const product_id = props.match.params.product;
+
         axios.get(`/api/viewproductdetail/${category_slug}/${product_id}`).then(res => {
             if (isMounterd) {
                 if (res.data.status === 200) {
                     setProduct(res.data.product);
-                    console.log(res.data.product);
                     setCategory(res.data.category);
                     setRelatedProduct(res.data.related_product);
                     setloading(false);
@@ -71,18 +93,76 @@ function ViewProductDetail(props) {
             isMounterd = false;
         }
     }, [props.match.params.category, props.match.params.product, history, product.name])
+
+    useEffect(() => {
+        const product_id = props.match.params.product;
+        axios.get(`/api/list-comment/${product_id}`).then(res => {
+            if (res.data.status === 200) {
+                setCommentList(res.data.listcomment);
+                setEnableComment(res.data.getorderdetail);
+            }
+        })
+    }, [props.match.params.product])
     function quantity_HTML() {
-        if (product.quantity <= 0){
+        if (product.quantity <= 0) {
             return (
                 <label className="btn-sm btn-danger px-4 mt-2">Hết hàng</label>
             )
-        }else {
+        } else {
             return (
                 <label className="btn-sm btn-success px-4 mt-2">Còn hàng</label>
             )
         }
     }
 
+
+    const onChangeComment = (e) => {
+        e.persist()
+        setComment({ ...comment, [e.target.name]: e.target.value })
+    }
+
+    const onChangeRate = (e) => {
+        setRate(e)
+    }
+    const submitComment = (e) => {
+        e.preventDefault()
+        const formData = new FormData();
+
+        formData.append('content', comment.content)
+        formData.append('detail', comment.detail)
+        formData.append('rate', rate)
+
+        const product_id = props.match.params.product;
+
+        axios.post(`/api/add-comment/${product_id}`, formData).then(res => {
+            if (res.data.status === 200) {
+                Swal.fire('Bình luận sản phẩm thành công', res.data.message, 'success')
+
+                setError([])
+            } else if (res.data.status === 201) {
+                Swal.fire('Sản phầm này đã được bình luận', res.data.message, 'warning')
+                setError([]);
+            } else if (res.data.status === 400) {
+                Swal.fire('Kiểm tra dữ liệu nhập', '', 'error');
+                setError(res.data.errors);
+            }
+        })
+
+    }
+    function formatDate(date) {
+        var d = new Date(date),
+            month = '' + (d.getMonth() + 1),
+            day = '' + d.getDate(),
+            year = d.getFullYear();
+
+        if (month.length < 2)
+            month = '0' + month;
+        if (day.length < 2)
+            day = '0' + day;
+
+        return [year, month, day].join('-');
+
+    }
     if (loading) {
         return <div className='loading'><h4>Đang tải, vui lòng đợi...</h4></div>
     } else {
@@ -95,11 +175,9 @@ function ViewProductDetail(props) {
                 return (
                     <Card className='card-product-related mx-2' key={idx}>
                         <Link to={`/category/${item.category.slug}/${item.id}`} className='link-product'>
-
                             <Card.Img
                                 src={`http://localhost:8000/${item.image}`}
                                 className='card-image' />
-
                             <Card.Body>
                                 <Card.Title>{item.name}</Card.Title>
                                 <Card.Text className='card-text'>
@@ -117,7 +195,6 @@ function ViewProductDetail(props) {
             }
         });
     }
-
     let original_p = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(product.original_price);
     let selling_p = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(product.selling_price);
     return (
@@ -152,8 +229,9 @@ function ViewProductDetail(props) {
                         <p className="cate-info">Loại sản phẩm:<Link to={`/category/${category.slug}`} className="link-to"> {product.category.name}</Link></p>
                     </div>
                     <div className='price-area'>
-                        <del className="ori-price">Giá gốc: {original_p}</del>
-                        <p className=" text-danger mt-2">Giá bán: ${selling_p}</p>
+                        {product.discountID !== 1 ? <div> <del className="ori-price">Giá gốc: {original_p}</del>
+                            <p className=" text-danger mt-2">Giá bán: ${selling_p}</p></div> :
+                            <p className=" text-danger mt-2">Giá bán: ${selling_p}</p>}
                     </div>
                     {quantity_HTML()}
                     <br />
@@ -179,6 +257,82 @@ function ViewProductDetail(props) {
                         </div>
                     </Tab>
                 </Tabs>
+
+            </div>
+            <div>
+            {enableComment.indexOf(parseInt(props.match.params.product)) !== -1 ?                 
+                <div className="product-comment">
+                <h3>Bình luận</h3>
+                    <Form className='mt-3' onSubmit={submitComment}>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Tiêu đề</Form.Label>
+                            <Form.Control
+                                placeholder="Nhập tiêu đề"
+                                name="content"
+                                value={comment.content}
+                                onChange={onChangeComment} />
+                        </Form.Group>
+                        <div className='text-danger'>{error.content}</div>
+                        <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
+                            <Form.Label><b>Nội dung</b></Form.Label>
+                            <Form.Control
+                                placeholder="Nhập nội dung bình luận"
+                                as="textarea"
+                                rows={3}
+                                name='detail'
+                                onChange={onChangeComment}
+                                value={comment.detail} />
+                        </Form.Group>
+                        <div className='text-danger'>{error.detail}</div>
+                        <div className='product-rate'>
+                            <p><b>Đánh giá sản phẩm</b></p>
+                            <Rate
+                                onChange={onChangeRate}
+                                value={rate}
+                            />
+                        </div>
+                        <div className='text-danger'>{error.rate}</div>
+                        <Button type='submit' variant="outline-primary" className='mt-2'>Đăng</Button>
+                    </Form>
+           
+                </div> : <div className="no-sold-product-comment">
+                    <Alert variant="warning">
+                        Bạn không thể bình luận vì chưa mua sản phẩm này
+                    </Alert>
+                </div>
+                 }
+                <div className='comment-list mt-3'>
+                    <h4 className='text-danger'>Danh sách bình luận sản phẩm (có {commentList.length} lượt bình luận)</h4>
+                    <div className='content-comment-list-area'>
+                        
+                        {commentList.length ? 
+                        commentList.slice(pagesVisited, pagesVisited + commentPerPage).map((item) => {
+                            return (
+                                <div key={item.id}>
+                                    <div className='user-name-comment'>{item.users.fullname}</div>
+                                    <div className='content-comment-list'>{item.content}</div>
+                                    <div className='detail-comment-list'>{item.detail}</div>
+                                    <Rate value={item.rate} disabled />
+                                    <div className='time-commet'>{formatDate(item.created_at)}</div>
+                                    <hr />
+                                </div>
+                            )
+                        }): <div>Hiện tại chưa có bình luận nào</div>}
+                        {commentList.length > 5 ? <ReactPaginate
+                            disabledClassName={"pagination__link--disabled"}
+                            previousLabel={'←'}
+                            nextLabel={'→'}
+                            pageCount={pageCount}
+                            onPageChange={handleChangPage}
+                            containerClassName={"paginationBttns"}
+                            previousLinkClassName={"paginationPN"}
+                            nextLinkClassName={"paginationPN"}
+                            activeClassName={"paginationActive"}
+                        >
+                        </ReactPaginate> : <div></div>}
+
+                    </div>
+                </div>
 
             </div>
             <hr />
