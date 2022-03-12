@@ -11,6 +11,7 @@ function EditProduct(props) {
     document.title = 'Chỉnh sửa sản phẩm';
 
     const [categorylist, setCategorylist] = useState([]);
+    const [discountlist, setDiscountlist] = useState([]);
     const [producerlist, setProducerlist] = useState([]);
     const [errorlist, setError] = useState([]);
     const [picture, setPicture] = useState([]);
@@ -51,6 +52,11 @@ function EditProduct(props) {
                 setProducerlist(res.data.producer);
             }
         });
+        axios.get(`api/all-discount`).then(res => {
+            if (res.data.status === 200) {
+                setDiscountlist(res.data.discount);
+            }
+        })
 
         const product_id = props.match.params.id;
         axios.get(`/api/edit-product/${product_id}`).then(res => {
@@ -74,6 +80,8 @@ function EditProduct(props) {
 
         formData.append('cateID', productInput.cateID);
         formData.append('producerID', productInput.producerID);
+        formData.append('discountID', productInput.discountID);
+
         formData.append('name', productInput.name);
         formData.append('slug', productInput.slug);
         formData.append('description', productInput.description);
@@ -127,7 +135,7 @@ function EditProduct(props) {
                     <div className="tab-content" id="myTabContent">
                         <div className="tab-pane card-body fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                             <div className='row'>
-                                <div className='col-md-6 form-group mb-3'>
+                                <div className='col-md-4 form-group mb-3'>
                                     <label>Loại sản phẩm</label>
                                     <select name='cateID' className='form-select' aria-label="Default select example" onChange={handleInput} value={productInput.cateID}>
                                         <option>Chọn loại sản phẩm</option>
@@ -141,7 +149,7 @@ function EditProduct(props) {
                                     </select>
                                     <small className='text-danger'>{errorlist.cateID}</small>
                                 </div>
-                                <div className='col-md-6 form-group mb-3'>
+                                <div className='col-md-4 form-group mb-3'>
                                     <label>Thương hiệu</label>
                                     <select name='producerID' className='form-select' aria-label="Default select example" onChange={handleInput} value={productInput.producerID}>
                                         <option>Chọn thương hiệu</option>
@@ -155,6 +163,20 @@ function EditProduct(props) {
                                     </select>
                                     <small className='text-danger'>{errorlist.producerID}</small>
 
+                                </div>
+                                <div className='col-md-4 form-group mb-3'>
+                                    <label>Mã giảm giá</label>
+                                    <select name='discountID' className='form-select' aria-label="Default select example" onChange={handleInput} value={productInput.discountID}>
+                                        <option>Chọn mã giảm giá</option>
+                                        {
+                                            discountlist.map((item) => {
+                                                return (
+                                                    <option value={item.id} key={item.id}>{item.name}</option>
+                                                )
+                                            })
+                                        }
+                                    </select>
+                                    <small className='text-danger'>{errorlist.discountID}</small>
                                 </div>
                             </div>
                             <div className='form-group mb-3'>
@@ -202,11 +224,6 @@ function EditProduct(props) {
                                 <small className='text-danger'>{errorlist.original_price}</small>
 
                                 <div className='col-md-4 form-group mb-3'>
-                                    <label>Giá bán</label>
-                                    <input type='text' name='selling_price' onChange={handleInput} value={productInput.selling_price} className='form-control' disabled/>
-                                </div>
-
-                                <div className='col-md-4 form-group mb-3'>
                                     <label>Số lượng</label>
                                     <input type='text' name='number' onChange={handleInput} value={productInput.number} className='form-control' />
                                 </div>
@@ -220,7 +237,7 @@ function EditProduct(props) {
                                 <small className='text-danger'>{errorlist.image}</small>
                                 <div className='col-md-4 form-group mb-3'>
                                     <label>Video (URL)</label>
-                                    <input type='text' name='video' value={productInput.video}  onChange={handleInput} className='form-control' />
+                                    <input type='text' name='video' value={productInput.video} onChange={handleInput} className='form-control' />
                                 </div>
                                 <div className='col-md-12 form-group mb-3'>
                                     <label>Nổi bật</label>

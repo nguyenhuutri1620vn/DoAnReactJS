@@ -155,22 +155,22 @@ function AddProduct() {
                                         }
                                     </select>
                                     <small className='text-danger'>{errorlist.producerID}</small>
-                                    
+
                                 </div>
                                 <div className='col-md-4 form-group mb-3'>
-                                        <label>Mã giảm giá</label>
-                                        <select name='discountID' className='form-select' aria-label="Default select example" onChange={handleInput} value={productInput.discountID}>
-                                            <option>Chọn mã giảm giá</option>
-                                            {
-                                                discountlist.map((item) => {
-                                                    return (
-                                                        <option value={item.id} key={item.id}>{item.name}</option>
-                                                    )
-                                                })
-                                            }
-                                        </select>
-                                        <small className='text-danger'>{errorlist.discountID}</small>
-                                    </div>
+                                    <label>Mã giảm giá</label>
+                                    <select name='discountID' className='form-select' aria-label="Default select example" onChange={handleInput} value={productInput.discountID}>
+                                        <option>Chọn mã giảm giá</option>
+                                        {
+                                            discountlist.map((item) => {
+                                                return (
+                                                    <option value={item.id} key={item.id}>{item.name}</option>
+                                                )
+                                            })
+                                        }
+                                    </select>
+                                    <small className='text-danger'>{errorlist.discountID}</small>
+                                </div>
                             </div>
                             <div className='form-group mb-3'>
                                 <label>Tên sản phẩm</label>
@@ -222,14 +222,6 @@ function AddProduct() {
                                     </InputGroup>
                                 </div>
                                 <small className='text-danger'>{errorlist.original_price}</small>
-                                <div className='col-md-4 form-group mb-3'>
-                                    <label>Giá bán</label>
-                                    <InputGroup >
-                                        <InputGroup.Text>$</InputGroup.Text>
-                                        <input type='text' name='selling_price'
-                                            onChange={handleInput} value={productInput.selling_price} className='form-control' disabled/>
-                                    </InputGroup>
-                                </div>
 
                                 <div className='col-md-4 form-group mb-3'>
                                     <label>Số lượng</label>

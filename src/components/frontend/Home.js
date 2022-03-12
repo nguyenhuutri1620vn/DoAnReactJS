@@ -1,9 +1,10 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Card, Carousel, Button, Container, Row, Col } from 'react-bootstrap';
-import { Link , useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { BsFillCartCheckFill } from 'react-icons/bs';
 import Swal from 'sweetalert2';
+import Rate from 'rc-rate';
 
 
 function Home() {
@@ -23,7 +24,6 @@ function Home() {
             if (res.data.status === 200) {
                 setCategory(res.data.category);
                 setProductFeatured(res.data.product_featured);
-                // setProducer(res.data.producer);
                 setProductPopular(res.data.product_popular);
                 setContent(res.data.content);
             }
@@ -49,7 +49,7 @@ function Home() {
             )
         })
         var featured_HTML = '';
-        featured_HTML = productFeatured.sort(function() {return 0.5 - Math.random()}).slice(0, 8).map((item) => {
+        featured_HTML = productFeatured.sort(function () { return 0.5 - Math.random() }).slice(0, 8).map((item) => {
             const submitAddtoCart = (e) => {
                 e.preventDefault();
                 setQuantity(1);
@@ -84,14 +84,18 @@ function Home() {
                         <Card.Body>
                             <Card.Title>{item.name}</Card.Title>
                             <Card.Text className='card-text'>
+                                <div className='rate-place'>
+                                    <Rate disabled value={item.rate} />
+                                    {item.rate === 0 ? <p className="card-user-name small">(Chưa có lượt đánh giá)</p> : null}
+                                </div>
                                 <p className="card-user-name small">Loại sản phẩm: {item.category.name}</p>
                                 <p className="card-user-name small">Thương hiệu: {item.producer.name}</p>
                                 <div className="card-price-area">
-                                {item.discountID !== 1 ? <div><del className="card-user-name">Giá gốc: {original_p} </del>
-                                    <p className="card-user-name selling-price">Giá bán: {selling_p}</p></div> :
-                                    <p className="card-user-name">Giá bán: {original_p}</p>
-                                }
-</div>
+                                    {item.discountID !== 1 ? <div><del className="card-user-name">Giá gốc: {original_p} </del>
+                                        <p className="card-user-name selling-price">Giá bán: {selling_p}</p></div> :
+                                        <p className="card-user-name">Giá bán: {original_p}</p>
+                                    }
+                                </div>
                             </Card.Text>
                             <div className="card-bottom">
                                 <Button variant="danger" onClick={submitAddtoCart}><BsFillCartCheckFill /></Button>
@@ -103,7 +107,7 @@ function Home() {
             )
         })
         var popular_HTML = '';
-        popular_HTML = productPopular.sort(function() {return 0.5 - Math.random()}).slice(0, 8).map((item) => {
+        popular_HTML = productPopular.sort(function () { return 0.5 - Math.random() }).slice(0, 8).map((item) => {
             const submitAddtoCart = (e) => {
                 e.preventDefault();
                 setQuantity(1);
@@ -128,36 +132,40 @@ function Home() {
             let selling_p = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.selling_price);
             return (
                 <Card className='card-product' key={item.id}>
-                {item.discountID !== 1 ? <div className="percent-sale">{item.discount.percent}%</div> : <div></div>}
-                <Link to={`/category/${item.category.slug}/${item.id}`} className='link-product'>
-                    <div className="image-product-area">
-                        <Card.Img
-                            src={`http://localhost:8000/${item.image}`}
-                            className='card-image' />
-                    </div>
-                    <Card.Body>
-                        <Card.Title>{item.name}</Card.Title>
-                        <Card.Text className='card-text'>
-                            <p className="card-user-name small">Loại sản phẩm: {item.category.name}</p>
-                            <p className="card-user-name small">Thương hiệu: {item.producer.name}</p>
-                            <div className="card-price-area">
-                            {item.discountID !== 1 ? <div><del className="card-user-name">Giá gốc: {original_p} </del>
-                                <p className="card-user-name selling-price">Giá bán: {selling_p}</p></div> :
-                                <p className="card-user-name">Giá bán: {original_p}</p>
-                            }
-</div>
-                        </Card.Text>
-                        <div className="card-bottom">
-                            <Button variant="danger" onClick={submitAddtoCart}><BsFillCartCheckFill /></Button>
-                            <div className="card-watching">Chỉ còn: {item.number}</div>
+                    {item.discountID !== 1 ? <div className="percent-sale">{item.discount.percent}%</div> : <div></div>}
+                    <Link to={`/category/${item.category.slug}/${item.id}`} className='link-product'>
+                        <div className="image-product-area">
+                            <Card.Img
+                                src={`http://localhost:8000/${item.image}`}
+                                className='card-image' />
                         </div>
-                    </Card.Body>
-                </Link>
-            </Card >
+                        <Card.Body>
+                            <Card.Title>{item.name}</Card.Title>
+                            <Card.Text className='card-text'>
+                                <div className='rate-place'>
+                                    <Rate disabled value={item.rate} />
+                                    {item.rate === 0 ? <p className="card-user-name small">(Chưa có lượt đánh giá)</p> : null}
+                                </div>
+                                <p className="card-user-name small">Loại sản phẩm: {item.category.name}</p>
+                                <p className="card-user-name small">Thương hiệu: {item.producer.name}</p>
+                                <div className="card-price-area">
+                                    {item.discountID !== 1 ? <div><del className="card-user-name">Giá gốc: {original_p} </del>
+                                        <p className="card-user-name selling-price">Giá bán: {selling_p}</p></div> :
+                                        <p className="card-user-name">Giá bán: {original_p}</p>
+                                    }
+                                </div>
+                            </Card.Text>
+                            <div className="card-bottom">
+                                <Button variant="danger" onClick={submitAddtoCart}><BsFillCartCheckFill /></Button>
+                                <div className="card-watching">Chỉ còn: {item.number}</div>
+                            </div>
+                        </Card.Body>
+                    </Link>
+                </Card >
             )
         })
         var content_html = '';
-        content_html = content.sort((a, b) => (b.id - a.id)).slice(0,7 ).map((item) => {
+        content_html = content.sort((a, b) => (b.id - a.id)).slice(0, 7).map((item) => {
             if (item.id !== 4 && item.id !== 5 && item.id !== 6) {
                 return (
                     <div className='col-md-6' key={item.id}>
@@ -280,7 +288,7 @@ function Home() {
                     </div>
                 </div>
                 <div className='see_more'>
-                    <Link to='/product' className='link-seemore'><h4>Xem thêm...</h4></Link></div>
+                    <Link to='/product-featured' className='link-seemore'><h4>Xem thêm...</h4></Link></div>
                 {/* Popular product */}
                 <div className='popular_product'>
                     <div className='box_category_home'>
@@ -292,7 +300,7 @@ function Home() {
                         </div>
                     </div>
                 </div>
-                <div className='see_more'><Link to='/product' className='link-seemore'><h4>Xem thêm...</h4></Link></div>
+                <div className='see_more'><Link to='/product-popular' className='link-seemore'><h4>Xem thêm...</h4></Link></div>
                 {/* Content */}
                 <div className='content-container'>
                     <div className='box_category_home'>

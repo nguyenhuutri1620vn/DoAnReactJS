@@ -1,4 +1,5 @@
 import axios from 'axios';
+import Rate from 'rc-rate';
 import React, { useEffect, useState } from 'react'
 import { Breadcrumb, Button, Card } from 'react-bootstrap';
 import { BsFillCartCheckFill } from 'react-icons/bs';
@@ -71,6 +72,10 @@ function Search(props) {
                             <Card.Body>
                                 <Card.Title>{item.name}</Card.Title>
                                 <Card.Text className='card-text'>
+                                    <div className='rate-place'>
+                                        <Rate disabled value={item.rate} />
+                                        {item.rate === 0 ? <p className="card-user-name small">(Chưa có lượt đánh giá)</p> : null}
+                                    </div>
                                     <p className="card-user-name small">Loại sản phẩm: {item.category.name}</p>
                                     <p className="card-user-name small">Thương hiệu: {item.producer.name}</p>
                                     <del className="card-user-name small">Giá gốc: {original_price}</del>

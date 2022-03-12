@@ -225,6 +225,7 @@ function ViewProductDetail(props) {
                 <Col>
                     <h3>{product.name} - <Link className="link-to text-success" to="#"> {product.producer.name}</Link></h3>
                     <p className="time-created"><Moment format="DD/MM/YYYY">{product.created_at}</Moment></p>
+                    <Rate disabled value={Math.round(product.rate)} />({commentList.length} lượt đánh giá)
                     <div className="inf-area">
                         <p className="cate-info">Loại sản phẩm:<Link to={`/category/${category.slug}`} className="link-to"> {product.category.name}</Link></p>
                     </div>
@@ -260,64 +261,64 @@ function ViewProductDetail(props) {
 
             </div>
             <div>
-            {enableComment.indexOf(parseInt(props.match.params.product)) !== -1 ?                 
-                <div className="product-comment">
-                <h3>Bình luận</h3>
-                    <Form className='mt-3' onSubmit={submitComment}>
-                        <Form.Group className="mb-3">
-                            <Form.Label>Tiêu đề</Form.Label>
-                            <Form.Control
-                                placeholder="Nhập tiêu đề"
-                                name="content"
-                                value={comment.content}
-                                onChange={onChangeComment} />
-                        </Form.Group>
-                        <div className='text-danger'>{error.content}</div>
-                        <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
-                            <Form.Label><b>Nội dung</b></Form.Label>
-                            <Form.Control
-                                placeholder="Nhập nội dung bình luận"
-                                as="textarea"
-                                rows={3}
-                                name='detail'
-                                onChange={onChangeComment}
-                                value={comment.detail} />
-                        </Form.Group>
-                        <div className='text-danger'>{error.detail}</div>
-                        <div className='product-rate'>
-                            <p><b>Đánh giá sản phẩm</b></p>
-                            <Rate
-                                onChange={onChangeRate}
-                                value={rate}
-                            />
-                        </div>
-                        <div className='text-danger'>{error.rate}</div>
-                        <Button type='submit' variant="outline-primary" className='mt-2'>Đăng</Button>
-                    </Form>
-           
-                </div> : <div className="no-sold-product-comment">
-                    <Alert variant="warning">
-                        Bạn không thể bình luận vì chưa mua sản phẩm này
-                    </Alert>
-                </div>
-                 }
+                {enableComment.indexOf(parseInt(props.match.params.product)) !== -1 ?
+                    <div className="product-comment">
+                        <h3>Bình luận</h3>
+                        <Form className='mt-3' onSubmit={submitComment}>
+                            <Form.Group className="mb-3">
+                                <Form.Label>Tiêu đề</Form.Label>
+                                <Form.Control
+                                    placeholder="Nhập tiêu đề"
+                                    name="content"
+                                    value={comment.content}
+                                    onChange={onChangeComment} />
+                            </Form.Group>
+                            <div className='text-danger'>{error.content}</div>
+                            <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
+                                <Form.Label><b>Nội dung</b></Form.Label>
+                                <Form.Control
+                                    placeholder="Nhập nội dung bình luận"
+                                    as="textarea"
+                                    rows={3}
+                                    name='detail'
+                                    onChange={onChangeComment}
+                                    value={comment.detail} />
+                            </Form.Group>
+                            <div className='text-danger'>{error.detail}</div>
+                            <div className='product-rate'>
+                                <p><b>Đánh giá sản phẩm</b></p>
+                                <Rate
+                                    onChange={onChangeRate}
+                                    value={rate}
+                                />
+                            </div>
+                            <div className='text-danger'>{error.rate}</div>
+                            <Button type='submit' variant="outline-primary" className='mt-2'>Đăng</Button>
+                        </Form>
+
+                    </div> : <div className="no-sold-product-comment">
+                        <Alert variant="warning">
+                            Bạn không thể bình luận vì chưa mua sản phẩm này
+                        </Alert>
+                    </div>
+                }
                 <div className='comment-list mt-3'>
                     <h4 className='text-danger'>Danh sách bình luận sản phẩm (có {commentList.length} lượt bình luận)</h4>
                     <div className='content-comment-list-area'>
-                        
-                        {commentList.length ? 
-                        commentList.slice(pagesVisited, pagesVisited + commentPerPage).map((item) => {
-                            return (
-                                <div key={item.id}>
-                                    <div className='user-name-comment'>{item.users.fullname}</div>
-                                    <div className='content-comment-list'>{item.content}</div>
-                                    <div className='detail-comment-list'>{item.detail}</div>
-                                    <Rate value={item.rate} disabled />
-                                    <div className='time-commet'>{formatDate(item.created_at)}</div>
-                                    <hr />
-                                </div>
-                            )
-                        }): <div>Hiện tại chưa có bình luận nào</div>}
+
+                        {commentList.length ?
+                            commentList.slice(pagesVisited, pagesVisited + commentPerPage).map((item) => {
+                                return (
+                                    <div key={item.id}>
+                                        <div className='user-name-comment'>{item.users.fullname}</div>
+                                        <div className='content-comment-list'>{item.content}</div>
+                                        <div className='detail-comment-list'>{item.detail}</div>
+                                        <Rate value={item.rate} disabled />
+                                        <div className='time-commet'>{formatDate(item.created_at)}</div>
+                                        <hr />
+                                    </div>
+                                )
+                            }) : <div>Hiện tại chưa có bình luận nào</div>}
                         {commentList.length > 5 ? <ReactPaginate
                             disabledClassName={"pagination__link--disabled"}
                             previousLabel={'←'}

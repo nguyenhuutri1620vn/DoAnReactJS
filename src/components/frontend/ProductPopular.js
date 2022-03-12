@@ -1,6 +1,7 @@
 import axios from 'axios';
+import Rate from 'rc-rate';
 import React, { useEffect, useState } from 'react'
-import { Card , Button, Dropdown, Breadcrumb} from 'react-bootstrap';
+import { Card, Button, Dropdown, Breadcrumb } from 'react-bootstrap';
 import { BsFillCartCheckFill } from 'react-icons/bs';
 import ReactPaginate from 'react-paginate';
 import { Link, useHistory } from 'react-router-dom';
@@ -74,14 +75,18 @@ function ProductPopular() {
                         <Card.Body>
                             <Card.Title>{item.name}</Card.Title>
                             <Card.Text className='card-text'>
+                                <div className='rate-place'>
+                                    <Rate disabled value={item.rate} />
+                                    {item.rate === 0 ? <p className="card-user-name small">(Chưa có lượt đánh giá)</p> : null}
+                                </div>
                                 <p className="card-user-name small">Loại sản phẩm: {item.category.name}</p>
                                 <p className="card-user-name small">Thương hiệu: {item.producer.name}</p>
                                 <div className="card-price-area">
-                                {item.discountID !== 1 ? <div><del className="card-user-name">Giá gốc: {original_p} </del>
-                                    <p className="card-user-name selling-price">Giá bán: {selling_p}</p></div> :
-                                    <p className="card-user-name">Giá bán: {original_p}</p>
-                                }
-</div>
+                                    {item.discountID !== 1 ? <div><del className="card-user-name">Giá gốc: {original_p} </del>
+                                        <p className="card-user-name selling-price">Giá bán: {selling_p}</p></div> :
+                                        <p className="card-user-name">Giá bán: {original_p}</p>
+                                    }
+                                </div>
                             </Card.Text>
                             <div className="card-bottom">
                                 <Button variant="danger" onClick={submitAddtoCart}><BsFillCartCheckFill /></Button>
