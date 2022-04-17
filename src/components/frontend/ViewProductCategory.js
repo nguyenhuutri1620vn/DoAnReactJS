@@ -1,7 +1,7 @@
 import axios from "axios";
 import Rate from "rc-rate";
 import React, { useEffect, useState } from "react";
-import { Breadcrumb, Card, Button } from "react-bootstrap";
+import { Breadcrumb, Card, Button, Dropdown } from "react-bootstrap";
 import { BsFillCartCheckFill } from "react-icons/bs";
 import ReactPaginate from "react-paginate";
 import { Link, useHistory } from "react-router-dom";
@@ -10,6 +10,8 @@ import Slidebar from "../../layouts/frontend/Slidebar";
 
 function ViewProductCategory(props) {
     const [product, setProduct] = useState([]);
+    const [asc, setAsc] = useState(false);
+    const [des, setDes] = useState(false);
     const [category, setCategory] = useState([]);
     const [pageNumber, setPageNumber] = useState(0);
     const [loading, setloading] = useState(true);
@@ -49,13 +51,21 @@ function ViewProductCategory(props) {
             isMounterd = false;
         }
     }, [props.match.params.slug, history])
-
+    function PriceSort(a, b) {
+        if (asc === true && des === false) {
+            return a.selling_price - b.selling_price
+        } else if (des === true && asc === false) {
+            return b.selling_price - a.selling_price
+        } else {
+            return b.id - a.id
+        }
+    }
     if (loading) {
         return <div className='loading'><h4>Vui lòng chờ...</h4></div>
     } else {
         var product_HTML = '';
         if (productCount) {
-            product_HTML = product.sort((a, b) => (b.id - a.id)).slice(pagesVisited, pagesVisited + productPerPage).map((item, idx) => {
+            product_HTML = product.sort(PriceSort).slice(pagesVisited, pagesVisited + productPerPage).map((item, idx) => {
                 const submitAddtoCart = (e) => {
                     e.preventDefault();
                     setQuantity(1);
@@ -135,6 +145,17 @@ function ViewProductCategory(props) {
                         {category.name}
                     </Breadcrumb.Item>
                 </Breadcrumb>
+                Lọc sản phẩm: 
+                <Dropdown>
+                    <Dropdown.Toggle variant="light" id="dropdown-basic">
+                        Theo giá
+                    </Dropdown.Toggle>
+                    <Dropdown.Menu>
+                        <Dropdown.Item onClick={() => (setAsc(false), setDes(false))}>Mặc định</Dropdown.Item>
+                        <Dropdown.Item onClick={() => (setAsc(true), setDes(false))}>Tăng dần</Dropdown.Item>
+                        <Dropdown.Item onClick={() => (setAsc(false), setDes(true))}>Giảm dần</Dropdown.Item>
+                    </Dropdown.Menu>
+                </Dropdown>
                 <div className='featured_product'>
                     <div className='box_category_home'>
                         <div className="cards-product">
