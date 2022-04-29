@@ -1529,3 +1529,9 @@ div.h6, h6 {
   width: 100%;
   display: block
 }
+.dropdown-area{
+  position: static;
+}
+.dropdown-product .dropdown-price{
+  position: absolute;
+}

@@ -7,6 +7,7 @@ import ReactPaginate from 'react-paginate';
 import { Link, useHistory } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import Slidebar from '../../layouts/frontend/Slidebar';
+import { sortPrice } from '../util';
 
 function ProductPopular() {
     document.title = "Chingu | Sản phẩm phổ biến"
@@ -36,26 +37,6 @@ function ProductPopular() {
             setloading(false);
         });
     }, [])
-    const sortPrice = (e, type) => {
-        e.preventDefault()
-        switch (type) {
-            case 'default':
-                setAsc(false)
-                setDes(false)
-                break;
-            case 'asc':
-                setAsc(true)
-                setDes(false)
-                break;
-            case 'des':
-                setAsc(false)
-                setDes(true)
-                break;
-            default:
-                break;
-        }
-    }
-
     if (loading) {
         return <div className='loading'><h4>Đang tải sản phẩm...</h4></div>
     } else {
@@ -140,27 +121,28 @@ function ProductPopular() {
                         Sản phẩm phổ biến
                     </Breadcrumb.Item>
                 </Breadcrumb>
-                Bộ lọc sản phẩm
-                <Dropdown>
-                    <Dropdown.Toggle variant="light" id="dropdown-basic">
-                        Xem sản phẩm
-                    </Dropdown.Toggle>
-                    <Dropdown.Menu>
-                        <Dropdown.Item href="/product">Mặc định</Dropdown.Item>
-                        <Dropdown.Item href="/product-popular">Phổ biến</Dropdown.Item>
-                        <Dropdown.Item href="/product-featured">Nổi bật</Dropdown.Item>
-                    </Dropdown.Menu>
-                </Dropdown>
-                <Dropdown>
-                    <Dropdown.Toggle variant="light" id="dropdown-basic">
-                        Theo giá
-                    </Dropdown.Toggle>
-                    <Dropdown.Menu>
-                        <Dropdown.Item onClick={(e) => sortPrice(e, 'default')}>Mặc định</Dropdown.Item>
-                        <Dropdown.Item onClick={(e) => sortPrice(e, 'asc')}>Tăng dần</Dropdown.Item>
-                        <Dropdown.Item onClick={(e) => sortPrice(e, 'des')}>Giảm dần</Dropdown.Item>
-                    </Dropdown.Menu>
-                </Dropdown>
+                <div className='dropdown-area'>
+                    <Dropdown className='dropdown-product float-end'>
+                        <Dropdown.Toggle variant="light" id="dropdown-basic">
+                            Xem sản phẩm
+                        </Dropdown.Toggle>
+                        <Dropdown.Menu>
+                            <Dropdown.Item href="/product">Mặc định</Dropdown.Item>
+                            <Dropdown.Item href="/product-popular">Phổ biến</Dropdown.Item>
+                            <Dropdown.Item href="/product-featured">Nổi bật</Dropdown.Item>
+                        </Dropdown.Menu>
+                    </Dropdown>
+                    <Dropdown className='dropdown-price float-end'>
+                        <Dropdown.Toggle variant="light" id="dropdown-basic">
+                            Theo giá
+                        </Dropdown.Toggle>
+                        <Dropdown.Menu>
+                            <Dropdown.Item onClick={(e) => sortPrice(e, 'default', setAsc, setDes)}>Mặc định</Dropdown.Item>
+                            <Dropdown.Item onClick={(e) => sortPrice(e, 'asc', setAsc, setDes)}>Tăng dần</Dropdown.Item>
+                            <Dropdown.Item onClick={(e) => sortPrice(e, 'des', setAsc, setDes)}>Giảm dần</Dropdown.Item>
+                        </Dropdown.Menu>
+                    </Dropdown>
+                </div>
                 <div className='featured_product'>
                     <div className='box_category_home'>
                         <div className="cards-product">

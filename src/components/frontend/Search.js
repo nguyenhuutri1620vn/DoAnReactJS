@@ -6,6 +6,7 @@ import { BsFillCartCheckFill } from 'react-icons/bs';
 import { Link, useHistory } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import Slidebar from '../../layouts/frontend/Slidebar';
+import { sortPrice } from '../util';
 
 function Search(props) {
     document.title = `Từ khóa ${props.match.params.name}`
@@ -34,26 +35,6 @@ function Search(props) {
             isMounterd = false;
         }
     }, [props.match.params.name, history])
-
-    const sortPrice = (e, type) => {
-        e.preventDefault()
-        switch (type) {
-            case 'default':
-                setAsc(false)
-                setDes(false)
-                break;
-            case 'asc':
-                setAsc(true)
-                setDes(false)
-                break;
-            case 'des':
-                setAsc(false)
-                setDes(true)
-                break;
-            default:
-                break;
-        }
-    }
 
     if (loading) {
         return (
@@ -143,16 +124,19 @@ function Search(props) {
                         Tìm kiếm với từ khóa '{props.match.params.name}'
                     </Breadcrumb.Item>
                 </Breadcrumb>
-                <Dropdown>
+                <div className='dropdown-area'>
+                    Lọc sản phẩm : 
+                    <Dropdown className='float-end dropdown-price'>
                         <Dropdown.Toggle variant="light" id="dropdown-basic">
                             Theo giá
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
-                            <Dropdown.Item onClick={(e) => sortPrice(e, 'default')}>Mặc định</Dropdown.Item>
-                            <Dropdown.Item onClick={(e) => sortPrice(e, 'asc')}>Tăng dần</Dropdown.Item>
-                            <Dropdown.Item onClick={(e) => sortPrice(e, 'des')}>Giảm dần</Dropdown.Item>
+                            <Dropdown.Item onClick={(e) => sortPrice(e, 'default', setAsc, setDes)}>Mặc định</Dropdown.Item>
+                            <Dropdown.Item onClick={(e) => sortPrice(e, 'asc', setAsc, setDes)}>Tăng dần</Dropdown.Item>
+                            <Dropdown.Item onClick={(e) => sortPrice(e, 'des', setAsc, setDes)}>Giảm dần</Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
+                </div>
                 <div className='featured_product'>
                     <div className='box_category_home'>
                         <div className="cards-product">

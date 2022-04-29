@@ -6,7 +6,7 @@ import { BsFillCartCheckFill } from "react-icons/bs";
 import ReactPaginate from "react-paginate";
 import { Link, useHistory } from "react-router-dom";
 import Swal from "sweetalert2";
-
+import { sortPrice } from '../util'
 import Slidebar from "../../layouts/frontend/Slidebar";
 
 function Product() {
@@ -37,32 +37,11 @@ function Product() {
         });
     }, [])
 
-    const sortPrice = (e, type) => {
-        e.preventDefault()
-
-        switch (type) {
-            case 'default':
-                setAsc(false)
-                setDes(false)
-                break;
-            case 'asc':
-                setAsc(true)
-                setDes(false)
-                break;
-            case 'des':
-                setAsc(false)
-                setDes(true)
-                break;
-            default:
-                break;
-        }
-    }
-    
     if (loading) {
         return <div className='loading'><h4>Đang tải sản phẩm...</h4></div>
     } else {
         var product_HTML = '';
-        function PriceSort(a, b) {
+        function PriceSort(a, b){
             if (asc === true && des === false) {
                 return a.selling_price - b.selling_price
             } else if (des === true && asc === false) {
@@ -70,7 +49,7 @@ function Product() {
             } else {
                 return b.id - a.id
             }
-        }    
+        }
         product_HTML = product.sort(PriceSort).slice(pagesVisited, pagesVisited + productPerPage).map((item) => {
             const submitAddtoCart = (e) => {
                 e.preventDefault();
@@ -142,9 +121,9 @@ function Product() {
                         Sản phẩm
                     </Breadcrumb.Item>
                 </Breadcrumb>
-                <div >
-                    Bộ lọc sản phẩm:
-                    <Dropdown>
+                <div className="dropdown-area">
+                    Lọc sản phẩm:
+                    <Dropdown className='float-end dropdown-product'>
                         <Dropdown.Toggle variant="light" id="dropdown-basic">
                             Theo sản phẩm
                         </Dropdown.Toggle>
@@ -154,14 +133,14 @@ function Product() {
                             <Dropdown.Item href="/product-featured">Nổi bật</Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
-                    <Dropdown>
+                    <Dropdown className='float-end dropdown-price'>
                         <Dropdown.Toggle variant="light" id="dropdown-basic">
                             Theo giá
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
-                            <Dropdown.Item onClick={(e) => sortPrice(e, 'default')}>Mặc định</Dropdown.Item>
-                            <Dropdown.Item onClick={(e) => sortPrice(e, 'asc')}>Tăng dần</Dropdown.Item>
-                            <Dropdown.Item onClick={(e) => sortPrice(e, 'des')}>Giảm dần</Dropdown.Item>
+                            <Dropdown.Item onClick={(e) => sortPrice(e, 'default', setAsc, setDes)}>Mặc định</Dropdown.Item>
+                            <Dropdown.Item onClick={(e) => sortPrice(e, 'asc', setAsc, setDes)}>Tăng dần</Dropdown.Item>
+                            <Dropdown.Item onClick={(e) => sortPrice(e, 'des', setAsc, setDes)}>Giảm dần</Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
                 </div>
