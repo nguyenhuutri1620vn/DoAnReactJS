@@ -11,7 +11,7 @@ function Dashboard() {
     document.title = 'Chingu | Thống kê';
 
     const [showCalendar, setShowCalendar] = useState(false);
-    const [showCalendarToDate, setShowCalendarToDate] = useState(false);
+    // const [showCalendarToDate, setShowCalendarToDate] = useState(false);
 
     const [product, setProduct] = useState([]);
     const [content, setContent] = useState([]);
@@ -27,7 +27,7 @@ function Dashboard() {
     const [check, setCheck] = useState([]);
     const [totalproductdashboard, setTotalProductDashboard] = useState([]);
     const [fromdate, setFromDate] = useState(new Date());
-    const [todate, setToDate] = useState (new Date());
+    // const [todate, setToDate] = useState(new Date());
     const [year] = useState();
 
     let total_price = [];
@@ -35,10 +35,10 @@ function Dashboard() {
         setFromDate(fromdate);
         setShowCalendar(false);
     };
-    const handleChangeToDate = todate => {
-        setToDate(todate);
-        setShowCalendarToDate(false);
-    };
+    // const handleChangeToDate = todate => {
+    //     setToDate(todate);
+    //     setShowCalendarToDate(false);
+    // };
     useEffect(() => {
         axios.get(`/api/dashboard`).then(res => {
             setProduct(res.data.product);
@@ -168,22 +168,19 @@ function Dashboard() {
         return [year, month, day].join('-');
 
     }
-
-    const Submitday = (value) => {
-        console.log(formatDate(value));
-
-        axios.post(`/api/day-order/${formatDate(value)}/${formatDate(todate)}`).then(res => {
-            if (res.data.status === 200) {
-                setOrderDay(res.data.orderday);
-                setOrderMoneyDay(res.data.money_day);
-                setProductSold(res.data.productsold);
-                setProductDetailSold(res.data.productdetailsold);
-            }
-        })
-    }
-
+    // const Submitday = (value) => {
+    //     axios.post(`/api/day-order/${formatDate(value)}${formatDate(todate)}`).then(res => {
+    //         if (res.data.status === 200) {
+    //             setOrderDay(res.data.orderday);
+    //             setOrderMoneyDay(res.data.money_day);
+    //             setProductSold(res.data.productsold);
+    //             setProductDetailSold(res.data.productdetailsold);
+    //             console.log("from: " + res.data.from);
+    //             console.log("to: " + res.data.to);
+    //         }
+    //     })
+    // }
     const chooseDay = (value) => {
-        console.log(formatDate(value));
         axios.post(`/api/day-order-staff/${formatDate(value)}`).then(res => {
             if (res.data.status === 200) {
                 setOrderDay(res.data.orderday);
@@ -193,7 +190,7 @@ function Dashboard() {
             }
         })
     }
-  
+
     if (loading) {
         return <div className="container loading"><h4>Đang tải dữ liệu</h4></div>
     }
@@ -266,7 +263,9 @@ function Dashboard() {
                             </Card>
                         </Col>
                         <Col xs={8}>
-                            <Card>
+                            <Card
+                                style={{height: "100%"}}
+                            >
                                 <Card.Header>DOANH THU THEO NĂM</Card.Header>
                                 <Card.Body>
                                     <Form>
@@ -293,7 +292,6 @@ function Dashboard() {
                                     DOANH THU THEO NGÀY
                                 </Card.Header>
                                 <Card.Body>
-                                    Từ
                                     <input
                                         value={fromdate.toLocaleDateString()}
                                         onFocus={() => setShowCalendar(true)}
@@ -304,22 +302,8 @@ function Dashboard() {
                                             onChange={handleChange}
                                             value={fromdate}
                                             className={showCalendar ? "" : "hide"}
-                                            onClickDay={(value)=>Submitday(value)}
-                                        />
-                                    </div>
-                                    Đến
-                                    <input
-                                        value={todate.toLocaleDateString()}
-                                        onFocus={() => setShowCalendarToDate(true)}
-                                        className="form-control my-2"
-                                        disabled
-                                    />
-                                    <div className='calendar-container'>
-                                        <Calendar
-                                            onChange={handleChangeToDate}
-                                            value={todate}
-                                            className={showCalendarToDate ? "" : "hide"}
-                                            onClickDay={(value)=>Submitday(value)}
+                                            onClickDay={(value) => chooseDay(value)}
+
                                         />
                                     </div>
                                     <Button className='float-end' variant='primary' onClick={OutPutPDF}>Xuất file pdf</Button>
@@ -373,7 +357,7 @@ function Dashboard() {
                                 onChange={handleChange}
                                 value={fromdate}
                                 className={showCalendar ? "" : "hide"}
-                                onClickDay={(value)=>chooseDay(value)}
+                                onClickDay={(value) => chooseDay(value)}
 
                             />
                         </div>

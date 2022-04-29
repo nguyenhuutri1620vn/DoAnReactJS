@@ -1,7 +1,7 @@
 import axios from 'axios';
 import Rate from 'rc-rate';
 import React, { useEffect, useState } from 'react'
-import { Breadcrumb, Button, Card } from 'react-bootstrap';
+import { Breadcrumb, Button, Card, Dropdown } from 'react-bootstrap';
 import { BsFillCartCheckFill } from 'react-icons/bs';
 import { Link, useHistory } from 'react-router-dom';
 import Swal from 'sweetalert2';
@@ -11,6 +11,8 @@ function Search(props) {
     document.title = `Từ khóa ${props.match.params.name}`
 
     const [product, setProduct] = useState([]);
+    const [asc, setAsc] = useState(false);
+    const [des, setDes] = useState(false);
     const [loading, setLoading] = useState(true);
     const [quantity, setQuantity] = useState(1);
     const productCount = product.length;
@@ -33,14 +35,43 @@ function Search(props) {
         }
     }, [props.match.params.name, history])
 
+    const sortPrice = (e, type) => {
+        e.preventDefault()
+        switch (type) {
+            case 'default':
+                setAsc(false)
+                setDes(false)
+                break;
+            case 'asc':
+                setAsc(true)
+                setDes(false)
+                break;
+            case 'des':
+                setAsc(false)
+                setDes(true)
+                break;
+            default:
+                break;
+        }
+    }
+
     if (loading) {
         return (
             <div className='container loading'><h4>Đang tìm sẩm phẩm...</h4></div>
         )
     } else {
         var product_HTML = ''
+        function PriceSort(a, b) {
+            if (asc === true && des === false) {
+                return a.selling_price - b.selling_price
+            } else if (des === true && asc === false) {
+                return b.selling_price - a.selling_price
+            } else {
+                return b.id - a.id
+            }
+        }
         if (productCount) {
-            product_HTML = product.map((item, idx) => {
+            product_HTML = product.sort(PriceSort).map((item, idx) => {
                 const submitAddtoCart = (e) => {
                     e.preventDefault();
                     setQuantity(1);
@@ -112,6 +143,16 @@ function Search(props) {
                         Tìm kiếm với từ khóa '{props.match.params.name}'
                     </Breadcrumb.Item>
                 </Breadcrumb>
+                <Dropdown>
+                        <Dropdown.Toggle variant="light" id="dropdown-basic">
+                            Theo giá
+                        </Dropdown.Toggle>
+                        <Dropdown.Menu>
+                            <Dropdown.Item onClick={(e) => sortPrice(e, 'default')}>Mặc định</Dropdown.Item>
+                            <Dropdown.Item onClick={(e) => sortPrice(e, 'asc')}>Tăng dần</Dropdown.Item>
+                            <Dropdown.Item onClick={(e) => sortPrice(e, 'des')}>Giảm dần</Dropdown.Item>
+                        </Dropdown.Menu>
+                    </Dropdown>
                 <div className='featured_product'>
                     <div className='box_category_home'>
                         <div className="cards-product">

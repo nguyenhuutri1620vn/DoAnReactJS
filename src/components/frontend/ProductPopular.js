@@ -36,19 +36,39 @@ function ProductPopular() {
             setloading(false);
         });
     }, [])
-    function PriceSort(a, b) {
-        if (asc === true && des === false) {
-            return a.selling_price - b.selling_price
-        } else if (des === true && asc === false) {
-            return b.selling_price - a.selling_price
-        } else {
-            return b.id - a.id
+    const sortPrice = (e, type) => {
+        e.preventDefault()
+        switch (type) {
+            case 'default':
+                setAsc(false)
+                setDes(false)
+                break;
+            case 'asc':
+                setAsc(true)
+                setDes(false)
+                break;
+            case 'des':
+                setAsc(false)
+                setDes(true)
+                break;
+            default:
+                break;
         }
     }
+
     if (loading) {
         return <div className='loading'><h4>Đang tải sản phẩm...</h4></div>
     } else {
         var productPopular_HTML = '';
+        function PriceSort(a, b) {
+            if (asc === true && des === false) {
+                return a.selling_price - b.selling_price
+            } else if (des === true && asc === false) {
+                return b.selling_price - a.selling_price
+            } else {
+                return b.id - a.id
+            }
+        }
         productPopular_HTML = productPopular.sort(PriceSort).slice(pagesVisited, pagesVisited + productPerPage).map((item) => {
             const submitAddtoCart = (e) => {
                 e.preventDefault();
@@ -136,9 +156,9 @@ function ProductPopular() {
                         Theo giá
                     </Dropdown.Toggle>
                     <Dropdown.Menu>
-                        <Dropdown.Item onClick={() => (setAsc(false), setDes(false))}>Mặc định</Dropdown.Item>
-                        <Dropdown.Item onClick={() => (setAsc(true), setDes(false))}>Tăng dần</Dropdown.Item>
-                        <Dropdown.Item onClick={() => (setAsc(false), setDes(true))}>Giảm dần</Dropdown.Item>
+                        <Dropdown.Item onClick={(e) => sortPrice(e, 'default')}>Mặc định</Dropdown.Item>
+                        <Dropdown.Item onClick={(e) => sortPrice(e, 'asc')}>Tăng dần</Dropdown.Item>
+                        <Dropdown.Item onClick={(e) => sortPrice(e, 'des')}>Giảm dần</Dropdown.Item>
                     </Dropdown.Menu>
                 </Dropdown>
                 <div className='featured_product'>

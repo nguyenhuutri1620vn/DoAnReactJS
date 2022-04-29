@@ -11201,7 +11201,7 @@ html, body {
   display: none;
 }
 .card-product-dashboard{
-  height: 438px;
+  height: 100%;
 }
 .quantity-danger{
   background-color: #f89a7f;
