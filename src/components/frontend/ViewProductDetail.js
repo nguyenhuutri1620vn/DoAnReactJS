@@ -9,6 +9,7 @@ import ReactPlayer from 'react-player'
 import Rate from 'rc-rate';
 import 'rc-rate/assets/index.css';
 import ReactPaginate from 'react-paginate';
+import { submitAddtoCart } from '../util';
 
 
 function ViewProductDetail(props) {
@@ -48,27 +49,6 @@ function ViewProductDetail(props) {
     const handleIncrement = () => {
         if (quantity < product.number)
             setQuantity(prevCount => prevCount + 1);
-    }
-
-    const submitAddtoCart = (e) => {
-        e.preventDefault();
-        const data = {
-            productID: product.id,
-            quantity: quantity,
-        }
-        axios.post(`/api/add-to-cart`, data).then(res => {
-            if (res.data.status === 201) {
-                Swal.fire("Thêm giỏ hàng thành công", res.data.message, "success");
-            } else if (res.data.status === 409) {
-                Swal.fire("Thông báo", res.data.message, "warning");
-            } else if (res.data.status === 401) {
-                Swal.fire("Có lỗi", res.data.message, "error");
-                history.push('/login');
-            } else if (res.data.status === 404) {
-                Swal.fire("Thông báo", res.data.message, "warning");
-            }
-
-        });
     }
 
     useEffect(() => {
@@ -114,8 +94,6 @@ function ViewProductDetail(props) {
             )
         }
     }
-
-
     const onChangeComment = (e) => {
         e.persist()
         setComment({ ...comment, [e.target.name]: e.target.value })
@@ -242,7 +220,7 @@ function ViewProductDetail(props) {
                         <div className="text-center form-control ">{quantity}</div>
                         <button className='input-group-text' onClick={handleIncrement} type="button">+</button>
                     </div>
-                    <Button variant="danger" className="mt-3" onClick={submitAddtoCart}><BsFillCartCheckFill className="mb-1" /> Thêm vào giỏ hàng</Button>
+                    <Button variant="danger" className="mt-3" onClick={(e) => submitAddtoCart(e, product, quantity, setQuantity, history)}><BsFillCartCheckFill className="mb-1" /> Thêm vào giỏ hàng</Button>
                 </Col>
             </Row>
             <hr />

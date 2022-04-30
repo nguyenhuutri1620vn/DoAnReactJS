@@ -1,16 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { Button } from 'react-bootstrap';
+import { Button, Dropdown } from 'react-bootstrap';
 import ReactPaginate from 'react-paginate';
 import Swal from "sweetalert2";
-
+import { sortPrice, sortTime } from '../../util'
 
 function ViewProduct() {
     document.title = 'Danh sách sản phẩm';
 
     const [pageNumber, setPageNumber] = useState(0);
     const [search, setSearch] = useState("");
+    const [newest, setNewest] = useState(true);
+    const [asc, setAsc] = useState(false);
+    const [des, setDes] = useState(false);
     const [product, setProduct] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -71,10 +74,22 @@ function ViewProduct() {
     if (loading) {
         return <h4>Đang tải trang danh sách sản phẩm, vui lòng chờ...</h4>
     } else {
+        function Sort(a, b) {
+            if (asc === true && des === false) {
+                return a.selling_price - b.selling_price
+            } else if (des === true && asc === false) {
+                return b.selling_price - a.selling_price
+            } else if(newest === true && des === false && asc === false){
+                return b.id - a.id
+            } else if(newest === false && des === false && asc === false){
+                return a.id - b.id
+            }
+        }
         if (search !== '') {
             show_paginate = false
+
             display_product =
-                product.sort((a, b) => (b.id - a.id)).filter((item) => {
+                product.sort(Sort).filter((item) => {
                     if (item.name.toString().toLowerCase().includes(search.toLowerCase())) {
                         return item
                     } else {
@@ -100,7 +115,7 @@ function ViewProduct() {
                     )
                 })
         } else {
-            display_product = product.sort((a, b) => (b.id - a.id)).slice(pagesVisited, pagesVisited + productPerPage).map((item) => {
+            display_product = product.sort(Sort).slice(pagesVisited, pagesVisited + productPerPage).map((item) => {
                 let original_price = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.original_price);
                 let selling_price = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.selling_price);
                 return (
@@ -122,32 +137,34 @@ function ViewProduct() {
         }
     }
 
-    function show_panigation (){
-        if (show_paginate === true){
+    function show_panigation() {
+        if (show_paginate === true) {
             return (
                 <ReactPaginate
-                disabledClassName={"pagination__link--disabled"}
-                previousLabel={'←'}
-                nextLabel={'→'}
-                pageCount={pageCount}
-                onPageChange={handleChangPage}
-                containerClassName={"paginationBttns"}
-                previousLinkClassName={"paginationPN"}
-                nextLinkClassName={"paginationPN"}
-                activeClassName={"paginationActive"}
-            >
-            </ReactPaginate>
+                    disabledClassName={"pagination__link--disabled"}
+                    previousLabel={'←'}
+                    nextLabel={'→'}
+                    pageCount={pageCount}
+                    onPageChange={handleChangPage}
+                    containerClassName={"paginationBttns"}
+                    previousLinkClassName={"paginationPN"}
+                    nextLinkClassName={"paginationPN"}
+                    activeClassName={"paginationActive"}
+                >
+                </ReactPaginate>
             )
-        }else {
+        } else {
             return (
                 null
-             )
+            )
         }
     }
 
     return (
         <div className='container px-4 mt-2'>
+           
             <div className='card'>
+                
                 <div className='card-header'>
                     <h4>Danh sách sản phẩm
                         <form className="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0 float-end">
@@ -164,6 +181,28 @@ function ViewProduct() {
                     </h4>
                 </div>
                 <div className='card-body'>
+                <div className="dropdown-area">
+                Lọc sản phẩm:
+                <Dropdown className='float-end dropdown-price'>
+                    <Dropdown.Toggle variant="light" id="dropdown-basic">
+                        Theo thời gian
+                    </Dropdown.Toggle>
+                    <Dropdown.Menu>
+                        <Dropdown.Item onClick={(e) => sortTime(e, 'newest', setNewest, setAsc, setDes)}>Mới nhất</Dropdown.Item>
+                        <Dropdown.Item onClick={(e) => sortTime(e, 'oldest', setNewest, setAsc,setDes)}>Cũ nhất</Dropdown.Item>
+                    </Dropdown.Menu>
+                </Dropdown>
+                <Dropdown className='float-end dropdown-price'>
+                    <Dropdown.Toggle variant="light" id="dropdown-basic">
+                        Theo giá
+                    </Dropdown.Toggle>
+                    <Dropdown.Menu>
+                        <Dropdown.Item onClick={(e) => sortPrice(e, 'default', setAsc, setDes)}>Mặc định</Dropdown.Item>
+                        <Dropdown.Item onClick={(e) => sortPrice(e, 'asc', setAsc, setDes)}>Tăng dần</Dropdown.Item>
+                        <Dropdown.Item onClick={(e) => sortPrice(e, 'des', setAsc, setDes)}>Giảm dần</Dropdown.Item>
+                    </Dropdown.Menu>
+                </Dropdown>
+            </div>
                     <table className='table table-hover table-bordered'>
                         <thead className='text-center'>
                             <tr>
@@ -185,8 +224,8 @@ function ViewProduct() {
                         </tbody>
                     </table>
                 </div>
-               {show_panigation()}
-                
+                {show_panigation()}
+
             </div>
         </div>
     )

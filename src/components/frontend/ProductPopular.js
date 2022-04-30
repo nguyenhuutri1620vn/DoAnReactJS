@@ -5,9 +5,8 @@ import { Card, Button, Dropdown, Breadcrumb } from 'react-bootstrap';
 import { BsFillCartCheckFill } from 'react-icons/bs';
 import ReactPaginate from 'react-paginate';
 import { Link, useHistory } from 'react-router-dom';
-import Swal from 'sweetalert2';
 import Slidebar from '../../layouts/frontend/Slidebar';
-import { sortPrice } from '../util';
+import { Sort, sortPrice, sortTime, submitAddtoCart } from '../util';
 
 function ProductPopular() {
     document.title = "Chingu | Sản phẩm phổ biến"
@@ -16,6 +15,7 @@ function ProductPopular() {
 
     const [loading, setloading] = useState(true);
     const [asc, setAsc] = useState(false);
+    const [newest, setNewest] = useState(true);
     const [des, setDes] = useState(false);
     const [pageNumber, setPageNumber] = useState(0);
     const [quantity, setQuantity] = useState(1);
@@ -41,37 +41,7 @@ function ProductPopular() {
         return <div className='loading'><h4>Đang tải sản phẩm...</h4></div>
     } else {
         var productPopular_HTML = '';
-        function PriceSort(a, b) {
-            if (asc === true && des === false) {
-                return a.selling_price - b.selling_price
-            } else if (des === true && asc === false) {
-                return b.selling_price - a.selling_price
-            } else {
-                return b.id - a.id
-            }
-        }
-        productPopular_HTML = productPopular.sort(PriceSort).slice(pagesVisited, pagesVisited + productPerPage).map((item) => {
-            const submitAddtoCart = (e) => {
-                e.preventDefault();
-                setQuantity(1);
-                const data = {
-                    productID: item.id,
-                    quantity: quantity,
-                }
-                axios.post(`/api/add-to-cart`, data).then(res => {
-                    if (res.data.status === 201) {
-                        Swal.fire("Thêm giỏ hàng thành công", res.data.message, "success");
-                    } else if (res.data.status === 409) {
-                        Swal.fire("Thông báo", res.data.message, "warning");
-                    } else if (res.data.status === 401) {
-                        Swal.fire("Có lỗi", res.data.message, "error");
-                        history.push('/login');
-                    } else if (res.data.status === 404) {
-                        Swal.fire("Thông báo", res.data.message, "warning");
-                    }
-
-                });
-            }
+        productPopular_HTML = productPopular.sort(((a, b) => Sort(a, b, asc, des, newest))).slice(pagesVisited, pagesVisited + productPerPage).map((item) => {
             let original_p = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.original_price);
             let selling_p = Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.selling_price);
             return (
@@ -100,7 +70,7 @@ function ProductPopular() {
                                 </div>
                             </Card.Text>
                             <div className="card-bottom">
-                                <Button variant="danger" onClick={submitAddtoCart}><BsFillCartCheckFill /></Button>
+                                <Button variant="danger" onClick={(e) => submitAddtoCart(e, item, quantity, setQuantity, history)}><BsFillCartCheckFill /></Button>
                                 <div className="card-watching">Chỉ còn: {item.number}</div>
                             </div>
                         </Card.Body>
@@ -140,6 +110,15 @@ function ProductPopular() {
                             <Dropdown.Item onClick={(e) => sortPrice(e, 'default', setAsc, setDes)}>Mặc định</Dropdown.Item>
                             <Dropdown.Item onClick={(e) => sortPrice(e, 'asc', setAsc, setDes)}>Tăng dần</Dropdown.Item>
                             <Dropdown.Item onClick={(e) => sortPrice(e, 'des', setAsc, setDes)}>Giảm dần</Dropdown.Item>
+                        </Dropdown.Menu>
+                    </Dropdown>
+                    <Dropdown className='float-end dropdown-price'>
+                        <Dropdown.Toggle variant="light" id="dropdown-basic">
+                            Theo thời gian
+                        </Dropdown.Toggle>
+                        <Dropdown.Menu>
+                            <Dropdown.Item onClick={(e) => sortTime(e, 'newest', setNewest, setAsc, setDes)}>Mới nhất</Dropdown.Item>
+                            <Dropdown.Item onClick={(e) => sortTime(e, 'oldest', setNewest, setAsc, setDes)}>Cũ nhất</Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
                 </div>

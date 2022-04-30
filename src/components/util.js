@@ -21,8 +21,26 @@ export const sortPrice = (e, type, setAsc, setDes) => {
     }
 }
 
-export const submitAddtoCart = ( item, quantity, setQuantity, history) => {
-    // e.preventDefault();
+export const sortTime = (e, type, setNewest, setAsc, setDes) => {
+    e.preventDefault()
+    switch (type) {
+        case 'newest':
+            setNewest(true)
+            setAsc(false)
+            setDes(false)
+            break;
+        case 'oldest':
+            setNewest(false)
+            setAsc(false)
+            setDes(false)
+            break;
+        default:
+            break;
+    }
+}
+
+export const submitAddtoCart = (e, item, quantity, setQuantity, history) => {
+    e.preventDefault();
     setQuantity(1);
     const data = {
         productID: item.id,
@@ -40,4 +58,16 @@ export const submitAddtoCart = ( item, quantity, setQuantity, history) => {
             Swal.fire("Thông báo", res.data.message, "warning");
         }
     });
+}
+
+export function Sort(a, b, asc, des, newest) {
+    if (asc === true && des === false) {
+        return a.selling_price - b.selling_price
+    } else if (des === true && asc === false) {
+        return b.selling_price - a.selling_price
+    } else if (newest === true && des === false && asc === false) {
+        return b.id - a.id
+    } else if (newest === false && des === false && asc === false) {
+        return a.id - b.id
+    }
 }
