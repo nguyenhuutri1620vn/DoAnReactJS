@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Breadcrumb, Col, ListGroup, Row, Table } from 'react-bootstrap';
-import { useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import Swal from 'sweetalert2';
 
 function OrderItem(props) {
@@ -35,7 +35,7 @@ function OrderItem(props) {
             return (
                 <tr key={idx}>
                     <td>#</td>
-                    <td className='text-center'>{item.product.name}</td>
+                    <td className='text-center'><Link to={`/category/${item.product.category.slug}/${item.product.id}`}>{item.product.name}</Link></td>
                     <td className='text-center'>{item.count}</td>
                     <td className='text-center'>
                         <img

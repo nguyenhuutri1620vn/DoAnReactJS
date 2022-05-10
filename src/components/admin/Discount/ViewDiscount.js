@@ -36,7 +36,7 @@ function ViewDiscount() {
         const thisClicked = e.currentTarget;
         thisClicked.innerText = "Đang xóa..."
         Swal.fire({
-            title: "Bạn muốn xóa loại sản phẩm?",
+            title: "Bạn muốn xóa mã giảm giá?",
             text: "Khi mà đã xóa rồi thì không hoàn tác được!",
             icon: "warning",
             showCancelButton: true,
@@ -49,7 +49,7 @@ function ViewDiscount() {
 
                 axios.delete(`/api/delete-discount/${id}`).then(res => {
                     if (res.data.status === 200) {
-                        Swal.fire("Poof! Loại sản phẩm đã được xóa!", {
+                        Swal.fire("Poof! Mã giảm giá đã được xóa!", {
                             icon: "success",
                         });
                         thisClicked.innerText = "Đã xóa..."
@@ -142,7 +142,7 @@ function ViewDiscount() {
         <div className='container mt-2'>
         <div className='card'>
             <div className='card-header'>
-                <h4>Danh sách loại sản phẩm
+                <h4>Danh sách mã giảm giá
                     <form className="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0 float-end">
                         <div className="input-group">
                             <input className="form-control"
